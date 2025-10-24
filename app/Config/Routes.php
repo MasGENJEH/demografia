@@ -7,6 +7,6 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 $routes->get('/coba', 'Home::coba');
-$routes->get('/penduduk/tabel-penduduk', 'PendudukController::index');
-$routes->get('/penduduk/tambah', 'PendudukController::new');
-$routes->get('/penduduk/ubah', 'PendudukController::edit');
+$routes->get('/penduduk/tabel-penduduk', 'Penduduk::index');
+$routes->get('/penduduk/tambah', 'Penduduk::new');
+$routes->get('/penduduk/ubah', 'Penduduk::edit');

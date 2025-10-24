@@ -29,14 +29,15 @@
                                     <th>Pendidikan Terakhir</th>
                                     <th>Status Perkawinan</th>
                                 </tr>
+                                <?php foreach ($data_penduduk as $key => $value) { ?>
                                 <tr>
-                                    <td>1</td>
-                                    <td>Irwansyah Saputra</td>
-                                    <td>2000-01-09</td>
-                                    <td>Laki-laki</td>
-                                    <td>Karyawan Swasta</td>
+                                    <td><?php echo $key + 1; ?></td>
+                                    <td><?php echo $value->nama_lengkap; ?></td>
+                                    <td><?php echo $value->tanggal_lahir; ?></td>
+                                    <td><?php echo $value->jenis_kelamin; ?></td>
+                                    <td><?php echo $value->pekerjaan; ?></td>
                                     <td>
-                                        <div class="badge badge-success">Active</div>
+                                        <div class="badge badge-info"><?php echo $value->pendidikan_terakhir; ?></div>
                                     </td>
                                     <td>
                                         <a href="#" class="btn btn-primary">Detail</a>
@@ -44,6 +45,7 @@
                                         <a href="#" class="btn btn-danger">Hapus</a>
                                     </td>
                                 </tr>
+                                <?php } ?>
                             </table>
                         </div>
                     </div>

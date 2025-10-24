@@ -1465,6 +1465,12 @@ table tr:hover .table-links {
 .badge.badge-info {
   background-color: #3abaf4;
 }
+.badge.badge-man {
+  background-color: #0084ff;
+}
+.badge.badge-woman {
+  background-color: #ff00f2;
+}
 .badge.badge-danger {
   background-color: #fc544b;
 }
