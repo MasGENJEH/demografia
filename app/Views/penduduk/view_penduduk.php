@@ -1,14 +1,35 @@
 <?php echo $this->extend('layout/default'); ?>
+
+<?php echo $this->section('judul'); ?>
+<title>View | Penduduk</title>
+<?php echo $this->endSection(); ?>
+
+
+
 <?php echo $this->section('tabel_penduduk'); ?>
 <section class="section">
     <div class="section-header">
+
         <h1>Data Penduduk</h1>
+        <div class="section-header-button">
+            <a href="<?php echo base_url('penduduk/tambah'); ?>" class="btn btn-primary">Tambah Penduduk</a>
+        </div>
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
             <div class="breadcrumb-item"><a href="#">Penduduk</a></div>
             <div class="breadcrumb-item">Data Penduduk</div>
         </div>
     </div>
+
+    <?php if (session()->getFlashdata('success')) { ?>
+    <div class="alert alert-success alert-dismissible show fade">
+        <div class="alert-body">
+            <button class="close" data-dismiss="alert">x</button>
+            <b>Success !</b>
+            <?php echo session()->getFlashdata('success'); ?>
+        </div>
+    </div>
+    <?php }  ?>
     <div class="section-body">
         <div class="row">
 
@@ -27,7 +48,7 @@
                                     <th>Jenis Kelamin</th>
                                     <th>Pekerjaan</th>
                                     <th>Pendidikan Terakhir</th>
-                                    <th>Status Perkawinan</th>
+                                    <th>Action</th>
                                 </tr>
                                 <?php foreach ($data_penduduk as $key => $value) { ?>
                                 <tr>
@@ -40,9 +61,8 @@
                                         <div class="badge badge-info"><?php echo $value->pendidikan_terakhir; ?></div>
                                     </td>
                                     <td>
-                                        <a href="#" class="btn btn-primary">Detail</a>
-                                        <a href="#" class="btn btn-warning">Ubah</a>
-                                        <a href="#" class="btn btn-danger">Hapus</a>
+                                        <a href="#" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
+                                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                                     </td>
                                 </tr>
                                 <?php } ?>

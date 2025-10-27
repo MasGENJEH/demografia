@@ -21,7 +21,6 @@ class Penduduk extends BaseController
     // CREATE (Tampilkan Form Tambah Data)
     public function new()
     {
-        // Tampilkan form penambahan data
         return view('penduduk/form_tambah');
     }
 
@@ -29,6 +28,13 @@ class Penduduk extends BaseController
     public function create()
     {
         // Validasi input
+        $data = $this->request->getPost();
+
+        $this->db->table('data_penduduk')->insert($data);
+
+        if ($this->db->affectdRows() > 0) {
+            return redirect()->to(base_url('penduduk')); // ->with('success', 'Data Berhasil Disimpan')
+        }
         // Simpan data baru ke database (menggunakan POST request)
         // Redirect ke index jika berhasil
     }
