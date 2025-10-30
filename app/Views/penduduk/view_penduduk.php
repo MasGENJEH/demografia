@@ -30,6 +30,15 @@
         </div>
     </div>
     <?php }  ?>
+    <?php if (session()->getFlashdata('error')) { ?>
+    <div class="alert alert-danger alert-dismissible show fade">
+        <div class="alert-body">
+            <button class="close" data-dismiss="alert">x</button>
+            <b>Success !</b>
+            <?php echo session()->getFlashdata('error'); ?>
+        </div>
+    </div>
+    <?php }  ?>
     <div class="section-body">
         <div class="row">
 

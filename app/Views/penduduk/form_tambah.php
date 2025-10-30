@@ -30,42 +30,44 @@
                         <h4>Masukan Data Penduduk Baru</h4>
                     </div>
                     <div class="card-body">
-                        <form action="<?php echo base_url('penduduk'); ?>" method="post" autocomplete="off">
+                        <form action="<?php echo base_url('penduduk/save'); ?>" method="post" autocomplete="off">
+                            <?php echo csrf_field(); ?>
 
                             <div class="form-group">
                                 <label>Nama Lengkap</label>
-                                <input type="text" name="nama_lengkap" class="form-control">
+                                <input type="text" name="nama_lengkap" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label>NIK</label>
-                                <input type="text" name="nik" class="form-control">
+                                <input type="number" name="nik" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label>Nomor KK</label>
-                                <input type="text" name="nomor_kk" class="form-control">
+                                <input type="number" name="nomor_kk" class="form-control" required>
                             </div>
 
                             <div class="form-group">
                                 <label>Tanggal Lahir</label>
-                                <input type="date" name="tanggal_lahir" class="form-control">
+                                <input type="date" name="tanggal_lahir" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label>Jenis Kelamin</label>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="jenis_kelamin" id="radio_laki"
-                                        value="Laki-laki">
+                                        value="Laki-laki" required>
                                     <label class="form-check-label" for="radio_laki">Laki-laki</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="jenis_kelamin"
-                                        id="radio_perempuan" value="Perempuan">
+                                        id="radio_perempuan" value="Perempuan" required>
                                     <label class="form-check-label" for="radio_perempuan">Perempuan</label>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="status_keluarga_select">Status Keluarga</label>
-                                <select class="form-control" id="status_keluarga_select" name="status_keluarga">
+                                <select class="form-control" id="status_keluarga_select" name="status_keluarga"
+                                    required>
                                     <option value="" selected disabled hidden>Pilih Status Keluarga</option>
                                     <option value="Kepala Keluarga">Kepala Keluarga</option>
                                     <option value="Suami">Suami</option>
@@ -82,7 +84,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="pendidikan_terakhir_select">Pendidikan Terakhir</label>
-                                <select class="form-control" id="pendidikan_terakhir_select" name="pendidikan_terakhir">
+                                <select class="form-control" id="pendidikan_terakhir_select" name="pendidikan_terakhir"
+                                    required>
                                     <option value="" selected disabled hidden>Pilih Pendidikan Terakhir</option>
                                     <option value="Tidak / Belum Sekolah">Tidak / Belum Sekolah</option>
                                     <option value="Belum Tamat SD / Sederajat">Belum Tamat SD / Sederajat</option>
@@ -100,12 +103,13 @@
                             </div>
                             <div class="form-group">
                                 <label>Pekerjaan</label>
-                                <input type="text" class="form-control">
+                                <input type="text" name="pekerjaan" class="form-control" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="status_perkawinan_select">Status Perkawinan</label>
-                                <select class="form-control" id="status_perkawinan_select" name="status_perkawinan">
+                                <select class="form-control" id="status_perkawinan_select" name="status_perkawinan"
+                                    required>
                                     <option value="" selected disabled hidden>Pilih Salah Satu</option>
                                     <option value="Belum Kawin">Belum Kawin</option>
                                     <option value="Kawin">Kawin</option>

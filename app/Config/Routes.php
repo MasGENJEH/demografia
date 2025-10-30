@@ -11,7 +11,7 @@ $routes->get('/penduduk', 'Penduduk::index');
 
 // create data
 $routes->get('/penduduk/tambah', 'Penduduk::new');
-$routes->post('/penduduk', 'Penduduk::create');
+$routes->post('/penduduk/save', 'Penduduk::create');
 
 // edit data
 $routes->get('/penduduk/ubah', 'Penduduk::edit');

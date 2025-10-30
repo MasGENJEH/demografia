@@ -83,6 +83,16 @@ class CreatePenduduk extends Migration
                 ],
                 'null' => true,
             ],
+            'created_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
+            'updated_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
+            'created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP',
+            'updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
         ]);
 
         // Menetapkan NIK sebagai Primary Key

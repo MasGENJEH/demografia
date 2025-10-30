@@ -32,8 +32,9 @@ class Penduduk extends BaseController
 
         $this->db->table('data_penduduk')->insert($data);
 
-        if ($this->db->affectdRows() > 0) {
-            return redirect()->to(base_url('penduduk')); // ->with('success', 'Data Berhasil Disimpan')
+        if ($this->db->affectedRows() > 0) {
+            // code...
+            return redirect()->to(base_url('penduduk'))->with('success', 'Data Berhasil Disimpan'); // ->with('success', 'Data Berhasil Disimpan')
         }
         // Simpan data baru ke database (menggunakan POST request)
         // Redirect ke index jika berhasil
