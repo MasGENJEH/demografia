@@ -16,3 +16,6 @@ $routes->post('/penduduk/save', 'Penduduk::create');
 // edit data
 $routes->get('/penduduk/ubah/(:any)', 'Penduduk::edit/$1');
 $routes->put('/penduduk/(:any)', 'Penduduk::update/$1');
+
+// delete data
+$routes->delete('/penduduk/(:segment)', 'Penduduk::delete/$1');

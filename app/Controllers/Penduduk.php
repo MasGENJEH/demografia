@@ -77,15 +77,21 @@ class Penduduk extends BaseController
         // Perbarui data di database
         $this->db->table('data_penduduk')->where(['NIK' => $id])->update($data);
 
-        return redirect()->to(base_url('penduduk'))->with('success', 'Data Berhasil Diupdate'); // ->with('success', 'Data Berhasil Disimpan')
+        return redirect()->to(base_url('penduduk'))->with('success', 'Data Berhasil Diupdate');
 
         // Redirect ke index jika berhasil
     }
 
     // DELETE (Proses Hapus Data)
-    public function delete($id = null)
+    public function delete($id)
     {
         // Hapus data dari database (menggunakan DELETE request)
+        // $data = $this->request->getPost();
+        // unset($data['_method']);
+        $this->db->table('data_penduduk')->where(['NIK' => $id])->delete();
+
+        return redirect()->to(base_url('penduduk'))->with('success', 'Data Berhasil Dihapus');
+
         // Redirect ke index jika berhasil
     }
 }

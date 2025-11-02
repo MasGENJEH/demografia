@@ -72,7 +72,12 @@
                                     <td>
                                         <a href="<?php echo base_url('penduduk/ubah/'.$value->NIK); ?>"
                                             class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
-                                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                        <form class="d-inline" action="<?php echo base_url('penduduk/'.$value->NIK); ?>"
+                                            method="post" onsubmit="return confirm('Anda yakin ingin menghapus data?')">
+                                            <?php echo csrf_field(); ?>
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                        </form>
                                     </td>
                                 </tr>
                                 <?php } ?>
