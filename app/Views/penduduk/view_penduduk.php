@@ -70,7 +70,8 @@
                                         <div class="badge badge-info"><?php echo $value->pendidikan_terakhir; ?></div>
                                     </td>
                                     <td>
-                                        <a href="#" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
+                                        <a href="<?php echo base_url('penduduk/ubah/'.$value->NIK); ?>"
+                                            class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
                                         <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                                     </td>
                                 </tr>

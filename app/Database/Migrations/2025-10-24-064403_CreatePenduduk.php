@@ -9,7 +9,7 @@ class CreatePenduduk extends Migration
     public function up()
     {
         $this->forge->addField([
-            'NIK' => [
+            'nik' => [
                 'type' => 'VARCHAR',
                 'constraint' => '16',
                 'null' => false,
@@ -95,8 +95,8 @@ class CreatePenduduk extends Migration
             'updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
         ]);
 
-        // Menetapkan NIK sebagai Primary Key
-        $this->forge->addKey('NIK', true);
+        // Menetapkan nik sebagai Primary Key
+        $this->forge->addKey('nik', true);
 
         // Menambahkan Foreign Key ke tabel kartu_keluarga
         $this->forge->addForeignKey('nomor_kk', 'kartu_keluarga', 'nomor_kk', 'CASCADE', 'CASCADE');

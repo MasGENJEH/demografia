@@ -43,16 +43,42 @@ class Penduduk extends BaseController
     // UPDATE (Tampilkan Form Edit Data)
     public function edit($id = null)
     {
-        // Ambil data penduduk berdasarkan $id
-        // Tampilkan form edit data
-        return view('penduduk/form_edit');
+        if ($id != null) {
+            $query = $this->db->table('data_penduduk')->getWhere(['nik' => $id]);
+            if ($query->resultID->num_rows > 0) {
+                // code...
+                $data['data_penduduk'] = $query->getRow();
+
+                return view('penduduk/form_edit', $data);
+            } else {
+                throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            }
+        } else {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
     }
 
     // UPDATE (Proses Perbarui Data)
-    public function update($id = null)
+    public function update($id)
     {
         // Ambil data dari form (menggunakan PUT/PATCH request)
+        $data = $this->request->getPost();
+        unset($data['_method']);
+        // $data = [
+        //     'nama_lengkap' => $this->request->getVar('nama_lengkap'),
+        //     'nomor_kk' => $this->request->getVar('nomor_kk'),
+        //     'tanggal_lahir' => $this->request->getVar('tanggal_lahir'),
+        //     'status_keluarga' => $this->request->getVar('status_keluarga'),
+        //     'pendidikan_terakhir' => $this->request->getVar('pendidikan_terakhir'),
+        //     'pekerjaan' => $this->request->getVar('pekerjaan'),
+        //     'status_perkawinan' => $this->request->getVar('status_perkawinan'),
+        // ];
+
         // Perbarui data di database
+        $this->db->table('data_penduduk')->where(['NIK' => $id])->update($data);
+
+        return redirect()->to(base_url('penduduk'))->with('success', 'Data Berhasil Diupdate'); // ->with('success', 'Data Berhasil Disimpan')
+
         // Redirect ke index jika berhasil
     }
 
