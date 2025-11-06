@@ -107,5 +107,6 @@ class CreatePenduduk extends Migration
 
     public function down()
     {
+        $this->forge->dropTable('data_penduduk', true);
     }
 }

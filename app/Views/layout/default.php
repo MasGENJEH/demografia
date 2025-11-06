@@ -291,9 +291,26 @@
                                 <li><a class="nav-link" href="<?php echo base_url('/penduduk/tambah'); ?>">
                                         <i class="fas fa-user-plus fa-fw"></i>
                                         <span>Tambah Penduduk</span></a></li>
-                                <li><a class="nav-link" href="<?php echo base_url('/penduduk/ubah'); ?>">
+                                <!-- <li><a class="nav-link" href="<?php echo base_url('/penduduk/ubah'); ?>">
                                         <i class="fas fa-user-edit fa-fw"></i>
-                                        <span>Ubah Data Penduduk</span></a></li>
+                                        <span>Ubah Data Penduduk</span></a></li> -->
+                            </ul>
+                        </li>
+
+                        <li class="nav-item dropdown active">
+                            <a class="nav-link has-dropdown" href="index-0.html">
+                                <span><i class="far fa-user"></i>Kartu Keluarga</span></a>
+                            <ul class="dropdown-menu">
+
+                                <li><a class="nav-link" href="<?php echo base_url('/penduduk'); ?>">
+                                        <i class="fas fa-table fa-fw"></i>
+                                        <span>Tabel Kerluarga</span></a></li>
+                                <li><a class="nav-link" href="<?php echo base_url('/penduduk/tambah'); ?>">
+                                        <i class="fas fa-user-plus fa-fw"></i>
+                                        <span>Tambah Kerluarga</span></a></li>
+                                <!-- <li><a class="nav-link" href="<?php echo base_url('/penduduk/ubah'); ?>">
+                                        <i class="fas fa-user-edit fa-fw"></i>
+                                        <span>Ubah Data Penduduk</span></a></li> -->
                             </ul>
                         </li>
 
