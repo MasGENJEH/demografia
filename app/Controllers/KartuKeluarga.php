@@ -2,18 +2,20 @@
 
 namespace App\Controllers;
 
+use App\Models\KartuKeluargaModel;
+
 class KartuKeluarga extends BaseController
 {
+    public function __construct()
+    {
+        $this->kartu_keluarga = new KartuKeluargaModel();
+    }
+
     public function index()
     {
-        // 1. Ambil semua data dari PendudukModel
-        // $db = \Config\Database::connect();
-        $builder = $this->db->table('kartu_keluarga');
-        $query = $builder->get();
-        $data['kartu_keluarga'] = $query->getResult();
+        $data['kartu_keluarga'] = $this->kartu_keluarga->paginate(10);
+        $data['pager'] = $this->kartu_keluarga->pager;
 
-        // print_r($query->getResult());
-        // 2. Load view daftar penduduk
         return view('kartu_keluarga/view_kk', $data);
     }
 }

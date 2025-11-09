@@ -59,9 +59,12 @@
                                     <th>Pendidikan Terakhir</th>
                                     <th>Action</th>
                                 </tr>
-                                <?php foreach ($penduduk as $key => $value) { ?>
+                                <?php
+                                $page = isset($_GET['page']) ? $_GET['page'] : 1;
+$no = 1 + (10 * ($page - 1));
+foreach ($penduduk as $key => $value) { ?>
                                 <tr>
-                                    <td><?php echo $key + 1; ?></td>
+                                    <td><?php echo $no++; ?></td>
                                     <td><?php echo $value->nama_lengkap; ?></td>
                                     <td><?php echo $value->tanggal_lahir; ?></td>
                                     <td><?php echo $value->jenis_kelamin; ?></td>
@@ -86,22 +89,8 @@
                     </div>
                     <div class="card-footer text-right">
                         <nav class="d-inline-block">
-                            <?php echo $pager->links(); ?>
-                            <ul class="pagination mb-0">
+                            <?php echo $pager->links('default', 'pagination'); ?>
 
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1"><i class="fas fa-chevron-left"></i></a>
-                                </li>
-                                <li class="page-item active"><a class="page-link" href="#">1 <span
-                                            class="sr-only">(current)</span></a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">2</a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
-                                </li>
-                            </ul>
                         </nav>
                     </div>
                 </div>

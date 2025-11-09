@@ -1,7 +1,7 @@
 <?php echo $this->extend('layout/default'); ?>
 
 <?php echo $this->section('judul'); ?>
-<title>View | Penduduk</title>
+<title>View | Kartu Keluarga</title>
 <?php echo $this->endSection(); ?>
 
 
@@ -10,9 +10,9 @@
 <section class="section">
     <div class="section-header">
 
-        <h1>Data Penduduk</h1>
+        <h1>Data Kartu Keluarga</h1>
         <div class="section-header-button">
-            <a href="<?php echo base_url('kartu_keluarga/tambah'); ?>" class="btn btn-primary">Tambah Penduduk</a>
+            <a href="<?php echo base_url('kartu_keluarga/tambah'); ?>" class="btn btn-primary">Tambah Kartu Keluarga</a>
         </div>
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
@@ -45,7 +45,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Tabel Penduduk</h4>
+                        <h4>Tabel Kartu Keluarga</h4>
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
@@ -61,15 +61,18 @@
                                     <th>Skala Rumah</th>
                                     <th>Action</th>
                                 </tr>
-                                <?php foreach ($kartu_keluarga as $key => $value) { ?>
+                                <?php
+                                $page = isset($_GET['page']) ? $_GET['page'] : 1;
+$no = 1 + (10 * ($page - 1));
+foreach ($kartu_keluarga as $key => $value) { ?>
                                 <tr>
-                                    <td><?php echo $key + 1; ?></td>
+                                    <td><?php echo $no++; ?></td>
                                     <td><?php echo $value->nomor_kk; ?></td>
                                     <td><?php echo $value->alamat; ?></td>
                                     <td><?php echo $value->rt; ?></td>
                                     <td><?php echo $value->rw; ?></td>
                                     <td><?php echo $value->dusun; ?></td>
-                                    <td><?php echo $value->pendapatan; ?></td>
+                                    <td>Rp <?php echo number_format($value->pendapatan, 0, ',', '.'); ?></td>
                                     <td><?php echo $value->skala_rumah; ?></td>
                                     <td>
                                         <a href="<?php echo base_url('kartu_keluarga/ubah/'.$value->nomor_kk); ?>"
@@ -89,20 +92,8 @@
                     </div>
                     <div class="card-footer text-right">
                         <nav class="d-inline-block">
-                            <ul class="pagination mb-0">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1"><i class="fas fa-chevron-left"></i></a>
-                                </li>
-                                <li class="page-item active"><a class="page-link" href="#">1 <span
-                                            class="sr-only">(current)</span></a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">2</a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
-                                </li>
-                            </ul>
+                            <?php echo $pager->links('default', 'pagination'); ?>
+
                         </nav>
                     </div>
                 </div>
