@@ -34,6 +34,26 @@ class CreateKartuKeluarga extends Migration
                 'constraint' => '50',
                 'null' => true,
             ],
+            'pendapatan' => [
+                'type' => 'INT',
+                'constraint' => '50',
+                'null' => true,
+            ],
+            'skala_rumah' => [
+                'type' => 'INT',
+                'constraint' => '50',
+                'null' => true,
+            ],
+            'created_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
+            'updated_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
+            'created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP',
+            'updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
         ]);
 
         // Menetapkan nomor_kk sebagai Primary Key

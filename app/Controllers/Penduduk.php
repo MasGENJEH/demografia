@@ -2,16 +2,20 @@
 
 namespace App\Controllers;
 
+use App\Models\PendudukModel;
+
 class Penduduk extends BaseController
 {
+    public function __construct()
+    {
+        $this->penduduk = new PendudukModel();
+    }
+
     // READ (Tampilkan Daftar Data)
     public function index()
     {
-        // 1. Ambil semua data dari PendudukModel
-        // $db = \Config\Database::connect();
-        $builder = $this->db->table('data_penduduk');
-        $query = $builder->get();
-        $data['data_penduduk'] = $query->getResult();
+        $data['penduduk'] = $this->penduduk->paginate(10);
+        $data['pager'] = $this->penduduk->pager;
 
         // print_r($query->getResult());
         // 2. Load view daftar penduduk
@@ -30,7 +34,7 @@ class Penduduk extends BaseController
         // Validasi input
         $data = $this->request->getPost();
 
-        $this->db->table('data_penduduk')->insert($data);
+        $this->db->table('penduduk')->insert($data);
 
         if ($this->db->affectedRows() > 0) {
             // code...
@@ -44,10 +48,10 @@ class Penduduk extends BaseController
     public function edit($id = null)
     {
         if ($id != null) {
-            $query = $this->db->table('data_penduduk')->getWhere(['nik' => $id]);
+            $query = $this->db->table('penduduk')->getWhere(['nik' => $id]);
             if ($query->resultID->num_rows > 0) {
                 // code...
-                $data['data_penduduk'] = $query->getRow();
+                $data['penduduk'] = $query->getRow();
 
                 return view('penduduk/form_edit', $data);
             } else {
@@ -75,7 +79,7 @@ class Penduduk extends BaseController
         // ];
 
         // Perbarui data di database
-        $this->db->table('data_penduduk')->where(['NIK' => $id])->update($data);
+        $this->db->table('penduduk')->where(['NIK' => $id])->update($data);
 
         return redirect()->to(base_url('penduduk'))->with('success', 'Data Berhasil Diupdate');
 
@@ -88,7 +92,7 @@ class Penduduk extends BaseController
         // Hapus data dari database (menggunakan DELETE request)
         // $data = $this->request->getPost();
         // unset($data['_method']);
-        $this->db->table('data_penduduk')->where(['NIK' => $id])->delete();
+        $this->db->table('penduduk')->where(['NIK' => $id])->delete();
 
         return redirect()->to(base_url('penduduk'))->with('success', 'Data Berhasil Dihapus');
 

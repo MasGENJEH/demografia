@@ -6,18 +6,18 @@
 
 
 
-<?php echo $this->section('tabel_penduduk'); ?>
+<?php echo $this->section('kartu_keluarga'); ?>
 <section class="section">
     <div class="section-header">
 
         <h1>Data Penduduk</h1>
         <div class="section-header-button">
-            <a href="<?php echo base_url('penduduk/tambah'); ?>" class="btn btn-primary">Tambah Penduduk</a>
+            <a href="<?php echo base_url('kartu_keluarga/tambah'); ?>" class="btn btn-primary">Tambah Penduduk</a>
         </div>
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-            <div class="breadcrumb-item"><a href="#">Penduduk</a></div>
-            <div class="breadcrumb-item">Data Penduduk</div>
+            <div class="breadcrumb-item"><a href="#">Kartu Keluarga</a></div>
+            <div class="breadcrumb-item">Data Kartu Keluarga</div>
         </div>
     </div>
 
@@ -52,27 +52,30 @@
                             <table class="table table-striped table-md">
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama</th>
-                                    <th>Tanggal Lahir</th>
-                                    <th>Jenis Kelamin</th>
-                                    <th>Pekerjaan</th>
-                                    <th>Pendidikan Terakhir</th>
+                                    <th>Nomor KK</th>
+                                    <th>Alamat</th>
+                                    <th>RT</th>
+                                    <th>RW</th>
+                                    <th>Dusun</th>
+                                    <th>Pendapatan</th>
+                                    <th>Skala Rumah</th>
                                     <th>Action</th>
                                 </tr>
-                                <?php foreach ($penduduk as $key => $value) { ?>
+                                <?php foreach ($kartu_keluarga as $key => $value) { ?>
                                 <tr>
                                     <td><?php echo $key + 1; ?></td>
-                                    <td><?php echo $value->nama_lengkap; ?></td>
-                                    <td><?php echo $value->tanggal_lahir; ?></td>
-                                    <td><?php echo $value->jenis_kelamin; ?></td>
-                                    <td><?php echo $value->pekerjaan; ?></td>
+                                    <td><?php echo $value->nomor_kk; ?></td>
+                                    <td><?php echo $value->alamat; ?></td>
+                                    <td><?php echo $value->rt; ?></td>
+                                    <td><?php echo $value->rw; ?></td>
+                                    <td><?php echo $value->dusun; ?></td>
+                                    <td><?php echo $value->pendapatan; ?></td>
+                                    <td><?php echo $value->skala_rumah; ?></td>
                                     <td>
-                                        <div class="badge badge-info"><?php echo $value->pendidikan_terakhir; ?></div>
-                                    </td>
-                                    <td>
-                                        <a href="<?php echo base_url('penduduk/ubah/'.$value->nik); ?>"
+                                        <a href="<?php echo base_url('kartu_keluarga/ubah/'.$value->nomor_kk); ?>"
                                             class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
-                                        <form class="d-inline" action="<?php echo base_url('penduduk/'.$value->nik); ?>"
+                                        <form class="d-inline"
+                                            action="<?php echo base_url('kartu_keluarga/'.$value->nomor_kk); ?>"
                                             method="post" onsubmit="return confirm('Anda yakin ingin menghapus data?')">
                                             <?php echo csrf_field(); ?>
                                             <input type="hidden" name="_method" value="DELETE">
@@ -86,9 +89,7 @@
                     </div>
                     <div class="card-footer text-right">
                         <nav class="d-inline-block">
-                            <?php echo $pager->links(); ?>
                             <ul class="pagination mb-0">
-
                                 <li class="page-item disabled">
                                     <a class="page-link" href="#" tabindex="-1"><i class="fas fa-chevron-left"></i></a>
                                 </li>

@@ -5,17 +5,41 @@ use CodeIgniter\Router\RouteCollection;
 /*
  * @var RouteCollection $routes
  */
+
+// Rute Default (Halaman Utama)
 $routes->get('/', 'Home::index');
 $routes->get('/coba', 'Home::coba');
-$routes->get('/penduduk', 'Penduduk::index');
 
-// create data
-$routes->get('/penduduk/tambah', 'Penduduk::new');
-$routes->post('/penduduk/save', 'Penduduk::create');
+// --- PENDUDUK ROUTES ---
+$routes->group('penduduk', static function ($routes) {
+    // View (GET /penduduk)
+    $routes->get('/', 'Penduduk::index', ['as' => 'penduduk.index']);
 
-// edit data
-$routes->get('/penduduk/ubah/(:any)', 'Penduduk::edit/$1');
-$routes->put('/penduduk/(:any)', 'Penduduk::update/$1');
+    // Create Data
+    $routes->get('tambah', 'Penduduk::new', ['as' => 'penduduk.new']);
+    $routes->post('save', 'Penduduk::create', ['as' => 'penduduk.create']);
 
-// delete data
-$routes->delete('/penduduk/(:segment)', 'Penduduk::delete/$1');
+    // Edit/Update Data
+    $routes->get('ubah/(:any)', 'Penduduk::edit/$1', ['as' => 'penduduk.edit']);
+    $routes->put('(:any)', 'Penduduk::update/$1', ['as' => 'penduduk.update']);
+
+    // Delete Data
+    $routes->delete('(:segment)', 'Penduduk::delete/$1', ['as' => 'penduduk.delete']);
+});
+
+// --- KARTU KELUARGA ROUTES (KK) ---
+$routes->group('kartu-keluarga', static function ($routes) {
+    // View (GET /kartu-keluarga)
+    $routes->get('/', 'KartuKeluarga::index', ['as' => 'kk.index']);
+
+    // Create Data
+    $routes->get('tambah', 'KartuKeluarga::new', ['as' => 'kk.new']);
+    $routes->post('save', 'KartuKeluarga::create', ['as' => 'kk.create']);
+
+    // Edit/Update Data
+    $routes->get('ubah/(:any)', 'KartuKeluarga::edit/$1', ['as' => 'kk.edit']);
+    $routes->put('(:any)', 'KartuKeluarga::update/$1', ['as' => 'kk.update']);
+
+    // Delete Data
+    $routes->delete('(:segment)', 'KartuKeluarga::delete/$1', ['as' => 'kk.delete']);
+});

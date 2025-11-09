@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreatePenduduk extends Migration
+class Penduduk extends Migration
 {
     public function up()
     {
@@ -26,7 +26,7 @@ class CreatePenduduk extends Migration
             ],
             'jenis_kelamin' => [
                 'type' => 'ENUM',
-                'constraint' => ['Laki-laki', 'Perempuan'],
+                'constraint' => ['LAKI-LAKI', 'PEREMPUAN'],
                 'null' => false,
             ],
             'tanggal_lahir' => [
@@ -36,34 +36,33 @@ class CreatePenduduk extends Migration
             'status_keluarga' => [
                 'type' => 'ENUM',
                 'constraint' => [
-                    'Kepala Keluarga',
-                    'Suami',
-                    'Istri',
-                    'Anak',
-                    'Menantu',
-                    'Cucu',
-                    'Orang Tua',
-                    'Mertua',
-                    'Famili Lain',
-                    'Lainnya',
+                    'KEPALA KELUARGA',
+                    'ISTRI',
+                    'ANAK',
+                    'CUCU',
+                    'MENANTU',
+                    'ORANG TUA',
+                    'MERTUA',
+                    'FAMILI LAIN',
+                    'LAINNYA',
                 ],
                 'null' => true,
             ],
             'pendidikan_terakhir' => [
                 'type' => 'ENUM',
                 'constraint' => [
-                    'Tidak / Belum Sekolah',
-                    'Belum Tamat SD / Sederajat',
-                    'Tamat SD / Sederajat',
-                    'SLTP / Sederajat',
-                    'SLTA / Sederajat',
-                    'Diploma I',
-                    'Diploma II',
-                    'Diploma III',
-                    'Diploma IV',
-                    'Strata I',
-                    'Strata II',
-                    'Strata III',
+                    'TIDAK / BELUM SEKOLAH',
+                    'BELUM TAMAT SD / SEDERAJAT',
+                    'TAMAT SD / SEDERAJAT',
+                    'SLTP / SEDERAJAT',
+                    'SLTA / SEDERAJAT',
+                    'DIPLOMA I',
+                    'DIPLOMA II',
+                    'DIPLOMA III',
+                    'DIPLOMA IV',
+                    'STRATA I',
+                    'STRATA II',
+                    'STRATA III',
                 ],
                 'null' => true,
             ],
@@ -75,11 +74,11 @@ class CreatePenduduk extends Migration
             'status_perkawinan' => [
                 'type' => 'ENUM',
                 'constraint' => [
-                    'Belum Kawin',
-                    'Kawin',
-                    'Cerai Hidup',
-                    'Cerai Mati',
-                    'Kawin Belum Tercatat',
+                    'BELUM KAWIN',
+                    'KAWIN',
+                    'CERAI HIDUP',
+                    'CERAI MATI',
+                    'KAWIN BELUM TERCATAT',
                 ],
                 'null' => true,
             ],
@@ -102,11 +101,11 @@ class CreatePenduduk extends Migration
         $this->forge->addForeignKey('nomor_kk', 'kartu_keluarga', 'nomor_kk', 'CASCADE', 'CASCADE');
 
         // Membuat tabel
-        $this->forge->createTable('data_penduduk', true);
+        $this->forge->createTable('penduduk', true);
     }
 
     public function down()
     {
-        $this->forge->dropTable('data_penduduk', true);
+        $this->forge->dropTable('penduduk', true);
     }
 }

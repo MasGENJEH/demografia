@@ -302,13 +302,13 @@
                                 <span><i class="far fa-user"></i>Kartu Keluarga</span></a>
                             <ul class="dropdown-menu">
 
-                                <li><a class="nav-link" href="<?php echo base_url('/penduduk'); ?>">
+                                <li><a class="nav-link" href="<?php echo base_url('/kartu-keluarga'); ?>">
                                         <i class="fas fa-table fa-fw"></i>
                                         <span>Tabel Kerluarga</span></a></li>
-                                <li><a class="nav-link" href="<?php echo base_url('/penduduk/tambah'); ?>">
+                                <li><a class="nav-link" href="<?php echo base_url('/kartu-keluarga/tambah'); ?>">
                                         <i class="fas fa-user-plus fa-fw"></i>
                                         <span>Tambah Kerluarga</span></a></li>
-                                <!-- <li><a class="nav-link" href="<?php echo base_url('/penduduk/ubah'); ?>">
+                                <!-- <li><a class="nav-link" href="<?php echo base_url('/kartu-keluarga/ubah'); ?>">
                                         <i class="fas fa-user-edit fa-fw"></i>
                                         <span>Ubah Data Penduduk</span></a></li> -->
                             </ul>
@@ -333,6 +333,7 @@
             <div class="main-content">
                 <?php echo $this->renderSection('content'); ?>
                 <?php echo $this->renderSection('tabel_penduduk'); ?>
+                <?php echo $this->renderSection('kartu_keluarga'); ?>
                 <?php echo $this->renderSection('form_tambah'); ?>
                 <?php echo $this->renderSection('form_edit'); ?>
             </div>
