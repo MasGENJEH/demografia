@@ -271,7 +271,7 @@
                 <aside id="sidebar-wrapper">
                     <div class="sidebar-brand">
 
-                        <a href="index.html"><i class="fa fa-user-circle-o"></i>Demografia</a>
+                        <a href="<?php echo base_url(); ?>"><i class="fa fa-user-circle-o"></i>Demografia</a>
                     </div>
                     <div class="sidebar-brand sidebar-brand-sm">
                         <a href="index.html">St</a>
@@ -365,6 +365,12 @@
     <!-- Template JS File -->
     <script src="<?php echo base_url(); ?>/template/assets/js/scripts.js"></script>
     <script src="<?php echo base_url(); ?>/template/assets/js/custom.js"></script>
+    <script src="<?php echo base_url(); ?>/template/node_modules/chart.js/dist/Chart.min.js"></script>
+    <script src="<?php echo base_url(); ?>/template/assets/js/stisla.js"></script>
+    <script src="<?php echo base_url(); ?>/template/assets/js/page/modules-chartjs.js"></script>
+
+
+
 
     <!-- Page Specific JS File -->
 </body>

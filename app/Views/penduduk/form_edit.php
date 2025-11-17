@@ -24,74 +24,88 @@
                             autocomplete="off">
                             <?php echo csrf_field(); ?>
                             <input type="hidden" name="_method" value="PUT">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Nama Lengkap</label>
+                                        <input type="text" class="form-control" name="nama_lengkap"
+                                            value="<?php echo $penduduk->nama_lengkap; ?>">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Nomor KK</label>
+                                        <input type="text" class="form-control" name="nomor_kk"
+                                            value="<?php echo $penduduk->nomor_kk; ?>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Tanggal Lahir</label>
+                                        <input type="date" class="form-control" name="tanggal_lahir"
+                                            value="<?php echo $penduduk->tanggal_lahir; ?>">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="status_keluarga_select">Status Keluarga</label>
+                                        <select class="form-control" id="status_keluarga_select" name="status_keluarga">
+                                            <option value="<?php echo $penduduk->status_keluarga; ?>" selected hidden>
+                                                <?php echo $penduduk->status_keluarga; ?></option>
+                                            <option value="Kepala Keluarga">KEPALA KELUARGA</option>
+                                            <option value="Istri">ISTRI</option>
+                                            <option value="Anak">ANAK</option>
+                                            <option value="Menantu">MENANTU</option>
+                                            <option value="Cucu">CUCU</option>
+                                            <option value="Orang Tua">ORANG TUA</option>
+                                            <option value="Mertua">MERTUA</option>
+                                            <option value="Famili Lain">FAMILI LAIN</option>
+                                            <option value="Lainnya">LAINNYA</option>
 
-                            <div class="form-group">
-                                <label>Nama Lengkap</label>
-                                <input type="text" class="form-control" name="nama_lengkap"
-                                    value="<?php echo $penduduk->nama_lengkap; ?>">
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="form-group">
-                                <label>Nomor KK</label>
-                                <input type="text" class="form-control" name="nomor_kk"
-                                    value="<?php echo $penduduk->nomor_kk; ?>">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="pendidikan_terakhir_select">Pendidikan Terakhir</label>
+                                        <select class="form-control" id="pendidikan_terakhir_select"
+                                            name="pendidikan_terakhir">
+                                            <option value="<?php echo $penduduk->pendidikan_terakhir; ?>" selected
+                                                hidden>
+                                                <?php echo $penduduk->pendidikan_terakhir; ?></option>
+                                            <option value="Tidak / Belum Sekolah">Tidak / Belum Sekolah</option>
+                                            <option value="Belum Tamat SD / Sederajat">Belum Tamat SD / Sederajat
+                                            </option>
+                                            <option value="Tamat SD / Sederajat">Tamat SD / Sederajat</option>
+                                            <option value="SLTP / Sederajat">SLTP / Sederajat</option>
+                                            <option value="SLTA / Sederajat">SLTA / Sederajat</option>
+                                            <option value="Diploma I">Diploma I</option>
+                                            <option value="Diploma II">Diploma II</option>
+                                            <option value="Diploma III">Diploma III</option>
+                                            <option value="Diploma IV">Diploma IV</option>
+                                            <option value="Strata I">Strata I</option>
+                                            <option value="Strata II">Strata II</option>
+                                            <option value="Strata III">Strata III</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Pekerjaan</label>
+                                        <input type="text" class="form-control" name="pekerjaan"
+                                            value="<?php echo $penduduk->pekerjaan; ?>">
+                                    </div>
+                                </div>
                             </div>
-
-                            <div class="form-group">
-                                <label>Tanggal Lahir</label>
-                                <input type="date" class="form-control" name="tanggal_lahir"
-                                    value="<?php echo $penduduk->tanggal_lahir; ?>">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="status_keluarga_select">Status Keluarga</label>
-                                <select class="form-control" id="status_keluarga_select" name="status_keluarga">
-                                    <option value="" selected disabled hidden>
-                                        <?php echo $penduduk->status_keluarga; ?></option>
-                                    <option value="Kepala Keluarga">Kepala Keluarga</option>
-                                    <option value="Suami">Suami</option>
-                                    <option value="Istri">Istri</option>
-                                    <option value="Anak">Anak</option>
-                                    <option value="Menantu">Menantu</option>
-                                    <option value="Cucu">Cucu</option>
-                                    <option value="Orang Tua">Orang Tua</option>
-                                    <option value="Mertua">Mertua</option>
-                                    <option value="Famili Lain">Famili Lain</option>
-                                    <option value="Lainnya">Lainnya</option>
-
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="pendidikan_terakhir_select">Pendidikan Terakhir</label>
-                                <select class="form-control" id="pendidikan_terakhir_select" name="pendidikan_terakhir">
-                                    <option value="" selected disabled hidden>
-                                        <?php echo $penduduk->pendidikan_terakhir; ?></option>
-                                    <option value="Tidak / Belum Sekolah">Tidak / Belum Sekolah</option>
-                                    <option value="Belum Tamat SD / Sederajat">Belum Tamat SD / Sederajat</option>
-                                    <option value="Tamat SD / Sederajat">Tamat SD / Sederajat</option>
-                                    <option value="SLTP / Sederajat">SLTP / Sederajat</option>
-                                    <option value="SLTA / Sederajat">SLTA / Sederajat</option>
-                                    <option value="Diploma I">Diploma I</option>
-                                    <option value="Diploma II">Diploma II</option>
-                                    <option value="Diploma III">Diploma III</option>
-                                    <option value="Diploma IV">Diploma IV</option>
-                                    <option value="Strata I">Strata I</option>
-                                    <option value="Strata II">Strata II</option>
-                                    <option value="Strata III">Strata III</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Pekerjaan</label>
-                                <input type="text" class="form-control" name="pekerjaan"
-                                    value="<?php echo $penduduk->pekerjaan; ?>">
-                            </div>
-
                             <div class="form-group">
                                 <label for="status_perkawinan_select">Status Perkawinan</label>
                                 <select class="form-control" id="status_perkawinan_select" name="status_perkawinan">
-                                    <option value="" selected disabled hidden>
+                                    <option value="<?php echo $penduduk->status_perkawinan; ?>" selected hidden>
                                         <?php echo $penduduk->status_perkawinan; ?></option>
                                     <option value="Belum Kawin">Belum Kawin</option>
                                     <option value="Kawin">Kawin</option>

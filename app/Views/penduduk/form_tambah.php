@@ -43,7 +43,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>NIK</label>
-                                        <input type="number" name="nik" class="form-control" required>
+                                        <input type="text" name="nik" class="form-control" required>
                                     </div>
                                 </div>
                             </div>
@@ -52,7 +52,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Nomor KK</label>
-                                        <input type="number" name="nomor_kk" class="form-control" required>
+                                        <input type="text" name="nomor_kk" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -86,7 +86,6 @@
                                             required>
                                             <option value="" selected disabled hidden>Pilih Status Keluarga</option>
                                             <option value="Kepala Keluarga">Kepala Keluarga</option>
-                                            <option value="Suami">Suami</option>
                                             <option value="Istri">Istri</option>
                                             <option value="Anak">Anak</option>
                                             <option value="Menantu">Menantu</option>

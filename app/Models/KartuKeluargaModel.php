@@ -12,7 +12,7 @@ class KartuKeluargaModel extends Model
     protected $returnType = 'object';
     // protected $useSoftDeletes = false;
     // protected $protectFields = true;
-    protected $allowedFields = [];
+    protected $allowedFields = ['nomor_kk', 'alamat', 'rt', 'rw', 'dusun', 'pendapatan', 'skala_rumah'];
 
     // protected bool $allowEmptyInserts = false;
     // protected bool $updateOnlyChanged = true;

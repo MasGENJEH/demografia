@@ -9,7 +9,7 @@ class PendudukModel extends Model
     protected $table = 'penduduk';
     protected $primaryKey = 'nik';
     protected $returnType = 'object';
-    protected $allowedFields = [];
+    protected $allowedFields = ['nik', 'nomor_kk', 'nama_lengkap', 'jenis_kelamin', 'tanggal_lahir', 'status_keluarga', 'pendidikan_terakhir', 'pekerjaan', 'status_perkawinan'];
     // protected $useAutoIncrement = true;
     // protected $protectFields = true;
     // protected $useSoftDeletes = false;
