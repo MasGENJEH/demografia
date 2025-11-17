@@ -3,7 +3,7 @@
 <?php echo $this->section('content'); ?>
 <section class="section">
     <div class="section-header">
-        <h1>anja</h1>
+        <h1>Dashboard Coming Soon</h1>
     </div>
 
     <div class="section-body">

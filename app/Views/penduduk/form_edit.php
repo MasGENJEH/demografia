@@ -20,7 +20,7 @@
                     </div>
 
                     <div class="card-body">
-                        <form action="<?php echo base_url('penduduk/'.$data_penduduk->NIK); ?>" method="post"
+                        <form action="<?php echo base_url('penduduk/'.$penduduk->nik); ?>" method="post"
                             autocomplete="off">
                             <?php echo csrf_field(); ?>
                             <input type="hidden" name="_method" value="PUT">
@@ -28,26 +28,26 @@
                             <div class="form-group">
                                 <label>Nama Lengkap</label>
                                 <input type="text" class="form-control" name="nama_lengkap"
-                                    value="<?php echo $data_penduduk->nama_lengkap; ?>">
+                                    value="<?php echo $penduduk->nama_lengkap; ?>">
                             </div>
 
                             <div class="form-group">
                                 <label>Nomor KK</label>
                                 <input type="text" class="form-control" name="nomor_kk"
-                                    value="<?php echo $data_penduduk->nomor_kk; ?>">
+                                    value="<?php echo $penduduk->nomor_kk; ?>">
                             </div>
 
                             <div class="form-group">
                                 <label>Tanggal Lahir</label>
                                 <input type="date" class="form-control" name="tanggal_lahir"
-                                    value="<?php echo $data_penduduk->tanggal_lahir; ?>">
+                                    value="<?php echo $penduduk->tanggal_lahir; ?>">
                             </div>
 
                             <div class="form-group">
                                 <label for="status_keluarga_select">Status Keluarga</label>
                                 <select class="form-control" id="status_keluarga_select" name="status_keluarga">
                                     <option value="" selected disabled hidden>
-                                        <?php echo $data_penduduk->status_keluarga; ?></option>
+                                        <?php echo $penduduk->status_keluarga; ?></option>
                                     <option value="Kepala Keluarga">Kepala Keluarga</option>
                                     <option value="Suami">Suami</option>
                                     <option value="Istri">Istri</option>
@@ -66,7 +66,7 @@
                                 <label for="pendidikan_terakhir_select">Pendidikan Terakhir</label>
                                 <select class="form-control" id="pendidikan_terakhir_select" name="pendidikan_terakhir">
                                     <option value="" selected disabled hidden>
-                                        <?php echo $data_penduduk->pendidikan_terakhir; ?></option>
+                                        <?php echo $penduduk->pendidikan_terakhir; ?></option>
                                     <option value="Tidak / Belum Sekolah">Tidak / Belum Sekolah</option>
                                     <option value="Belum Tamat SD / Sederajat">Belum Tamat SD / Sederajat</option>
                                     <option value="Tamat SD / Sederajat">Tamat SD / Sederajat</option>
@@ -85,14 +85,14 @@
                             <div class="form-group">
                                 <label>Pekerjaan</label>
                                 <input type="text" class="form-control" name="pekerjaan"
-                                    value="<?php echo $data_penduduk->pekerjaan; ?>">
+                                    value="<?php echo $penduduk->pekerjaan; ?>">
                             </div>
 
                             <div class="form-group">
                                 <label for="status_perkawinan_select">Status Perkawinan</label>
                                 <select class="form-control" id="status_perkawinan_select" name="status_perkawinan">
                                     <option value="" selected disabled hidden>
-                                        <?php echo $data_penduduk->status_perkawinan; ?></option>
+                                        <?php echo $penduduk->status_perkawinan; ?></option>
                                     <option value="Belum Kawin">Belum Kawin</option>
                                     <option value="Kawin">Kawin</option>
                                     <option value="Cerai Hidup">Cerai Hidup</option>

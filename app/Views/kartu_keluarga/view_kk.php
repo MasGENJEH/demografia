@@ -12,7 +12,7 @@
 
         <h1>Data Kartu Keluarga</h1>
         <div class="section-header-button">
-            <a href="<?php echo base_url('kartu_keluarga/tambah'); ?>" class="btn btn-primary">Tambah Kartu Keluarga</a>
+            <a href="<?php echo base_url('kartu-keluarga/tambah'); ?>" class="btn btn-primary">Tambah Kartu Keluarga</a>
         </div>
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
@@ -75,10 +75,10 @@ foreach ($kartu_keluarga as $key => $value) { ?>
                                     <td>Rp <?php echo number_format($value->pendapatan, 0, ',', '.'); ?></td>
                                     <td><?php echo $value->skala_rumah; ?></td>
                                     <td>
-                                        <a href="<?php echo base_url('kartu_keluarga/ubah/'.$value->nomor_kk); ?>"
+                                        <a href="<?php echo base_url('kartu-keluarga/ubah/'.$value->nomor_kk); ?>"
                                             class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
                                         <form class="d-inline"
-                                            action="<?php echo base_url('kartu_keluarga/'.$value->nomor_kk); ?>"
+                                            action="<?php echo base_url('kartu-keluarga/'.$value->nomor_kk); ?>"
                                             method="post" onsubmit="return confirm('Anda yakin ingin menghapus data?')">
                                             <?php echo csrf_field(); ?>
                                             <input type="hidden" name="_method" value="DELETE">

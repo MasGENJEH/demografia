@@ -8,11 +8,11 @@ class PendudukModel extends Model
 {
     protected $table = 'penduduk';
     protected $primaryKey = 'nik';
-    // protected $useAutoIncrement = true;
     protected $returnType = 'object';
-    // protected $useSoftDeletes = false;
-    // protected $protectFields = true;
     protected $allowedFields = [];
+    // protected $useAutoIncrement = true;
+    // protected $protectFields = true;
+    // protected $useSoftDeletes = false;
 
     // protected bool $allowEmptyInserts = false;
     // protected bool $updateOnlyChanged = true;
