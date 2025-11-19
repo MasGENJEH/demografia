@@ -43,3 +43,22 @@ $routes->group('kartu-keluarga', static function ($routes) {
     // Delete Data
     $routes->delete('(:segment)', 'KartuKeluarga::delete/$1', ['as' => 'kk.delete']);
 });
+
+// --- AUTH ROUTES ---
+$routes->group('auth', static function ($routes) {
+    // View (GET /kartu-keluarga)
+    $routes->get('login', 'Auth::login', ['as' => 'auth.login']);
+
+    $routes->post('/', 'Auth::loginProcess', ['as' => 'auth.loginProcess']);
+
+    // // Create Data
+    // $routes->get('tambah', 'Auth::new', ['as' => 'kk.new']);
+    // $routes->post('save', 'Auth::create', ['as' => 'kk.create']);
+
+    // // Edit/Update Data
+    // $routes->get('ubah/(:any)', 'Auth::edit/$1', ['as' => 'kk.edit']);
+    // $routes->put('(:any)', 'Auth::update/$1', ['as' => 'kk.update']);
+
+    // // Delete Data
+    // $routes->delete('(:segment)', 'Auth::delete/$1', ['as' => 'kk.delete']);
+});

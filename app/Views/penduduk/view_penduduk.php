@@ -34,7 +34,7 @@
     <div class="alert alert-danger alert-dismissible show fade">
         <div class="alert-body">
             <button class="close" data-dismiss="alert">x</button>
-            <b>Success !</b>
+            <b>Error !</b>
             <?php echo session()->getFlashdata('error'); ?>
         </div>
     </div>
