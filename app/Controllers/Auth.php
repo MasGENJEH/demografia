@@ -51,4 +51,11 @@ class Auth extends BaseController
             return redirect()->back()->with('error', 'Email tidak ditemukan');
         }
     }
+
+    public function logout()
+    {
+        session()->remove('id');
+
+        return redirect()->to(base_url('login_page'));
+    }
 }
