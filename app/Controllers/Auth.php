@@ -18,23 +18,16 @@ class Auth extends BaseController
     public function login()
     {
         // return 'login';
+        if (session('id')) {
+            return redirect()->to(base_url());
+        }
+
         return view('auth/login_page');
     }
 
     public function loginProcess()
     {
         $data = $this->request->getPost();
-
-        // // 1. Validasi Input (WAJIB)
-        // if (!$this->validate([
-        //     'email' => 'required|valid_email',
-        //     'password' => 'required',
-        // ])) {
-        //     // Jika validasi gagal, kembali dengan error
-        //     return redirect()->back()->withInput()->with('error', 'Masukkan email dan password yang valid.');
-        // }
-        // $user = $this->auth->where('email', $data['email'])->first();
-
         $query = $this->auth->getWhere(['email' => $data['email']]);
         $user = $query->getRow();
 
@@ -56,6 +49,6 @@ class Auth extends BaseController
     {
         session()->remove('id');
 
-        return redirect()->to(base_url('login_page'));
+        return redirect()->to(base_url('auth/login'));
     }
 }

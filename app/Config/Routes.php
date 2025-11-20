@@ -8,7 +8,6 @@ use CodeIgniter\Router\RouteCollection;
 
 // Rute Default (Halaman Utama)
 $routes->get('/', 'Home::index');
-$routes->get('/coba', 'Home::coba');
 
 // --- PENDUDUK ROUTES ---
 $routes->group('penduduk', static function ($routes) {
@@ -50,6 +49,7 @@ $routes->group('auth', static function ($routes) {
     $routes->get('login', 'Auth::login', ['as' => 'auth.login']);
 
     $routes->post('/', 'Auth::loginProcess', ['as' => 'auth.loginProcess']);
+    $routes->get('logout', 'Auth::Logout', ['as' => 'auth.logout']);
 
     // // Create Data
     // $routes->get('tambah', 'Auth::new', ['as' => 'kk.new']);
