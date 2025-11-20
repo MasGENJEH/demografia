@@ -1,18 +1,22 @@
 <aside id="sidebar-wrapper">
     <div class="sidebar-brand">
 
-        <a href="<?php echo base_url(); ?>"><i class="fa fa-user-circle-o"></i>Demografia</a>
+        <a href="<?php echo base_url('home'); ?>"><i class="fa fa-user-circle-o"></i>Demografia</a>
     </div>
     <div class="sidebar-brand sidebar-brand-sm">
         <a href="index.html">St</a>
     </div>
     <ul class="sidebar-menu">
 
-        <li class="menu-header">Starter</li>
+        <li class="menu-header">Menu</li>
+        <li class="nav-item">
+            <a class="nav-link" href="index-0.html">
+                <span><i class="fa fa-home" aria-hidden="true"></i>Dashboard</span></a>
+        </li>
 
-        <li class="nav-item dropdown active">
+        <li class="nav-item dropdown">
             <a class="nav-link has-dropdown" href="index-0.html">
-                <span><i class="far fa-user"></i>Penduduk Desa</span></a>
+                <span><i class="far fa-user" aria-hidden="true"></i>Penduduk Desa</span></a>
             <ul class="dropdown-menu">
 
                 <li><a class="nav-link" href="<?php echo base_url('/penduduk'); ?>">
@@ -27,9 +31,9 @@
             </ul>
         </li>
 
-        <li class="nav-item dropdown active">
+        <li class="nav-item dropdown">
             <a class="nav-link has-dropdown" href="index-0.html">
-                <span><i class="far fa-user"></i>Kartu Keluarga</span></a>
+                <span><i class="fa fa-users" aria-hidden="true"></i>Kartu Keluarga</span></a>
             <ul class="dropdown-menu">
 
                 <li><a class="nav-link" href="<?php echo base_url('/kartu-keluarga'); ?>">
@@ -44,7 +48,7 @@
             </ul>
         </li>
 
-        <li class="nav-item dropdown active">
+        <li class="nav-item dropdown">
             <a class="nav-link has-dropdown" href="index-0.html">
                 <span><i class="fas fa-hand-holding-heart fa-fw"></i>Bantuan Sosial</span></a>
             <ul class="dropdown-menu">

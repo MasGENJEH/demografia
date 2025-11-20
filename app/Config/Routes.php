@@ -7,7 +7,7 @@ use CodeIgniter\Router\RouteCollection;
  */
 
 // Rute Default (Halaman Utama)
-$routes->get('/', 'Home::index');
+$routes->get('/home', 'Home::index');
 
 // --- PENDUDUK ROUTES ---
 $routes->group('penduduk', static function ($routes) {
