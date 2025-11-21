@@ -2,7 +2,9 @@
 
 namespace Config;
 
+use App\Filters\AdminFilter;
 use App\Filters\LoginFilter;
+use App\Filters\RoleFilter;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
@@ -36,6 +38,8 @@ class Filters extends BaseFilters
         'pagecache' => PageCache::class,
         'performance' => PerformanceMetrics::class,
         'isLoggedIn' => LoginFilter::class,
+        'role' => RoleFilter::class,
+        'isAdmin' => AdminFilter::class,
     ];
 
     /**
@@ -116,11 +120,18 @@ class Filters extends BaseFilters
             'kartu-keluarga/*',
             '/',
         ],
+
             'except' => [
                 'login',
                 'loginProcess',
                 'register',
             ],
         ],
+
+        // 'isAdmin' => ['before' => [
+        //     'penduduk',
+        //     '/',
+        // ],
+        // ],
     ];
 }

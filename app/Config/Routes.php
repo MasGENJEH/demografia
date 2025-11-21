@@ -10,55 +10,29 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 
 // --- PENDUDUK ROUTES ---
-$routes->group('penduduk', static function ($routes) {
+$routes->group('penduduk', ['filter' => 'isAdmin'], static function ($routes) {
     // View (GET /penduduk)
-    $routes->get('/', 'Penduduk::index');
-
-    // Create Data
-    $routes->get('tambah', 'Penduduk::new');
+    $routes->get('/', 'Penduduk::index'); // View
+    $routes->get('tambah', 'Penduduk::new'); // Create Data
     $routes->post('save', 'Penduduk::create');
-
-    // Edit/Update Data
-    $routes->get('ubah/(:any)', 'Penduduk::edit/$1');
+    $routes->get('ubah/(:any)', 'Penduduk::edit/$1'); // Edit/Update Data
     $routes->put('(:any)', 'Penduduk::update/$1');
-
-    // Delete Data
-    $routes->delete('(:segment)', 'Penduduk::delete/$1');
+    $routes->delete('(:segment)', 'Penduduk::delete/$1'); // Delete Data
 });
 
 // --- KARTU KELUARGA ROUTES (KK) ---
 $routes->group('kartu-keluarga', static function ($routes) {
-    // View (GET /kartu-keluarga)
-    $routes->get('/', 'KartuKeluarga::index');
-
-    // Create Data
-    $routes->get('tambah', 'KartuKeluarga::new');
-    $routes->post('save', 'KartuKeluarga::create');
-
-    // Edit/Update Data
-    $routes->get('ubah/(:any)', 'KartuKeluarga::edit/$1');
-    $routes->put('(:any)', 'KartuKeluarga::update/$1');
-
-    // Delete Data
-    $routes->delete('(:segment)', 'KartuKeluarga::delete/$1');
+    $routes->get('/', 'KartuKeluarga::index');  // View
+    $routes->get('tambah', 'KartuKeluarga::new'); // View Tambah
+    $routes->post('save', 'KartuKeluarga::create');// Create Data
+    $routes->get('ubah/(:any)', 'KartuKeluarga::edit/$1'); // View Edit
+    $routes->put('(:any)', 'KartuKeluarga::update/$1'); // Edit/Update Data
+    $routes->delete('(:segment)', 'KartuKeluarga::delete/$1'); // Delete Data
 });
 
 // --- AUTH ROUTES ---
 $routes->group('auth', static function ($routes) {
-    // View (GET /kartu-keluarga)
-    $routes->get('login', 'Auth::login');
-
-    $routes->post('/', 'Auth::loginProcess');
-    $routes->get('logout', 'Auth::Logout');
-
-    // // Create Data
-    // $routes->get('tambah', 'Auth::new', ['as' => 'kk.new']);
-    // $routes->post('save', 'Auth::create', ['as' => 'kk.create']);
-
-    // // Edit/Update Data
-    // $routes->get('ubah/(:any)', 'Auth::edit/$1', ['as' => 'kk.edit']);
-    // $routes->put('(:any)', 'Auth::update/$1', ['as' => 'kk.update']);
-
-    // // Delete Data
-    // $routes->delete('(:segment)', 'Auth::delete/$1', ['as' => 'kk.delete']);
+    $routes->get('login', 'Auth::login'); // view login
+    $routes->post('/', 'Auth::loginProcess'); // login process
+    $routes->get('logout', 'Auth::Logout'); // logout
 });
