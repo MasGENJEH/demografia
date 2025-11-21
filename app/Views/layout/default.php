@@ -27,6 +27,7 @@
 <div class="main-content">
     <?php echo $this->renderSection('content'); ?>
     <?php echo $this->renderSection('tabel_penduduk'); ?>
+    <?php echo $this->renderSection('tabel_pengguna'); ?>
     <?php echo $this->renderSection('kartu_keluarga'); ?>
     <?php echo $this->renderSection('form_tambah'); ?>
     <?php echo $this->renderSection('form_edit'); ?>

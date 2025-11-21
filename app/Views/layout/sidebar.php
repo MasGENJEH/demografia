@@ -38,15 +38,30 @@
 
                 <li><a class="nav-link" href="<?php echo base_url('/kartu-keluarga'); ?>">
                         <i class="fas fa-table fa-fw"></i>
-                        <span>Tabel Kerluarga</span></a></li>
+                        <span>Tabel Keluarga</span></a></li>
                 <li><a class="nav-link" href="<?php echo base_url('/kartu-keluarga/tambah'); ?>">
                         <i class="fas fa-user-plus fa-fw"></i>
-                        <span>Tambah Kerluarga</span></a></li>
+                        <span>Tambah Keluarga</span></a></li>
                 <!-- <li><a class="nav-link" href="<?php echo base_url('/kartu-keluarga/ubah'); ?>">
                                         <i class="fas fa-user-edit fa-fw"></i>
                                         <span>Ubah Data Penduduk</span></a></li> -->
             </ul>
         </li>
+
+        <?php if (session()->get('role') == 'admin') { ?>
+        <li class="nav-item dropdown">
+            <a class="nav-link has-dropdown" href="index-0.html">
+                <span><i class="fa fa-users" aria-hidden="true"></i>Pengguna</span></a>
+            <ul class="dropdown-menu">
+                <li><a class="nav-link" href="<?php echo base_url('/pengguna'); ?>">
+                        <i class="fas fa-table fa-fw"></i>
+                        <span>Tabel Pengguna</span></a></li>
+                <li><a class="nav-link" href="<?php echo base_url('/pengguna/tambah'); ?>">
+                        <i class="fas fa-user-plus fa-fw"></i>
+                        <span>Tambah Pengguna</span></a></li>
+            </ul>
+        </li>
+        <?php }  ?>
 
         <li class="nav-item dropdown">
             <a class="nav-link has-dropdown" href="index-0.html">
