@@ -7,49 +7,49 @@ use CodeIgniter\Router\RouteCollection;
  */
 
 // Rute Default (Halaman Utama)
-$routes->get('/home', 'Home::index');
+$routes->get('/', 'Home::index');
 
 // --- PENDUDUK ROUTES ---
 $routes->group('penduduk', static function ($routes) {
     // View (GET /penduduk)
-    $routes->get('/', 'Penduduk::index', ['as' => 'penduduk.index']);
+    $routes->get('/', 'Penduduk::index');
 
     // Create Data
-    $routes->get('tambah', 'Penduduk::new', ['as' => 'penduduk.new']);
-    $routes->post('save', 'Penduduk::create', ['as' => 'penduduk.create']);
+    $routes->get('tambah', 'Penduduk::new');
+    $routes->post('save', 'Penduduk::create');
 
     // Edit/Update Data
-    $routes->get('ubah/(:any)', 'Penduduk::edit/$1', ['as' => 'penduduk.edit']);
-    $routes->put('(:any)', 'Penduduk::update/$1', ['as' => 'penduduk.update']);
+    $routes->get('ubah/(:any)', 'Penduduk::edit/$1');
+    $routes->put('(:any)', 'Penduduk::update/$1');
 
     // Delete Data
-    $routes->delete('(:segment)', 'Penduduk::delete/$1', ['as' => 'penduduk.delete']);
+    $routes->delete('(:segment)', 'Penduduk::delete/$1');
 });
 
 // --- KARTU KELUARGA ROUTES (KK) ---
 $routes->group('kartu-keluarga', static function ($routes) {
     // View (GET /kartu-keluarga)
-    $routes->get('/', 'KartuKeluarga::index', ['as' => 'kk.index']);
+    $routes->get('/', 'KartuKeluarga::index');
 
     // Create Data
-    $routes->get('tambah', 'KartuKeluarga::new', ['as' => 'kk.new']);
-    $routes->post('save', 'KartuKeluarga::create', ['as' => 'kk.create']);
+    $routes->get('tambah', 'KartuKeluarga::new');
+    $routes->post('save', 'KartuKeluarga::create');
 
     // Edit/Update Data
-    $routes->get('ubah/(:any)', 'KartuKeluarga::edit/$1', ['as' => 'kk.edit']);
-    $routes->put('(:any)', 'KartuKeluarga::update/$1', ['as' => 'kk.update']);
+    $routes->get('ubah/(:any)', 'KartuKeluarga::edit/$1');
+    $routes->put('(:any)', 'KartuKeluarga::update/$1');
 
     // Delete Data
-    $routes->delete('(:segment)', 'KartuKeluarga::delete/$1', ['as' => 'kk.delete']);
+    $routes->delete('(:segment)', 'KartuKeluarga::delete/$1');
 });
 
 // --- AUTH ROUTES ---
 $routes->group('auth', static function ($routes) {
     // View (GET /kartu-keluarga)
-    $routes->get('login', 'Auth::login', ['as' => 'auth.login']);
+    $routes->get('login', 'Auth::login');
 
-    $routes->post('/', 'Auth::loginProcess', ['as' => 'auth.loginProcess']);
-    $routes->get('logout', 'Auth::Logout', ['as' => 'auth.logout']);
+    $routes->post('/', 'Auth::loginProcess');
+    $routes->get('logout', 'Auth::Logout');
 
     // // Create Data
     // $routes->get('tambah', 'Auth::new', ['as' => 'kk.new']);

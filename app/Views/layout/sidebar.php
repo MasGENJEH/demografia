@@ -1,7 +1,7 @@
 <aside id="sidebar-wrapper">
     <div class="sidebar-brand">
 
-        <a href="<?php echo base_url('home'); ?>"><i class="fa fa-user-circle-o"></i>Demografia</a>
+        <a href="<?php echo base_url(); ?>"><i class="fa fa-user-circle-o"></i>Demografia</a>
     </div>
     <div class="sidebar-brand sidebar-brand-sm">
         <a href="index.html">St</a>
@@ -10,7 +10,7 @@
 
         <li class="menu-header">Menu</li>
         <li class="nav-item">
-            <a class="nav-link" href="index-0.html">
+            <a class="nav-link" href="<?php echo base_url(); ?>">
                 <span><i class="fa fa-home" aria-hidden="true"></i>Dashboard</span></a>
         </li>
 
