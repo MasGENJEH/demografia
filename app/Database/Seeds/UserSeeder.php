@@ -11,23 +11,23 @@ class UserSeeder extends Seeder
         // Data untuk 3 Admin
         $adminUsers = [
             [
-                'username' => 'admin_satu',
+                'username' => 'Fachriibnufalah',
                 'role' => 'admin',
-                'email' => 'admin1@bansos.com',
+                'email' => 'fachri@bansos.com',
                 // Password: 'password123'
                 'password' => password_hash('1234', PASSWORD_BCRYPT),
             ],
             [
-                'username' => 'admin_dua',
+                'username' => 'Witarlina',
                 'role' => 'admin',
-                'email' => 'admin2@bansos.com',
+                'email' => 'witarlina@bansos.com',
                 // Password: '1234'
                 'password' => password_hash('1234', PASSWORD_BCRYPT),
             ],
             [
-                'username' => 'admin_tiga',
+                'username' => 'Febipitriana',
                 'role' => 'admin',
-                'email' => 'admin3@bansos.com',
+                'email' => 'febi@bansos.com',
                 // Password: '1234'
                 'password' => password_hash('1234', PASSWORD_BCRYPT),
             ],
@@ -36,23 +36,23 @@ class UserSeeder extends Seeder
         // Data untuk 3 User
         $regularUsers = [
             [
-                'username' => 'user_biasa_1',
+                'username' => 'Maman',
                 'role' => 'user',
-                'email' => 'user1@bansos.com',
+                'email' => 'maman@bansos.com',
                 // Password: 'user123'
                 'password' => password_hash('1234', PASSWORD_BCRYPT),
             ],
             [
-                'username' => 'user_biasa_2',
+                'username' => 'Budiarie',
                 'role' => 'user',
-                'email' => 'user2@bansos.com',
+                'email' => 'budi@bansos.com',
                 // Password: '1234'
                 'password' => password_hash('1234', PASSWORD_BCRYPT),
             ],
             [
-                'username' => 'user_biasa_3',
+                'username' => 'Fufufafa',
                 'role' => 'user',
-                'email' => 'user3@bansos.com',
+                'email' => 'fufufafa@bansos.com',
                 // Password: '1234'
                 'password' => password_hash('1234', PASSWORD_BCRYPT),
             ],
