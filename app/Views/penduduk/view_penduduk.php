@@ -1,7 +1,7 @@
 <?php echo $this->extend('layout/default'); ?>
 
 <?php echo $this->section('judul'); ?>
-<title>View | Penduduk</title>
+<title>View | Rakyat Desa</title>
 <?php echo $this->endSection(); ?>
 
 
