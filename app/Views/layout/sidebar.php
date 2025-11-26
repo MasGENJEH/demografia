@@ -1,7 +1,7 @@
 <aside id="sidebar-wrapper">
     <div class="sidebar-brand">
 
-        <a href="<?php echo base_url(); ?>"><i class="fa fa-user-circle-o"></i>Demografia</a>
+        <a href="<?php echo base_url('home'); ?>"><i class="fa fa-user-circle-o"></i>Demografia</a>
     </div>
     <div class="sidebar-brand sidebar-brand-sm">
         <a href="index.html">St</a>
@@ -10,24 +10,23 @@
 
         <li class="menu-header">Menu</li>
         <li class="nav-item">
-            <a class="nav-link" href="<?php echo base_url(); ?>">
+            <a class="nav-link" href="<?php echo base_url('home'); ?>">
                 <span><i class="fa fa-home" aria-hidden="true"></i>Dashboard</span></a>
         </li>
-
         <li class="nav-item dropdown">
-            <a class="nav-link has-dropdown" href="index-0.html">
-                <span><i class="far fa-user" aria-hidden="true"></i>Penduduk Desa</span></a>
+            <a class="nav-link has-dropdown" href="index-0.html"><span><i class="far fa-user"
+                        aria-hidden="true"></i>Penduduk Desa</span></a>
             <ul class="dropdown-menu">
-
-                <li><a class="nav-link" href="<?php echo base_url('/penduduk'); ?>">
+                <li>
+                    <a class="nav-link" href="<?php echo base_url('/penduduk'); ?>">
                         <i class="fas fa-table fa-fw"></i>
-                        <span>Tabel Penduduk</span></a></li>
-                <li><a class="nav-link" href="<?php echo base_url('/penduduk/tambah'); ?>">
+                        <span>Tabel Penduduk</span></a>
+                </li>
+                <li>
+                    <a class="nav-link" href="<?php echo base_url('/penduduk/tambah'); ?>">
                         <i class="fas fa-user-plus fa-fw"></i>
-                        <span>Tambah Penduduk</span></a></li>
-                <!-- <li><a class="nav-link" href="<?php echo base_url('/penduduk/ubah'); ?>">
-                                        <i class="fas fa-user-edit fa-fw"></i>
-                                        <span>Ubah Data Penduduk</span></a></li> -->
+                        <span>Tambah Penduduk</span></a>
+                </li>
             </ul>
         </li>
 
@@ -42,9 +41,6 @@
                 <li><a class="nav-link" href="<?php echo base_url('/kartu-keluarga/tambah'); ?>">
                         <i class="fas fa-user-plus fa-fw"></i>
                         <span>Tambah Keluarga</span></a></li>
-                <!-- <li><a class="nav-link" href="<?php echo base_url('/kartu-keluarga/ubah'); ?>">
-                                        <i class="fas fa-user-edit fa-fw"></i>
-                                        <span>Ubah Data Penduduk</span></a></li> -->
             </ul>
         </li>
 
@@ -68,7 +64,7 @@
                 <span><i class="fas fa-hand-holding-heart fa-fw"></i>Bantuan Sosial</span></a>
             <ul class="dropdown-menu">
                 <li>
-                    <a class="nav-link" href="<?php echo base_url('/penduduk'); ?>">
+                    <a class="nav-link" href="<?php echo base_url('/bansos'); ?>">
                         <i class="fas fa-table fa-fw"></i>
                         <span>Daftar Penerima</span>
                     </a>

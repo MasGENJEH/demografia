@@ -7,8 +7,11 @@ use CodeIgniter\Router\RouteCollection;
  */
 
 // Rute Default (Halaman Utama)
-$routes->get('/', 'Home::index');
+$routes->get('/home', 'Home::index');
 
+$routes->get('/', function () {
+    return redirect()->to(base_url('auth/login'));
+});
 // --- PENDUDUK ROUTES ---
 $routes->group('penduduk', static function ($routes) {
     // View (GET /penduduk)
@@ -38,6 +41,16 @@ $routes->group('pengguna', ['filter' => 'isAdmin'], static function ($routes) {
     $routes->get('ubah/(:any)', 'User::edit/$1'); // View Edit
     $routes->put('(:any)', 'User::update/$1'); // Edit/Update Data
     $routes->delete('(:segment)', 'User::delete/$1'); // Delete Data
+});
+
+// --- BANSOS ROUTES (KK) ---
+$routes->group('bansos', ['filter' => 'isAdmin'], static function ($routes) {
+    $routes->get('/', 'Bansos::index');  // View
+    // $routes->get('tambah', 'Bansos::new'); // View Tambah
+    // $routes->post('save', 'Bansos::create'); // Create Data
+    // $routes->get('ubah/(:any)', 'Bansos::edit/$1'); // View Edit
+    // $routes->put('(:any)', 'Bansos::update/$1'); // Edit/Update Data
+    // $routes->delete('(:segment)', 'Bansos::delete/$1'); // Delete Data
 });
 
 // --- AUTH ROUTES ---

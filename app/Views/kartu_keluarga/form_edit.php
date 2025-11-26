@@ -14,7 +14,7 @@
         </div>
         <h1>Tambah Kartu Keluarga</h1>
         <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active"><a href="<?php echo base_url(); ?>">Dashboard</a></div>
+            <div class="breadcrumb-item active"><a href="<?php echo base_url('home'); ?>">Dashboard</a></div>
             <div class="breadcrumb-item"><a href="<?php echo base_url('kartu-keluarga'); ?>">Kartu Keluarga</a></div>
             <div class="breadcrumb-item">Tambah Kartu Keluarga</div>
         </div>

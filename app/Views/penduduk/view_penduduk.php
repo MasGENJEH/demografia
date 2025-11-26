@@ -4,8 +4,6 @@
 <title>View | Rakyat Desa</title>
 <?php echo $this->endSection(); ?>
 
-
-
 <?php echo $this->section('tabel_penduduk'); ?>
 <section class="section">
     <div class="section-header">

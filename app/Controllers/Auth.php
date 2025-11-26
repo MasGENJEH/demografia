@@ -19,7 +19,7 @@ class Auth extends BaseController
     {
         // return 'login';
         if (session('id')) {
-            return redirect()->to(base_url());
+            return redirect()->to(base_url('home'));
         }
 
         return view('auth/login_page');
@@ -41,7 +41,7 @@ class Auth extends BaseController
                 ];
                 session()->set($params);
 
-                return redirect()->to(base_url());
+                return redirect()->to(base_url('home'));
             } else {
                 return redirect()->back()->with('error', 'Password salah');
             }

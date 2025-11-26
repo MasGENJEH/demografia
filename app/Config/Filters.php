@@ -118,6 +118,8 @@ class Filters extends BaseFilters
             'penduduk/*',
             'kartu-keluarga',
             'kartu-keluarga/*',
+            'bansos',
+            'bansos/*',
             '/',
         ],
 
