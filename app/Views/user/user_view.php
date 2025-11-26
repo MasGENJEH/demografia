@@ -13,8 +13,8 @@
             <a href="<?php echo base_url('pengguna/tambah'); ?>" class="btn btn-primary">Tambah Pengguna</a>
         </div>
         <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-            <div class="breadcrumb-item"><a href="#">Pengguna</a></div>
+            <div class="breadcrumb-item active"><a href="<?php echo base_url('home'); ?>">Dashboard</a></div>
+            <div class="breadcrumb-item"><a href="<?php echo base_url('pengguna'); ?>">Pengguna</a></div>
             <div class="breadcrumb-item">Data Pengguna</div>
         </div>
     </div>

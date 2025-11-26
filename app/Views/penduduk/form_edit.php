@@ -5,8 +5,8 @@
     <div class="section-header">
         <h1>Ubah Data Penduduk</h1>
         <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-            <div class="breadcrumb-item"><a href="#">Penduduk</a></div>
+            <div class="breadcrumb-item active"><a href="<?php echo base_url('home'); ?>">Dashboard</a></div>
+            <div class="breadcrumb-item"><a href="<?php echo base_url('penduduk'); ?>">Penduduk</a></div>
             <div class="breadcrumb-item">Ubah Data Pendududuk</div>
         </div>
     </div>

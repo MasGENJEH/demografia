@@ -14,8 +14,8 @@
                 <span><i class="fa fa-home" aria-hidden="true"></i>Dashboard</span></a>
         </li>
         <li class="nav-item dropdown">
-            <a class="nav-link has-dropdown" href="index-0.html"><span><i class="far fa-user"
-                        aria-hidden="true"></i>Penduduk Desa</span></a>
+            <a class="nav-link has-dropdown" href="#"><span><i class="far fa-user" aria-hidden="true"></i>Penduduk
+                    Desa</span></a>
             <ul class="dropdown-menu">
                 <li>
                     <a class="nav-link" href="<?php echo base_url('/penduduk'); ?>">
@@ -31,7 +31,7 @@
         </li>
 
         <li class="nav-item dropdown">
-            <a class="nav-link has-dropdown" href="index-0.html">
+            <a class="nav-link has-dropdown" href="#">
                 <span><i class="fa fa-users" aria-hidden="true"></i>Kartu Keluarga</span></a>
             <ul class="dropdown-menu">
 
@@ -46,7 +46,7 @@
 
         <?php if (session()->get('role') == 'admin') { ?>
         <li class="nav-item dropdown">
-            <a class="nav-link has-dropdown" href="index-0.html">
+            <a class="nav-link has-dropdown" href="#">
                 <span><i class="fa fa-users" aria-hidden="true"></i>Pengguna</span></a>
             <ul class="dropdown-menu">
                 <li><a class="nav-link" href="<?php echo base_url('/pengguna'); ?>">
@@ -60,7 +60,7 @@
         <?php }  ?>
 
         <li class="nav-item dropdown">
-            <a class="nav-link has-dropdown" href="index-0.html">
+            <a class="nav-link has-dropdown" href="#">
                 <span><i class="fas fa-hand-holding-heart fa-fw"></i>Bantuan Sosial</span></a>
             <ul class="dropdown-menu">
                 <li>

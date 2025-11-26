@@ -1,10 +1,9 @@
 "use strict";
-
 var path = location.pathname;
 var url = location.origin + path;
 
-$("ul.sidebar-menu li a").each(function () {
-  if ($(this).attr("href").indexOf(url) !== -1) {
+$("ul.sidebar-menu li a.nav-link").each(function () {
+  if ($(this).attr("href") === url) {
     $(this)
       .parent()
       .addClass("active")
@@ -13,5 +12,3 @@ $("ul.sidebar-menu li a").each(function () {
       .addClass("active");
   }
 });
-
-console.log(url);
