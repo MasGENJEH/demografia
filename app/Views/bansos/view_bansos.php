@@ -1,4 +1,7 @@
 <?php echo $this->extend('layout/default'); ?>
+<?php echo $this->section('judul'); ?>
+<title>View | Bansos</title>
+<?php echo $this->endSection(); ?>
 
 <?php echo $this->section('content'); ?>
 <section class="section">
