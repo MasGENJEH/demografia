@@ -13,10 +13,11 @@
     <link rel="stylesheet"
         href="<?php echo base_url(); ?>/template/node_modules/@fortawesome/fontawesome-free/css/all.css">
     <!-- CSS Libraries -->
-
     <!-- Template CSS -->
     <link rel="stylesheet" href="<?php echo base_url(); ?>/template/assets/css/style.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>/template/assets/css/components.css">
+    <script src="<?php echo base_url(); ?>/template/node_modules/chart.js/dist/Chart.js"></script>
+
 </head>
 
 <body>
