@@ -2,15 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Models\KartuKeluargaModel;
-
 class KartuKeluarga extends BaseController
 {
-    public function __construct()
-    {
-        $this->kartu_keluarga = new KartuKeluargaModel();
-    }
-
     public function index()
     {
         $data['kartu_keluarga'] = $this->kartu_keluarga->orderBy('created_at', 'DESC')->paginate(10);

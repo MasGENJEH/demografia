@@ -20,14 +20,14 @@ class KartuKeluargaSeeder extends Seeder
             'CKM 6',
         ];
 
-        for ($i = 1; $i < 20; ++$i) {
+        for ($i = 1; $i < 1000; ++$i) {
             $data = [
                 'nomor_kk' => $faker->randomNumber(7, true),
                 'alamat' => $faker->address(),
                 'rt' => $faker->numberBetween(1, 60),
                 'rw' => $faker->numberBetween(1, 20),
                 'dusun' => $faker->randomElement($dusun_values),
-                'pendapatan' => $faker->numberBetween(10000, 100000000),
+                'pendapatan' => $faker->numberBetween(10000, 1000000000),
                 'skala_rumah' => $faker->numberBetween(1, 5),
             ];
             $kartuKeluargaData[] = $data;

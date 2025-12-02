@@ -53,7 +53,7 @@ class PendudukSeeder extends Seeder
         $faker->unique(true);
 
         // 2. Generate 100 data penduduk
-        for ($i = 0; $i < 100; ++$i) {
+        for ($i = 0; $i < 5000; ++$i) {
             $gender = $faker->randomElement(['male', 'female']);
             $jenis_kelamin_fk = ($gender == 'male') ? 'LAKI-LAKI' : 'PEREMPUAN';
 

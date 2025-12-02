@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\KartuKeluargaModel;
+use App\Models\PendudukModel;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
@@ -37,6 +39,9 @@ abstract class BaseController extends Controller
      */
     protected $helpers = ['auth'];
 
+    protected $penduduk;
+    protected $kartu_keluarga;
+
     /**
      * Be sure to declare properties for any property fetch you initialized.
      * The creation of dynamic property is deprecated in PHP 8.2.
@@ -52,6 +57,8 @@ abstract class BaseController extends Controller
         parent::initController($request, $response, $logger);
 
         // Preload any models, libraries, etc, here.
+        $this->penduduk = new PendudukModel();
+        $this->kartu_keluarga = new KartuKeluargaModel();
 
         // E.g.: $this->session = service('session');
         $this->db = \Config\Database::connect();
