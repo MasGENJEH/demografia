@@ -56,6 +56,8 @@ $routes->group('bansos', ['filter' => 'isAdmin'], static function ($routes) {
 // --- AUTH ROUTES ---
 $routes->group('auth', static function ($routes) {
     $routes->get('login', 'Auth::login'); // view login
-    $routes->post('/', 'Auth::loginProcess'); // login process
+    $routes->post('login', 'Auth::loginProcess'); // login process
     $routes->get('logout', 'Auth::Logout'); // logout
+    $routes->get('daftar', 'Auth::register'); // register
+    $routes->post('daftar', 'Auth::registerProcess'); // register process
 });
