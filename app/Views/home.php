@@ -80,7 +80,7 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-6 col-md-6 col-6 col-sm-6">
+        <div class="col-lg-9 col-md-9 col-9 col-sm-9">
             <div class="card">
                 <div class="card-header">
                     <h4>Penghasilan Per Kartu Keluarga</h4>
@@ -98,7 +98,7 @@
         <div class="col-lg-3 col-md-3 col-3 col-sm-3">
             <div class="card">
                 <div class="card-header">
-                    <h4>Rasio Jenis Kelamin</h4>
+                    <h4>Penduduk Berdasarkan Gender</h4>
                     <div class="card-header-action">
                         <div class="btn-group">
                         </div>
@@ -109,7 +109,18 @@
                 </div>
             </div>
         </div>
-        
+
+        <div class="col-lg-12 col-md-12 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Kondisi Ekonomi: Distribusi Skala Rumah</h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="myChart5" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <div class="section-body">
@@ -118,8 +129,9 @@
 
 <script>
  
-const incomeData = <?php echo esc($data_income_json); ?>; //const incomeLabels = <?php // echo esc($labels_income_json);?>//;
-
+const incomeData = <?php echo esc($data_income_json); ?>;
+//const incomeLabels = <?php //echo esc($labels_income_json);?>//;
+// console.log(incomeLabels);
 var ctx = document.getElementById("myChart2").getContext("2d");
 var myChart = new Chart(ctx, {
     type: "bar",
@@ -170,6 +182,62 @@ var myChart = new Chart(ctx, {
         },
     },
 });
+
+</script>
+
+<script>
+
+    // Ambil data JSON untuk Chart Skala Rumah
+    const scaleData = <?= esc($data_scale_json) ?>;
+
+    var ctx = document.getElementById("myChart5").getContext("2d");
+    var myChart = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: [
+                "Sangat Sederhana (<20m²)",
+                "Sederhana (20m²-40m²)",
+                "Menengah (41m²-80m²)",
+                "Mewah (81m²-120m²)",
+                "Sangat Mewah (>120m²)",
+            ],
+            datasets: [{
+                label: "Jumlah Kartu Keluarga",
+                data: scaleData,
+                borderWidth: 2,
+                backgroundColor: "#6777ef",
+                borderColor: "#7967ef",
+                borderWidth: 2.5,
+                pointBackgroundColor: "#ffffff",
+                pointRadius: 4,
+            }, ],
+        },
+        options: {
+            legend: {
+                display: false,
+            },
+            scales: {
+                yAxes: [{
+                    gridLines: {
+                        drawBorder: false,
+                        color: "#f2f2f2",
+                    },
+                    ticks: {
+                        beginAtZero: true,
+                        stepSize: Math.ceil(Math.max(...incomeData) / 5) || 1,
+                    },
+                }, ],
+                xAxes: [{
+                    ticks: {
+                        display: true,
+                    },
+                    gridLines: {
+                        display: false,
+                    },
+                }, ],
+            },
+        },
+    });
 </script>
 
 <script>

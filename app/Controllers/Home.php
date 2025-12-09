@@ -29,10 +29,18 @@ class Home extends BaseController
             '<500 ribu' => 0,
             '500 ribu - 1 juta' => 0,
             '1 - 3 juta' => 0,
-            '3 - 5 juta' => 0, // Disesuaikan dengan format list Anda
+            '3 - 5 juta' => 0,
             '5 - 10 juta' => 0,
             '10 - 20 juta' => 0,
             '> 20 juta' => 0,
+        ];
+
+        $houseScaleCategories = [
+            "Sangat Sederhana (<20m²)" => 0,
+            "Sederhana (20m²-40m²)"   => 0,
+            "Menengah (41m²-80m²)"   => 0,
+            "Mewah (81m²-120m²)"          => 0,
+            "Sangat Mewah (>120m²)"          => 0,
         ];
 
         $genderCategories = [
@@ -54,6 +62,7 @@ class Home extends BaseController
         foreach ($allKK as $kk) {
             // Asumsi kolom 'pendapatan' ada di hasil model dan bertipe numerik.
             $income = (float) $kk->pendapatan;
+            $scale = (float)$kk->skala_rumah;
 
             if ($income < 500000) {
                 ++$incomeCategories['<500 ribu'];
@@ -70,6 +79,19 @@ class Home extends BaseController
             } else { // Jika >= 20,000,000
                 ++$incomeCategories['> 20 juta'];
             }
+
+            if ($scale == 1) {
+                $houseScaleCategories["Sangat Sederhana (<20m²)"]++;
+            } elseif ($scale == 2) {
+                $houseScaleCategories["Sederhana (20m²-40m²)"]++;
+            } elseif ($scale == 3) {
+                $houseScaleCategories["Menengah (41m²-80m²)"]++;
+            } elseif ($scale == 4) {
+                $houseScaleCategories["Mewah (81m²-120m²)"]++;
+            } elseif ($scale == 5) {
+                $houseScaleCategories["Sangat Mewah (>120m²)"]++;
+            }
+
         }
 
         // 4. Siapkan Array Data Final
@@ -77,6 +99,9 @@ class Home extends BaseController
             'labels_income_json' => json_encode(array_keys($incomeCategories)),
             'data_income_json' => json_encode(array_values($incomeCategories)),
             'data_gender_json' => json_encode(array_values($genderCategories)),
+
+            'labels_scale_json' => json_encode(array_keys($houseScaleCategories)),
+            'data_scale_json'   => json_encode(array_values($houseScaleCategories)),
 
             'jumlah_penduduk' => $this->penduduk->countAllResults(),
             'jumlah_kk' => $this->kartu_keluarga->countAllResults(),
