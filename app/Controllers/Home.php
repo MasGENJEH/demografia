@@ -22,6 +22,7 @@ class Home extends BaseController
         }
 
         $allKK = $this->kartu_keluarga->findAll();
+        $gender = $this->penduduk->findAll();
 
         // 2. Inisialisasi Kategori Penghasilan
         $incomeCategories = [
@@ -33,6 +34,21 @@ class Home extends BaseController
             '10 - 20 juta' => 0,
             '> 20 juta' => 0,
         ];
+
+        $genderCategories = [
+            'LAKI-LAKI' => 0,
+            'PEREMPUAN' => 0,
+        ];
+        foreach ($gender as $jk) {
+            // Asumsi kolom 'pendapatan' ada di hasil model dan bertipe numerik.
+            $jenis = $jk->jenis_kelamin;
+
+            if ($jenis == "LAKI-LAKI") {
+                ++$genderCategories['LAKI-LAKI'];
+            } else { // Jika PEREMPUAN
+                ++$genderCategories['PEREMPUAN'];
+            }
+        }
 
         // 3. Looping dan Kategorisasi
         foreach ($allKK as $kk) {
@@ -60,11 +76,13 @@ class Home extends BaseController
         $data = [
             'labels_income_json' => json_encode(array_keys($incomeCategories)),
             'data_income_json' => json_encode(array_values($incomeCategories)),
+            'data_gender_json' => json_encode(array_values($genderCategories)),
 
             'jumlah_penduduk' => $this->penduduk->countAllResults(),
             'jumlah_kk' => $this->kartu_keluarga->countAllResults(),
             'jumlah_user' => $this->user->countAllResults(),
             'income_stats' => $incomeCategories, // Data statistik penghasilan yang baru
+            'gender_stats' => $genderCategories, // Data statistik penghasilan yang baru
             // Data penduduk dan kartu_keluarga yang sudah di findAll() dihapus
             // karena hanya digunakan untuk perhitungan statistik.
         ];

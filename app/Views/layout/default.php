@@ -16,8 +16,6 @@
         </div>
     </form>
     <ul class="navbar-nav navbar-right">
-        <?php echo $this->include('element/messages'); ?>
-        <?php echo $this->include('element/notifications'); ?>
         <?php echo $this->include('element/profil'); ?>
     </ul>
 </nav>

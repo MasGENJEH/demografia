@@ -43,16 +43,16 @@ class UserSeeder extends Seeder
                 'password' => password_hash('1234', PASSWORD_BCRYPT),
             ],
             [
-                'username' => 'Budiarie',
+                'username' => 'Ujang',
                 'role' => 'user',
-                'email' => 'budi@bansos.com',
+                'email' => 'ujang@bansos.com',
                 // Password: '1234'
                 'password' => password_hash('1234', PASSWORD_BCRYPT),
             ],
             [
-                'username' => 'Fufufafa',
+                'username' => 'Ahmad',
                 'role' => 'user',
-                'email' => 'fufufafa@bansos.com',
+                'email' => 'ahmad@bansos.com',
                 // Password: '1234'
                 'password' => password_hash('1234', PASSWORD_BCRYPT),
             ],

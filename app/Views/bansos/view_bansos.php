@@ -59,10 +59,9 @@
                                     <th>Skala Rumah</th>
                                     <th>Action</th>
                                 </tr>
-                                <?php
-                                $page = isset($_GET['page']) ? $_GET['page'] : 1;
-$no = 1 + (10 * ($page - 1));
-foreach ($kartu_keluarga as $key => $value) { ?>
+                            <?php $page = isset($_GET['page']) ? $_GET['page'] : 1; ?>
+                            <?php $no = 1 + (10 * ($page - 1)); ?>
+                            <?php foreach ($kartu_keluarga as $key => $value) { ?>
                                 <tr>
                                     <td><?php echo $no++; ?></td>
                                     <td><?php echo $value->nomor_kk; ?></td>
@@ -73,11 +72,14 @@ foreach ($kartu_keluarga as $key => $value) { ?>
                                     <td>Rp <?php echo number_format($value->pendapatan, 0, ',', '.'); ?></td>
                                     <td><?php echo $value->skala_rumah; ?></td>
                                     <td>
-                                        <a href="<?php echo base_url('kartu-keluarga/ubah/'.$value->nomor_kk); ?>"
-                                            class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
+                                        <a href="<?php echo base_url('kartu-keluarga/ubah/'.$value->nomor_kk); ?>" class="btn btn-warning">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </a>
+
                                         <form class="d-inline"
                                             action="<?php echo base_url('kartu-keluarga/'.$value->nomor_kk); ?>"
-                                            method="post" onsubmit="return confirm('Anda yakin ingin menghapus data?')">
+                                            method="post"
+                                            onsubmit="return confirm('Anda yakin ingin menghapus data?')">
                                             <?php echo csrf_field(); ?>
                                             <input type="hidden" name="_method" value="DELETE">
                                             <button class="btn btn-danger"><i class="fas fa-trash"></i></button>

@@ -50,11 +50,13 @@
                             <table class="table table-striped table-md">
                                 <tr>
                                     <th>No</th>
+                                    <th>NIK</th>
                                     <th>Nama</th>
                                     <th>Tanggal Lahir</th>
                                     <th>Jenis Kelamin</th>
                                     <th>Pekerjaan</th>
                                     <th>Pendidikan Terakhir</th>
+                                    <th>Status Pernikahan</th>
                                     <th>Action</th>
                                 </tr>
                                 <?php
@@ -63,13 +65,13 @@ $no = 1 + (10 * ($page - 1));
 foreach ($penduduk as $key => $value) { ?>
                                 <tr>
                                     <td><?php echo $no++; ?></td>
+                                    <td><?php echo $value->nik; ?></td>
                                     <td><?php echo $value->nama_lengkap; ?></td>
                                     <td><?php echo $value->tanggal_lahir; ?></td>
                                     <td><?php echo $value->jenis_kelamin; ?></td>
                                     <td><?php echo $value->pekerjaan; ?></td>
-                                    <td>
-                                        <div class="badge badge-info"><?php echo $value->pendidikan_terakhir; ?></div>
-                                    </td>
+                                    <td><?php echo $value->pendidikan_terakhir; ?></td>
+                                    <td><?php echo $value->status_perkawinan; ?></td>
                                     <td>
                                         <a href="<?php echo base_url('penduduk/ubah/'.$value->nik); ?>"
                                             class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>

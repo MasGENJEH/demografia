@@ -130,7 +130,7 @@ class Bansos extends BaseController
         $alternatif = $builder
             ->select('kk.nomor_kk, kk.alamat, kk.pendapatan, kk.skala_rumah, COUNT(p.nik) as jumlah_tanggungan')
             ->join('penduduk p', 'p.nomor_kk = kk.nomor_kk', 'left')
-            ->where('kk.pendapatan <=', 50000000)
+            ->where('kk.pendapatan <', 5000000)
             ->groupBy('kk.nomor_kk, kk.alamat, kk.pendapatan, kk.skala_rumah')
             ->get()
             ->getResult();
