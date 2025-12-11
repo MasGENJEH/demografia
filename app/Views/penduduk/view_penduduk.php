@@ -61,8 +61,8 @@
                                 </tr>
                                 <?php
                                 $page = isset($_GET['page']) ? $_GET['page'] : 1;
-$no = 1 + (10 * ($page - 1));
-foreach ($penduduk as $key => $value) { ?>
+                                $no = 1 + (10 * ($page - 1));
+                                foreach ($penduduk as $key => $value) { ?>
                                 <tr>
                                     <td><?php echo $no++; ?></td>
                                     <td><?php echo $value->nik; ?></td>

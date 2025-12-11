@@ -8,11 +8,14 @@ use App\Models\UserModel;
 
 class Home extends BaseController
 {
+    private Bansos $bansos;
+
     public function __construct()
     {
         $this->penduduk = new PendudukModel();
         $this->kartu_keluarga = new KartuKeluargaModel();
-        $this->user = new UserModel();
+        $this->pengguna = new UserModel();
+        $this->bansos = new Bansos();
     }
 
     public function index(): string
@@ -36,11 +39,11 @@ class Home extends BaseController
         ];
 
         $houseScaleCategories = [
-            "Sangat Sederhana (<20m²)" => 0,
-            "Sederhana (20m²-40m²)"   => 0,
-            "Menengah (41m²-80m²)"   => 0,
-            "Mewah (81m²-120m²)"          => 0,
-            "Sangat Mewah (>120m²)"          => 0,
+            'Sangat Sederhana (<20m²)' => 0,
+            'Sederhana (20m²-40m²)' => 0,
+            'Menengah (41m²-80m²)' => 0,
+            'Mewah (81m²-120m²)' => 0,
+            'Sangat Mewah (>120m²)' => 0,
         ];
 
         $genderCategories = [
@@ -51,7 +54,7 @@ class Home extends BaseController
             // Asumsi kolom 'pendapatan' ada di hasil model dan bertipe numerik.
             $jenis = $jk->jenis_kelamin;
 
-            if ($jenis == "LAKI-LAKI") {
+            if ($jenis == 'LAKI-LAKI') {
                 ++$genderCategories['LAKI-LAKI'];
             } else { // Jika PEREMPUAN
                 ++$genderCategories['PEREMPUAN'];
@@ -62,7 +65,7 @@ class Home extends BaseController
         foreach ($allKK as $kk) {
             // Asumsi kolom 'pendapatan' ada di hasil model dan bertipe numerik.
             $income = (float) $kk->pendapatan;
-            $scale = (float)$kk->skala_rumah;
+            $scale = (float) $kk->skala_rumah;
 
             if ($income < 500000) {
                 ++$incomeCategories['<500 ribu'];
@@ -81,18 +84,31 @@ class Home extends BaseController
             }
 
             if ($scale == 1) {
-                $houseScaleCategories["Sangat Sederhana (<20m²)"]++;
+                ++$houseScaleCategories['Sangat Sederhana (<20m²)'];
             } elseif ($scale == 2) {
-                $houseScaleCategories["Sederhana (20m²-40m²)"]++;
+                ++$houseScaleCategories['Sederhana (20m²-40m²)'];
             } elseif ($scale == 3) {
-                $houseScaleCategories["Menengah (41m²-80m²)"]++;
+                ++$houseScaleCategories['Menengah (41m²-80m²)'];
             } elseif ($scale == 4) {
-                $houseScaleCategories["Mewah (81m²-120m²)"]++;
+                ++$houseScaleCategories['Mewah (81m²-120m²)'];
             } elseif ($scale == 5) {
-                $houseScaleCategories["Sangat Mewah (>120m²)"]++;
+                ++$houseScaleCategories['Sangat Mewah (>120m²)'];
             }
-
         }
+
+        $rtRanking = $this->kartu_keluarga->getTopRtByKK();
+
+        $topRt = null;
+        $totalKkInTopRt = 0;
+        $top5Rts = array_slice($rtRanking, 0, 5);
+
+        if (!empty($rtRanking)) {
+            // Ambil RT yang berada di urutan pertama (jumlah terbanyak)
+            $topRt = $rtRanking[0]->rt;
+            $totalKkInTopRt = $rtRanking[0]->total_kk;
+        }
+
+        $total = $this->bansos->summary();
 
         // 4. Siapkan Array Data Final
         $data = [
@@ -101,21 +117,19 @@ class Home extends BaseController
             'data_gender_json' => json_encode(array_values($genderCategories)),
 
             'labels_scale_json' => json_encode(array_keys($houseScaleCategories)),
-            'data_scale_json'   => json_encode(array_values($houseScaleCategories)),
+            'data_scale_json' => json_encode(array_values($houseScaleCategories)),
 
             'jumlah_penduduk' => $this->penduduk->countAllResults(),
             'jumlah_kk' => $this->kartu_keluarga->countAllResults(),
-            'jumlah_user' => $this->user->countAllResults(),
+            'jumlah_user' => $this->pengguna->countAllResults(),
             'income_stats' => $incomeCategories, // Data statistik penghasilan yang baru
             'gender_stats' => $genderCategories, // Data statistik penghasilan yang baru
-            // Data penduduk dan kartu_keluarga yang sudah di findAll() dihapus
-            // karena hanya digunakan untuk perhitungan statistik.
+            'total_bansos' => $total,
+
+            'top_5_rts' => $top5Rts,
+            'top_rt' => $topRt,
+            'total_kk_top_rt' => $totalKkInTopRt,
         ];
-
-        // $data['jumlah_penduduk'] = $jumlah_penduduk;
-        // $data2['jumlah_kk'] = $jumlah_kk;
-
-        // $combinedData = array_merge($data, $data2);
 
         return view('home', $data);
     }

@@ -44,6 +44,26 @@ class CreateKartuKeluarga extends Migration
                 'constraint' => '50',
                 'null' => true,
             ],
+            'status_verifikasi_rt' => [
+                'type' => 'ENUM',
+                'constraint' => [
+                    'DISETUJUI',
+                    'BELUM DISETUJUI',
+                    'TIDAK DISETUJUI',
+                ],
+                'null' => true,
+                'default' => 'BELUM DISETUJUI',
+            ],
+            'status_verifikasi_rw' => [
+                'type' => 'ENUM',
+                'constraint' => [
+                    'DISETUJUI',
+                    'BELUM DISETUJUI',
+                    'TIDAK DISETUJUI',
+                ],
+                'null' => true,
+                'default' => 'BELUM DISETUJUI',
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,

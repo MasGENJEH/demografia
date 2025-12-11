@@ -54,7 +54,7 @@
                         <h4>Jumlah Penerima Bansos</h4>
                     </div>
                     <div class="card-body">
-                        1,201
+                        <?php echo $total_bansos['total_kk']; ?>
                     </div>
                 </div>
             </div>
@@ -95,6 +95,46 @@
                 </div>
             </div>
         </div>
+        <div class="col-lg-3 col-md-3 col-3">
+            <div class="card" >
+                <div class="card-header">
+                    <h4>RT dengan Jumlah Keluarga Terbanyak</h4>
+                </div>
+                <div class="card-body" >
+                    <?php if (!empty($top_5_rts)): ?>
+                        <ul class="list-group list-group-flush">
+                            <?php $rank = 1; ?>
+                            <?php foreach ($top_5_rts as $rtData): ?>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="badge badge-success mr-2">#<?= $rank++ ?></span>
+                                        <strong>RT <?= esc($rtData->rt) ?></strong>
+                                    </div>
+                                    <span class="badge badge-primary badge-pill">
+                                <?= esc($rtData->total_kk) ?> KK
+                            </span>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php else: ?>
+                        <p class="text-muted">Data RT belum tersedia atau tidak ada Kartu Keluarga yang tercatat.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-lg-9 col-md-9 col-9">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Kondisi Ekonomi Berdasarkan Kondisi Rumah</h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="myChart5" height="100"></canvas>
+                </div>
+            </div>
+        </div>
         <div class="col-lg-3 col-md-3 col-3 col-sm-3">
             <div class="card">
                 <div class="card-header">
@@ -105,22 +145,10 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <canvas id="myChart4" height="225"></canvas>
+                    <canvas id="myChart4" height="350"></canvas>
                 </div>
             </div>
         </div>
-
-        <div class="col-lg-12 col-md-12 col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4>Kondisi Ekonomi: Distribusi Skala Rumah</h4>
-                </div>
-                <div class="card-body">
-                    <canvas id="myChart5" height="100"></canvas>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <div class="section-body">
@@ -130,7 +158,7 @@
 <script>
  
 const incomeData = <?php echo esc($data_income_json); ?>;
-//const incomeLabels = <?php //echo esc($labels_income_json);?>//;
+//const incomeLabels = <?php // echo esc($labels_income_json);?>//;
 // console.log(incomeLabels);
 var ctx = document.getElementById("myChart2").getContext("2d");
 var myChart = new Chart(ctx, {
@@ -188,9 +216,64 @@ var myChart = new Chart(ctx, {
 <script>
 
     // Ambil data JSON untuk Chart Skala Rumah
-    const scaleData = <?= esc($data_scale_json) ?>;
+    const scaleData = <?php echo esc($data_scale_json); ?>;
 
     var ctx = document.getElementById("myChart5").getContext("2d");
+    var myChart = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: [
+                "Sangat Sederhana (<20m²)",
+                "Sederhana (20m²-40m²)",
+                "Menengah (41m²-80m²)",
+                "Mewah (81m²-120m²)",
+                "Sangat Mewah (>120m²)",
+            ],
+            datasets: [{
+                label: "Jumlah Kartu Keluarga",
+                data: scaleData,
+                borderWidth: 2,
+                backgroundColor: "#6777ef",
+                borderColor: "#7967ef",
+                borderWidth: 2.5,
+                pointBackgroundColor: "#ffffff",
+                pointRadius: 4,
+            }, ],
+        },
+        options: {
+            legend: {
+                display: false,
+            },
+            scales: {
+                yAxes: [{
+                    gridLines: {
+                        drawBorder: false,
+                        color: "#f2f2f2",
+                    },
+                    ticks: {
+                        beginAtZero: true,
+                        stepSize: Math.ceil(Math.max(...incomeData) / 5) || 1,
+                    },
+                }, ],
+                xAxes: [{
+                    ticks: {
+                        display: true,
+                    },
+                    gridLines: {
+                        display: false,
+                    },
+                }, ],
+            },
+        },
+    });
+</script>
+
+<script>
+
+    // Ambil data JSON untuk Chart Skala Rumah
+    // const scaleData = <?php echo esc($data_scale_json); ?>;
+
+    var ctx = document.getElementById("myChart9").getContext("2d");
     var myChart = new Chart(ctx, {
         type: "line",
         data: {

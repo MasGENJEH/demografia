@@ -20,33 +20,32 @@ class KartuKeluargaSeeder extends Seeder
             'CKM 6',
         ];
 
-        for ($i = 1; $i < 1000; ++$i) {
+        for ($i = 1; $i < 500; ++$i) {
             $data = [
                 'nomor_kk' => $faker->randomNumber(7, true),
                 'alamat' => $faker->address(),
                 'rt' => $faker->numberBetween(1, 60),
                 'rw' => $faker->numberBetween(1, 20),
                 'dusun' => $faker->randomElement($dusun_values),
-                'pendapatan' => $faker->numberBetween(10000, 1000000000),
+                'pendapatan' => $faker->numberBetween(10000, 30000000),
                 'skala_rumah' => $faker->numberBetween(1, 5),
             ];
             $kartuKeluargaData[] = $data;
         }
 
-        // $kartu_keluarga->save([
-        //     'nomork_kk' => $faker,
-        //     'alamat'    => 'darth@theempire.com',
-        //     'rt'    => 'darth@theempire.com',
-        //     'rw'    => 'darth@theempire.com',
-        //     'dusun'    => 'darth@theempire.com',
-        //     'pendapatan'    => 'darth@theempire.com',
-        //     'skala_rumah'    => 'darth@theempire.com',
-        // ])
+        for ($i = 1; $i < 500; ++$i) {
+            $data = [
+                'nomor_kk' => $faker->randomNumber(7, true),
+                'alamat' => $faker->address(),
+                'rt' => $faker->numberBetween(1, 60),
+                'rw' => $faker->numberBetween(1, 20),
+                'dusun' => $faker->randomElement($dusun_values),
+                'pendapatan' => $faker->numberBetween(10000, 10000000),
+                'skala_rumah' => $faker->numberBetween(1, 5),
+            ];
+            $kartuKeluargaData[] = $data;
+        }
 
-        // Simple Queries
-        // $this->db->query('INSERT INTO users (username, email) VALUES(:username:, :email:)', $data);
-
-        // Using Query Builder
         $this->db->table('kartu_keluarga')->insertBatch($kartuKeluargaData);
     }
 }
