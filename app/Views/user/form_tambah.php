@@ -61,7 +61,8 @@
                                         <select class="form-control" id="role_select" name="role">
                                             <option value="" selected disabled hidden>Pilih Role</option>
                                             <option value="admin">Admin</option>
-                                            <option value="user">User</option>
+                                            <option value="rt">RT</option>
+                                            <option value="rw">RW</option>
                                         </select>
                                     </div>
                                 </div>

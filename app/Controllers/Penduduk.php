@@ -83,6 +83,24 @@ class Penduduk extends BaseController
         return redirect()->to(base_url('penduduk'))->with('success', 'Data Berhasil Diupdate');
     }
 
+    public function verifikasiRt($id)
+    {
+        // Opsional: Cek peran (role) jika hanya Admin/Supervisor yang boleh verifikasi
+        // if (session()->get('role') !== 'Supervisor') { ... throw access denied ... }
+        $this->penduduk->find($id);
+
+        // Data yang akan diupdate
+        $data = [
+            'status_verifikasi' => 'DISETUJUI',
+            'updated_at' => date('Y-m-d H:i:s') // Opsional: catat waktu update
+        ];
+
+        // Lakukan update pada data penduduk berdasarkan NIK
+        $this->penduduk->update($id, $data);
+
+        return redirect()->to(base_url('penduduk'))->with('success', 'Verifikasi Penduduk dengan NIK ' . $id . ' berhasil diubah menjadi DISETUJUI.');
+    }
+
     // DELETE (Proses Hapus Data)
     public function delete($id)
     {

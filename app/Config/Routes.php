@@ -19,6 +19,7 @@ $routes->group('penduduk', static function ($routes) {
     $routes->get('tambah', 'Penduduk::new'); // Create Data
     $routes->post('save', 'Penduduk::create');
     $routes->get('ubah/(:any)', 'Penduduk::edit/$1'); // Edit/Update Data
+    $routes->get('verifikasi-rt/(:any)', 'Penduduk::verifikasiRt/$1');
     $routes->put('(:any)', 'Penduduk::update/$1');
     $routes->delete('(:segment)', 'Penduduk::delete/$1'); // Delete Data
 });

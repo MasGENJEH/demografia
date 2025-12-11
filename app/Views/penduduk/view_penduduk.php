@@ -57,8 +57,12 @@
                                     <th>Pekerjaan</th>
                                     <th>Pendidikan Terakhir</th>
                                     <th>Status Pernikahan</th>
+                                    <th>Status Verifikasi RT</th>
                                     <th>Action</th>
                                 </tr>
+                                <?php
+                                $userRole = session()->get('role');
+                                ?>
                                 <?php
                                 $page = isset($_GET['page']) ? $_GET['page'] : 1;
                                 $no = 1 + (10 * ($page - 1));
@@ -73,6 +77,20 @@
                                     <td><?php echo $value->pendidikan_terakhir; ?></td>
                                     <td><?php echo $value->status_perkawinan; ?></td>
                                     <td>
+                                    <?php if ($userRole !== 'rt'): ?>
+                                        <span class="badge badge-info"><?php echo $value->status_verifikasi_rt; ?></span>
+                                    <?php else: ?>
+                                        <?php if ($value->status_verifikasi_rt !== 'DISETUJUI'): ?>
+                                            <a href="<?php echo base_url('penduduk/verifikasi-rt/'.$value->nik); ?>"
+                                               class="btn btn-warning">SETUJUI</a>
+                                        <?php else: ?>
+                                            <span class="badge badge-success">DISETUJUI</span>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+
+                                    </td>
+                                    <td>
+                                        <?php if ($userRole === 'admin'): ?>
                                         <a href="<?php echo base_url('penduduk/ubah/'.$value->nik); ?>"
                                             class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
                                         <form class="d-inline" action="<?php echo base_url('penduduk/'.$value->nik); ?>"
@@ -81,7 +99,14 @@
                                             <input type="hidden" name="_method" value="DELETE">
                                             <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
                                         </form>
+                                        <?php elseif ($userRole === 'rt'): ?>
+                                            <span class="badge badge-secondary">tampilan ketika RT</span>
+                                        <?php else: ?>
+                                            <span class="badge badge-info"><?php echo $value->status_verifikasi_rt; ?></span>
+                                        <?php endif; ?>
                                     </td>
+
+
                                 </tr>
                                 <?php } ?>
                             </table>
