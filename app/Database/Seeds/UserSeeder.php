@@ -37,21 +37,21 @@ class UserSeeder extends Seeder
         $regularUsers = [
             [
                 'username' => 'Maman',
-                'role' => 'user',
+                'role' => 'rt',
                 'email' => 'maman@bansos.com',
                 // Password: 'user123'
                 'password' => password_hash('1234', PASSWORD_BCRYPT),
             ],
             [
                 'username' => 'Ujang',
-                'role' => 'user',
+                'role' => 'rw',
                 'email' => 'ujang@bansos.com',
                 // Password: '1234'
                 'password' => password_hash('1234', PASSWORD_BCRYPT),
             ],
             [
                 'username' => 'Ahmad',
-                'role' => 'user',
+                'role' => 'rt',
                 'email' => 'ahmad@bansos.com',
                 // Password: '1234'
                 'password' => password_hash('1234', PASSWORD_BCRYPT),

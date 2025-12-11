@@ -24,7 +24,8 @@ class User extends Migration
                 'type' => 'ENUM',
                 'constraint' => [
                     'admin',
-                    'user',
+                    'rt',
+                    'rw',
                 ],
                 'null' => true,
             ],
