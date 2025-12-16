@@ -57,7 +57,7 @@
                                     <th>Pekerjaan</th>
                                     <th>Pendidikan Terakhir</th>
                                     <th>Status Pernikahan</th>
-                                    <th>Status Verifikasi RT</th>
+                                    <th>Verifikasi RT</th>
                                     <th>Action</th>
                                 </tr>
                                 <?php
@@ -78,11 +78,22 @@
                                     <td><?php echo $value->status_perkawinan; ?></td>
                                     <td>
                                     <?php if ($userRole !== 'rt'): ?>
-                                        <span class="badge badge-info"><?php echo $value->status_verifikasi_rt; ?></span>
+                                        <?php if ($value->status_verifikasi_rt === 'DISETUJUI'): ?>
+                                            <span class="badge badge-success"><?php echo $value->status_verifikasi_rt; ?></span>
+                                        <?php elseif ($value->status_verifikasi_rt === 'TIDAK DISETUJUI'): ?>
+                                            <span class="badge badge-danger"><?php echo $value->status_verifikasi_rt; ?></span>
+                                        <?php elseif ($value->status_verifikasi_rt === 'BELUM DISETUJUI'): ?>
+                                            <span class="badge badge-warning"><?php echo $value->status_verifikasi_rt; ?></span>
+                                        <?php endif; ?>
+
                                     <?php else: ?>
                                         <?php if ($value->status_verifikasi_rt !== 'DISETUJUI'): ?>
-                                            <a href="<?php echo base_url('penduduk/verifikasi-rt/'.$value->nik); ?>"
-                                               class="btn btn-warning">SETUJUI</a>
+                                            <form action="<?= base_url('penduduk/verifikasi-rt/' . $value->nik) ?>" method="POST" style="display:inline;">
+                                                <?= csrf_field() ?>
+                                                <button type="submit" class="btn btn-warning btn-sm" onclick="return confirm('Apakah Anda yakin ingin menyetujui data ini?');">
+                                                    SETUJUI
+                                                </button>
+                                            </form>
                                         <?php else: ?>
                                             <span class="badge badge-success">DISETUJUI</span>
                                         <?php endif; ?>

@@ -51,7 +51,7 @@
                 </div>
                 <div class="card-wrap">
                     <div class="card-header">
-                        <h4>Jumlah Penerima Bansos</h4>
+                        <h4>Keluarga Layak Bansos</h4>
                     </div>
                     <div class="card-body">
                         <?php echo $total_bansos['total_kk']; ?>
