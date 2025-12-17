@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="<?php echo base_url(); ?>/template/assets/css/style.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>/template/assets/css/components.css">
     <script src="<?php echo base_url(); ?>/template/node_modules/chart.js/dist/Chart.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
 
 </head>
 
