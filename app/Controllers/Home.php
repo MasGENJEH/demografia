@@ -110,6 +110,23 @@ class Home extends BaseController
 
         $total = $this->bansos->summary();
 
+        $rekap_rw = $this->db->table('kartu_keluarga')
+                                ->select('rw, COUNT(DISTINCT(rt)) as total_rt, COUNT(nomor_kk) as total_kk')
+                                ->groupBy('rw')
+                                ->get()
+                                ->getResult();
+        $rekap_rt = $this->db->table('kartu_keluarga')
+                                ->select('
+                                    kartu_keluarga.rt, 
+                                    COUNT(DISTINCT kartu_keluarga.nomor_kk) as total_kk, 
+                                    COUNT(penduduk.nik) as total_penduduk
+                                ')
+                                ->join('penduduk', 'penduduk.nomor_kk = kartu_keluarga.nomor_kk', 'left')
+                                ->groupBy('kartu_keluarga.rt')
+                                ->orderBy('kartu_keluarga.rt', 'ASC')
+                                ->get()
+                                ->getResult();
+
         // 4. Siapkan Array Data Final
         $data = [
             'labels_income_json' => json_encode(array_keys($incomeCategories)),
@@ -125,6 +142,8 @@ class Home extends BaseController
             'income_stats' => $incomeCategories, // Data statistik penghasilan yang baru
             'gender_stats' => $genderCategories, // Data statistik penghasilan yang baru
             'total_bansos' => $total,
+            'rekap_rw' => $rekap_rw,
+            'rekap_rt' => $rekap_rt,
 
             'top_5_rts' => $top5Rts,
             'top_rt' => $topRt,

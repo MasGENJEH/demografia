@@ -114,6 +114,7 @@
         
 
     </div>
+
     <div class="row">
         <div class="col-lg-9 col-md-9 col-9">
             <div class="card">
@@ -139,6 +140,71 @@
                     <canvas id="myChart4" height="350">
                     </canvas>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-6">
+            <div class="card">
+                 <div class="card-header">
+                    <h4>Jumlah RT tiap RW</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                            <table class="table table-striped table-md">
+                                <thead style="position: sticky; top: 0; background: white; z-index: 1;">
+                                <tr>
+                                    <th>Nomor RW</th>
+                                    <th>Jumlah RT</th>
+                                    <th>Total KK</th>
+                                </tr>
+                                <?php $userRole = session()->get('role'); ?>
+                                <?php $page = isset($_GET['page']) ? $_GET['page'] : 1; ?>
+                                <?php $no = 1 + (10 * ($page - 1)); ?>
+                                <?php foreach ($rekap_rw as $row) { ?>
+                                        <tr>
+                                            <td>RW <?php echo esc($row->rw); ?></td>
+                                            <td><?php echo esc($row->total_rt); ?> RT</td>
+                                            <td><?php echo esc($row->total_kk); ?> KK</td>
+                                        </tr>
+                                <?php } ?>
+                            </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Jumlah KK tiap RT</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                            <table class="table table-striped table-md">
+                                <thead style="position: sticky; top: 0; background: white; z-index: 1;">
+                                    <tr>
+                                        <th>Nomor RT</th>
+                                        <th>Total KK</th>
+                                        <th>Total Penduduk</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $page = isset($_GET['page']) ? $_GET['page'] : 1; ?>
+                                    <?php $no = 1 + (20 * ($page - 1)); ?>
+                                    <?php foreach ($rekap_rt as $row) { ?>
+                                        <tr>
+                                            <td>RT <?php echo esc($row->rt); ?></td>
+                                            <td><?php echo esc($row->total_kk); ?> KK</td>
+                                            <td><?php echo esc($row->total_penduduk); ?> Jiwa</td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
             </div>
         </div>
     </div>
@@ -183,8 +249,6 @@
         </div>
         
     </div>
-    <!-- <div class="section-body">
-    </div> -->
 </section>
 
 <script>

@@ -11,6 +11,6 @@ class AllDataSeeder extends Seeder
         $this->call('KartuKeluargaSeeder'); // Memanggil UserSeeder
         $this->call('PendudukSeeder'); // Memanggil PostSeeder
         $this->call('UserSeeder'); // Memanggil PostSeeder
-        $this->call('MasterWilayahSeeder'); // Memanggil PostSeeder
+        // $this->call('MasterWilayahSeeder'); // Memanggil PostSeeder
     }
 }
