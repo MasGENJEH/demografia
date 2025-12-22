@@ -69,4 +69,44 @@ class KartuKeluarga extends BaseController
 
         return redirect()->to(base_url('kartu-keluarga'))->with('success', 'Data Berhasil Dihapus');
     }
+
+    public function verifikasiRt($id)
+    {
+        $dataPenduduk = $this->kartu_keluarga->find($id);
+        // if (session()->get('role') !== 'Supervisor') { ... throw access denied ... }
+        // Data yang akan diupdate
+        $data = [
+            'status_verifikasi_rt' => 'DISETUJUI',
+            'updated_at' => date('Y-m-d H:i:s'), // Opsional: catat waktu update
+        ];
+        unset($data['_method']);
+
+        // Lakukan update pada data kartu_keluarga berdasarkan NIK
+        $this->kartu_keluarga->update($id, [
+            'status_verifikasi_rt' => 'DISETUJUI',
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        return redirect()->to(base_url('kartu-keluarga'))->with('success', 'Verifikasi kartu_keluarga dengan Nomor KK '.$id.' berhasil diubah menjadi DISETUJUI.');
+    }
+
+    public function verifikasiRw($id)
+    {
+        $dataPenduduk = $this->kartu_keluarga->find($id);
+        // if (session()->get('role') !== 'Supervisor') { ... throw access denied ... }
+        // Data yang akan diupdate
+        $data = [
+            'status_verifikasi_rt' => 'DISETUJUI',
+            'updated_at' => date('Y-m-d H:i:s'), // Opsional: catat waktu update
+        ];
+        unset($data['_method']);
+
+        // Lakukan update pada data kartu_keluarga berdasarkan NIK
+        $this->kartu_keluarga->update($id, [
+            'status_verifikasi_rw' => 'DISETUJUI',
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        return redirect()->to(base_url('kartu-keluarga'))->with('success', 'Verifikasi kartu_keluarga dengan Nomor KK '.$id.' berhasil diubah menjadi DISETUJUI.');
+    }
 }

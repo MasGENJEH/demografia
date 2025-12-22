@@ -33,6 +33,8 @@ $routes->group('kartu-keluarga', static function ($routes) {
     $routes->get('ubah/(:any)', 'KartuKeluarga::edit/$1'); // View Edit
     $routes->put('(:any)', 'KartuKeluarga::update/$1'); // Edit/Update Data
     $routes->delete('(:segment)', 'KartuKeluarga::delete/$1'); // Delete Data
+    $routes->post('verifikasi-rt/(:any)', 'KartuKeluarga::verifikasiRt/$1');
+    $routes->post('verifikasi-rw/(:any)', 'KartuKeluarga::verifikasiRw/$1');
 });
 
 // --- PENGGUNA ROUTES (KK) ---

@@ -178,25 +178,6 @@
                                             <span class="badge badge-info"><?php echo $value->status_verifikasi_rt; ?></span>
                                     </td>
                                 <?php } ?>
-
-                                    <!-- <td>
-                                        <?php if ($userRole === 'admin') { ?>
-                                        <a href="<?php echo base_url('penduduk/ubah/'.$value->nik); ?>"
-                                            class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
-                                        <form class="d-inline" action="<?php echo base_url('penduduk/'.$value->nik); ?>"
-                                            method="post" onsubmit="return confirm('Anda yakin ingin menghapus data?')">
-                                            <?php echo csrf_field(); ?>
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
-                                        </form>
-                                        <?php } elseif ($userRole === 'rt') { ?>
-                                            <span class="badge badge-secondary">tampilan ketika RT</span>
-                                        <?php } else { ?>
-                                            <span class="badge badge-info"><?php echo $value->status_verifikasi_rt; ?></span>
-                                        <?php } ?>
-                                    </td> -->
-
-
                                 </tr>
                                 <?php } ?>
                             </table>
