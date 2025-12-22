@@ -57,6 +57,7 @@
                                     <th>RT</th>
                                     <th>RW</th>
                                     <th>Dusun</th>
+                                    <th>Status Penduduk</th>
                                     <th>Pendapatan</th>
                                     <th>Skala Rumah</th>
                                     <th>Action</th>
@@ -72,6 +73,11 @@ foreach ($kartu_keluarga as $key => $value) { ?>
                                     <td><?php echo $value->rt; ?></td>
                                     <td><?php echo $value->rw; ?></td>
                                     <td><?php echo $value->dusun; ?></td>
+                                    <td><?php if ($value->desa === 'BENGLE') { ?>
+                                            <span class="badge badge-primary">PENDUDUK ASLI</span>
+                                        <?php } else { ?>
+                                            <span class="badge badge-warning">PENDATANG</span>
+                                        <?php } ?></td>
                                     <td>Rp <?php echo number_format($value->pendapatan, 0, ',', '.'); ?></td>
                                     <td><?php echo $value->skala_rumah; ?></td>
                                     <td>

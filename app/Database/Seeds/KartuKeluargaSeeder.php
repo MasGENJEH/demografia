@@ -10,24 +10,30 @@ class KartuKeluargaSeeder extends Seeder
     {
         $faker = \Faker\Factory::create('id_ID');
         $dusun_values = [
-            'Krajan 2',
-            'Krajan 1',
-            'CKM 1',
-            'CKM 2',
-            'CKM 3',
+            'KRAJAN 1',
+            'KRAJAN 2',
+            'TAMELANG',
             'CKM 4',
             'CKM 5',
             'CKM 6',
+            'CKM 7',
+            'CKM 8',
+            'CKM 9',
+        ];
+        $desa_values = [
+            'BENGLE',
+            'LUAR BENGLE',
         ];
 
         for ($i = 1; $i < 500; ++$i) {
             $data = [
                 'nomor_kk' => $faker->randomNumber(7, true),
                 'alamat' => $faker->address(),
-                'rt' => $faker->numberBetween(1, 60),
-                'rw' => $faker->numberBetween(1, 20),
+                'rt' => $faker->numberBetween(1, 59),
+                'rw' => $faker->numberBetween(1, 14),
                 'dusun' => $faker->randomElement($dusun_values),
-                'pendapatan' => $faker->numberBetween(10000, 30000000),
+                'desa' => $faker->randomElement($desa_values),
+                'pendapatan' => $faker->numberBetween(10000000, 30000000),
                 'skala_rumah' => $faker->numberBetween(1, 5),
             ];
             $kartuKeluargaData[] = $data;
@@ -37,10 +43,11 @@ class KartuKeluargaSeeder extends Seeder
             $data = [
                 'nomor_kk' => $faker->randomNumber(7, true),
                 'alamat' => $faker->address(),
-                'rt' => $faker->numberBetween(1, 60),
-                'rw' => $faker->numberBetween(1, 20),
+                'rt' => $faker->numberBetween(1, 59),
+                'rw' => $faker->numberBetween(1, 14),
                 'dusun' => $faker->randomElement($dusun_values),
-                'pendapatan' => $faker->numberBetween(10000, 10000000),
+                'desa' => $faker->randomElement($desa_values),
+                'pendapatan' => $faker->numberBetween(10000, 9999999),
                 'skala_rumah' => $faker->numberBetween(1, 5),
             ];
             $kartuKeluargaData[] = $data;

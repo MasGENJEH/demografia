@@ -34,6 +34,14 @@ class CreateKartuKeluarga extends Migration
                 'constraint' => '50',
                 'null' => true,
             ],
+            'desa' => [
+                'type' => 'ENUM',
+                'constraint' => [
+                    'BENGLE',
+                    'LUAR BENGLE',
+                ],
+                'null' => true,
+            ],
             'pendapatan' => [
                 'type' => 'INT',
                 'constraint' => '50',
