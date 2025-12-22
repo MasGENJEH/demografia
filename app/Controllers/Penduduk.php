@@ -85,6 +85,7 @@ class Penduduk extends BaseController
 
     public function verifikasiRt($id)
     {
+        $dataPenduduk = $this->penduduk->find($id);
         // if (session()->get('role') !== 'Supervisor') { ... throw access denied ... }
         // Data yang akan diupdate
         $data = [
@@ -94,7 +95,30 @@ class Penduduk extends BaseController
         unset($data['_method']);
 
         // Lakukan update pada data penduduk berdasarkan NIK
-        $this->penduduk->update($id, $data);
+        $this->penduduk->update($id, [
+            'status_verifikasi_rt' => 'DISETUJUI',
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        return redirect()->to(base_url('penduduk'))->with('success', 'Verifikasi Penduduk dengan NIK '.$id.' berhasil diubah menjadi DISETUJUI.');
+    }
+
+    public function verifikasiRw($id)
+    {
+        $dataPenduduk = $this->penduduk->find($id);
+        // if (session()->get('role') !== 'Supervisor') { ... throw access denied ... }
+        // Data yang akan diupdate
+        $data = [
+            'status_verifikasi_rt' => 'DISETUJUI',
+            'updated_at' => date('Y-m-d H:i:s'), // Opsional: catat waktu update
+        ];
+        unset($data['_method']);
+
+        // Lakukan update pada data penduduk berdasarkan NIK
+        $this->penduduk->update($id, [
+            'status_verifikasi_rw' => 'DISETUJUI',
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
 
         return redirect()->to(base_url('penduduk'))->with('success', 'Verifikasi Penduduk dengan NIK '.$id.' berhasil diubah menjadi DISETUJUI.');
     }

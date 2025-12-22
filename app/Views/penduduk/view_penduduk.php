@@ -58,15 +58,13 @@
                                     <th>Pendidikan Terakhir</th>
                                     <th>Status Pernikahan</th>
                                     <th>Verifikasi RT</th>
+                                    <th>Verifikasi RW</th>
                                     <th>Action</th>
                                 </tr>
-                                <?php
-                                $userRole = session()->get('role');
-                                ?>
-                                <?php
-                                $page = isset($_GET['page']) ? $_GET['page'] : 1;
-                                $no = 1 + (10 * ($page - 1));
-                                foreach ($penduduk as $key => $value) { ?>
+                                <?php $userRole = session()->get('role'); ?>
+                                <?php $page = isset($_GET['page']) ? $_GET['page'] : 1; ?>
+                                <?php $no = 1 + (10 * ($page - 1)); ?>
+                                <?php foreach ($penduduk as $key => $value) { ?>
                                 <tr>
                                     <td><?php echo $no++; ?></td>
                                     <td><?php echo $value->nik; ?></td>
@@ -76,32 +74,96 @@
                                     <td><?php echo $value->pekerjaan; ?></td>
                                     <td><?php echo $value->pendidikan_terakhir; ?></td>
                                     <td><?php echo $value->status_perkawinan; ?></td>
+                                <?php if ($userRole === 'rt') { ?>
                                     <td>
-                                    <?php if ($userRole !== 'rt'): ?>
-                                        <?php if ($value->status_verifikasi_rt === 'DISETUJUI'): ?>
-                                            <span class="badge badge-success"><?php echo $value->status_verifikasi_rt; ?></span>
-                                        <?php elseif ($value->status_verifikasi_rt === 'TIDAK DISETUJUI'): ?>
-                                            <span class="badge badge-danger"><?php echo $value->status_verifikasi_rt; ?></span>
-                                        <?php elseif ($value->status_verifikasi_rt === 'BELUM DISETUJUI'): ?>
-                                            <span class="badge badge-warning"><?php echo $value->status_verifikasi_rt; ?></span>
-                                        <?php endif; ?>
+                                        <?php if ($userRole !== 'rt') { ?>
+                                            <?php if ($value->status_verifikasi_rt === 'DISETUJUI') { ?>
+                                                <span class="badge badge-success"><?php echo $value->status_verifikasi_rt; ?></span>
+                                            <?php } elseif ($value->status_verifikasi_rt === 'TIDAK DISETUJUI') { ?>
+                                                <span class="badge badge-danger"><?php echo $value->status_verifikasi_rt; ?></span>
+                                            <?php } elseif ($value->status_verifikasi_rt === 'BELUM DISETUJUI') { ?>
+                                                <span class="badge badge-warning"><?php echo $value->status_verifikasi_rt; ?></span>
+                                            <?php } ?>
 
-                                    <?php else: ?>
-                                        <?php if ($value->status_verifikasi_rt !== 'DISETUJUI'): ?>
-                                            <form action="<?= base_url('penduduk/verifikasi-rt/' . $value->nik) ?>" method="POST" style="display:inline;">
-                                                <?= csrf_field() ?>
-                                                <button type="submit" class="btn btn-warning btn-sm" onclick="return confirm('Apakah Anda yakin ingin menyetujui data ini?');">
-                                                    SETUJUI
-                                                </button>
-                                            </form>
-                                        <?php else: ?>
-                                            <span class="badge badge-success">DISETUJUI</span>
-                                        <?php endif; ?>
-                                    <?php endif; ?>
-
+                                            <?php } else { ?>
+                                                <?php if ($value->status_verifikasi_rt !== 'DISETUJUI') { ?>
+                                                    <form action="<?php echo base_url('penduduk/verifikasi-rt/'.$value->nik); ?>" method="POST" style="display:inline;">
+                                                        <?php echo csrf_field(); ?>
+                                                        <button type="submit" class="btn btn-warning btn-sm">
+                                                            SETUJUI
+                                                        </button>
+                                                    </form>
+                                                <?php } else { ?>
+                                                    <span class="badge badge-success">DISETUJUI</span>
+                                                <?php } ?>
+                                        <?php } ?>
+                                    </td>
+                                    <td><?php if ($value->status_verifikasi_rw === 'DISETUJUI') { ?>
+                                                <span class="badge badge-success"><?php echo $value->status_verifikasi_rw; ?></span>
+                                            <?php } elseif ($value->status_verifikasi_rw === 'TIDAK DISETUJUI') { ?>
+                                                <span class="badge badge-danger"><?php echo $value->status_verifikasi_rw; ?></span>
+                                            <?php } elseif ($value->status_verifikasi_rw === 'BELUM DISETUJUI') { ?>
+                                                <span class="badge badge-warning"><?php echo $value->status_verifikasi_rw; ?></span>
+                                            <?php } ?>
                                     </td>
                                     <td>
-                                        <?php if ($userRole === 'admin'): ?>
+                                        <span class="badge badge-info">Khusus Admin</span> 
+                                    </td>
+
+                                <?php } elseif ($userRole === 'rw') { ?>
+                                    <td><?php if ($value->status_verifikasi_rt === 'DISETUJUI') { ?>
+                                                <span class="badge badge-success"><?php echo $value->status_verifikasi_rt; ?></span>
+                                            <?php } elseif ($value->status_verifikasi_rt === 'TIDAK DISETUJUI') { ?>
+                                                <span class="badge badge-danger"><?php echo $value->status_verifikasi_rt; ?></span>
+                                            <?php } elseif ($value->status_verifikasi_rt === 'BELUM DISETUJUI') { ?>
+                                                <span class="badge badge-warning"><?php echo $value->status_verifikasi_rt; ?></span>
+                                            <?php } ?>
+                                    </td>
+                                    <td>
+                                        <?php if ($userRole !== 'rw') { ?>
+                                            <?php if ($value->status_verifikasi_rw === 'DISETUJUI') { ?>
+                                                <span class="badge badge-success"><?php echo $value->status_verifikasi_rw; ?></span>
+                                            <?php } elseif ($value->status_verifikasi_rw === 'TIDAK DISETUJUI') { ?>
+                                                <span class="badge badge-danger"><?php echo $value->status_verifikasi_rw; ?></span>
+                                            <?php } elseif ($value->status_verifikasi_rw === 'BELUM DISETUJUI') { ?>
+                                                <span class="badge badge-warning"><?php echo $value->status_verifikasi_rw; ?></span>
+                                            <?php } ?>
+
+                                            <?php } else { ?>
+                                                <?php if ($value->status_verifikasi_rw !== 'DISETUJUI') { ?>
+                                                    <form action="<?php echo base_url('penduduk/verifikasi-rw/'.$value->nik); ?>" method="POST" style="display:inline;">
+                                                        <?php echo csrf_field(); ?>
+                                                        <button type="submit" class="btn btn-warning btn-sm">
+                                                            SETUJUI
+                                                        </button>
+                                                    </form>
+                                                <?php } else { ?>
+                                                    <span class="badge badge-success">DISETUJUI</span>
+                                                <?php } ?>
+                                        <?php } ?>
+                                    </td>
+                                    
+                                    <td>
+                                        <span class="badge badge-info">Khusus Admin</span> 
+                                    </td>
+                                <?php } elseif ($userRole === 'admin') { ?>
+                                    <td><?php if ($value->status_verifikasi_rt === 'DISETUJUI') { ?>
+                                                <span class="badge badge-success"><?php echo $value->status_verifikasi_rt; ?></span>
+                                            <?php } elseif ($value->status_verifikasi_rt === 'TIDAK DISETUJUI') { ?>
+                                                <span class="badge badge-danger"><?php echo $value->status_verifikasi_rt; ?></span>
+                                            <?php } elseif ($value->status_verifikasi_rt === 'BELUM DISETUJUI') { ?>
+                                                <span class="badge badge-warning"><?php echo $value->status_verifikasi_rt; ?></span>
+                                            <?php } ?>
+                                    </td>
+                                    <td><?php if ($value->status_verifikasi_rw === 'DISETUJUI') { ?>
+                                                <span class="badge badge-success"><?php echo $value->status_verifikasi_rw; ?></span>
+                                            <?php } elseif ($value->status_verifikasi_rw === 'TIDAK DISETUJUI') { ?>
+                                                <span class="badge badge-danger"><?php echo $value->status_verifikasi_rw; ?></span>
+                                            <?php } elseif ($value->status_verifikasi_rw === 'BELUM DISETUJUI') { ?>
+                                                <span class="badge badge-warning"><?php echo $value->status_verifikasi_rw; ?></span>
+                                            <?php } ?>
+                                    </td>
+                                    <td>
                                         <a href="<?php echo base_url('penduduk/ubah/'.$value->nik); ?>"
                                             class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
                                         <form class="d-inline" action="<?php echo base_url('penduduk/'.$value->nik); ?>"
@@ -110,12 +172,29 @@
                                             <input type="hidden" name="_method" value="DELETE">
                                             <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
                                         </form>
-                                        <?php elseif ($userRole === 'rt'): ?>
+                                        <?php } elseif ($userRole === 'rt') { ?>
                                             <span class="badge badge-secondary">tampilan ketika RT</span>
-                                        <?php else: ?>
+                                        <?php } else { ?>
                                             <span class="badge badge-info"><?php echo $value->status_verifikasi_rt; ?></span>
-                                        <?php endif; ?>
                                     </td>
+                                <?php } ?>
+
+                                    <!-- <td>
+                                        <?php if ($userRole === 'admin') { ?>
+                                        <a href="<?php echo base_url('penduduk/ubah/'.$value->nik); ?>"
+                                            class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
+                                        <form class="d-inline" action="<?php echo base_url('penduduk/'.$value->nik); ?>"
+                                            method="post" onsubmit="return confirm('Anda yakin ingin menghapus data?')">
+                                            <?php echo csrf_field(); ?>
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                        </form>
+                                        <?php } elseif ($userRole === 'rt') { ?>
+                                            <span class="badge badge-secondary">tampilan ketika RT</span>
+                                        <?php } else { ?>
+                                            <span class="badge badge-info"><?php echo $value->status_verifikasi_rt; ?></span>
+                                        <?php } ?>
+                                    </td> -->
 
 
                                 </tr>
