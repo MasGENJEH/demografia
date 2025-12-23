@@ -83,6 +83,17 @@
                                         <input type="number" name="skala_rumah" class="form-control" required>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="desa_select">Status Kependudukan</label>
+                                        <select class="form-control" id="desa_select"
+                                            name="desa" required>
+                                            <option value="" selected disabled hidden>Pilih Status Kependududkan</option>
+                                            <option value="PENDATANG">Pendatang</option>
+                                            <option value="PENDUDUK ASLI">Penduduk Asli</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
 
                             <button type="submit" class="btn btn-primary mt-3">Simpan Data</button>

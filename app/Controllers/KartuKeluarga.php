@@ -73,6 +73,7 @@ class KartuKeluarga extends BaseController
             'rt' => $this->request->getVar('rt'),
             'rw' => $this->request->getVar('rw'),
             'dusun' => $this->request->getVar('dusun'),
+            'desa' => $this->request->getVar('desa'),
             'pendapatan' => $this->request->getVar('pendapatan'),
             'skala_rumah' => $this->request->getVar('skala_rumah'),
         ];
