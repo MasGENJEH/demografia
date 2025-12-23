@@ -89,8 +89,8 @@
                                         <select class="form-control" id="desa_select"
                                             name="desa" required>
                                             <option value="" selected disabled hidden>Pilih Status Kependududkan</option>
-                                            <option value="PENDATANG">Pendatang</option>
-                                            <option value="PENDUDUK ASLI">Penduduk Asli</option>
+                                            <option value="BENGLE">Bengle</option>
+                                            <option value="LUAR BENGLE">Luar Bengle</option>
                                         </select>
                                     </div>
                                 </div>
