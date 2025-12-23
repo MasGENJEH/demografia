@@ -147,7 +147,7 @@
     
 
     <div class="row">
-        <div class="col-lg-6 col-md-6 col-6">
+        <div class="col-lg-4 col-md-4 col-4">
             <div class="card">
                  <div class="card-header">
                     <h4>Jumlah RT tiap RW</h4>
@@ -176,7 +176,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-6 col-md-6 col-6">
+        <div class="col-lg-4 col-md-4 col-4">
                 <div class="card">
                     <div class="card-header">
                         <h4>Jumlah KK tiap RT</h4>
@@ -207,20 +207,7 @@
                     </div>
             </div>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-9 col-md-9 col-9">
-            <div class="card">
-                <div class="card-header">
-                    <h4>Kondisi Ekonomi Berdasarkan Kondisi Rumah</h4>
-                </div>
-                <div class="card-body">
-                    <canvas id="myChart5" height="100"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-3 col-3">
+        <div class="col-lg-4 col-md-4 col-4">
             <div class="card" >
                 <div class="card-header">
                     <h4>RT dengan Jumlah Keluarga Terbanyak</h4>
@@ -247,7 +234,6 @@
                 </div>
             </div>
         </div>
-        
     </div>
 </section>
 
