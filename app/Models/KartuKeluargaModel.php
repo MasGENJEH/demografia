@@ -27,4 +27,18 @@ class KartuKeluargaModel extends Model
                     ->orderBy('total_kk', 'DESC')
                     ->findAll(); // Mengambil semua hasil ranking RT
     }
+
+    public function search($keyword)
+    {
+        return $this->table('kartu_keluarga')
+                    ->like('nomor_kk', $keyword)
+                    ->orLike('rt', $keyword)
+                    ->orLike('rw', $keyword)
+                    ->orLike('dusun', $keyword)
+                    ->orLike('status_verifikasi_rt', $keyword)
+                    ->orLike('status_verifikasi_rw', $keyword)
+                    ->orLike('skala_rumah', $keyword)
+                    ->orLike('pendapatan', $keyword)
+                    ->findAll();
+    }
 }

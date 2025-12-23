@@ -6,8 +6,28 @@ class KartuKeluarga extends BaseController
 {
     public function index()
     {
-        $data['kartu_keluarga'] = $this->kartu_keluarga->orderBy('created_at', 'DESC')->paginate(10);
-        $data['pager'] = $this->kartu_keluarga->pager;
+        // 1. Ambil keyword dari URL (input name="keyword")
+        $keyword = $this->request->getGet('keyword');
+
+        if (!empty($keyword)) {
+            // 2. Jika ada keyword, lakukan pencarian pada kolom nik atau nama_lengkap
+            // Gunakan groupStart/groupEnd agar operator OR tidak merusak ORDER BY
+            $this->kartu_keluarga->groupStart()
+                                    ->like('nomor_kk', $keyword)
+                                    ->orLike('dusun', $keyword)
+                                    ->orLike('status_verifikasi_rt', $keyword)
+                                    ->orLike('status_verifikasi_rw', $keyword)
+                                    ->orLike('skala_rumah', $keyword)
+                                    ->orLike('desa', $keyword)
+                                    ->orLike('pendapatan', $keyword)
+                                    ->groupEnd();
+        }
+
+        $data = [
+            'kartu_keluarga' => $this->kartu_keluarga->orderBy('created_at', 'DESC')->paginate(10),
+            'pager' => $this->kartu_keluarga->pager,
+            'keyword' => $keyword,
+        ];
 
         return view('kartu_keluarga/view_kk', $data);
     }

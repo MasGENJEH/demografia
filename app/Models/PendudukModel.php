@@ -21,6 +21,15 @@ class PendudukModel extends Model
         'pendidikan_terakhir',
         'pekerjaan',
         'status_perkawinan'];
+
+    public function search($keyword)
+    {
+        return $this->table('penduduk')
+                    ->like('nik', $keyword)
+                    ->orLike('nama_lengkap', $keyword)
+                    ->orLike('alamat', $keyword)
+                    ->findAll();
+    }
     // protected $useAutoIncrement = true;
     // protected $protectFields = true;
     // protected $useSoftDeletes = false;

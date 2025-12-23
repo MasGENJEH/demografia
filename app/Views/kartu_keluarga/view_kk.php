@@ -9,8 +9,8 @@
 <?php echo $this->section('kartu_keluarga'); ?>
 <section class="section">
     <div class="section-header">
-
         <h1>Data Kartu Keluarga</h1>
+        
         <div class="section-header-button">
             <a href="<?php echo base_url('kartu-keluarga/tambah'); ?>" class="btn btn-primary">Tambah Kartu Keluarga</a>
         </div>
@@ -46,6 +46,19 @@
                 <div class="card">
                     <div class="card-header">
                         <h4>Tabel Kartu Keluarga</h4>
+                        <div class="card-header-form">
+                            <form action="<?php echo base_url('kartu-keluarga'); ?>" method="GET">
+                                <div class="input-group">
+                                    <input type="text" name="keyword" class="form-control" placeholder="Cari ..." value="<?php echo isset($_GET['keyword']) ? esc($_GET['keyword']) : ''; ?>">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                        <?php if (isset($_GET['keyword'])) { ?>
+                                            <a href="<?php echo base_url('kartu-keluarga'); ?>" class="btn btn-secondary"><i class="fas fa-times"></i></a>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
@@ -75,130 +88,72 @@
                                     <td><?php echo $value->rt; ?></td>
                                     <td><?php echo $value->rw; ?></td>
                                     <td><?php echo $value->dusun; ?></td>
-                                    <td><?php if ($value->desa === 'BENGLE') { ?>
+                                    <td>
+                                        <?php if ($value->desa === 'BENGLE') { ?>
                                             <span class="badge badge-primary">PENDUDUK ASLI</span>
                                         <?php } else { ?>
                                             <span class="badge badge-warning">PENDATANG</span>
-                                        <?php } ?></td>
+                                        <?php } ?>
+                                    </td>
                                     <td>Rp <?php echo number_format($value->pendapatan, 0, ',', '.'); ?></td>
-                                    <td><?php echo $value->skala_rumah; ?></td>
-                                <?php if ($userRole === 'rt') { ?>
-                                    <td>
-                                        <?php if ($userRole !== 'rt') { ?>
-                                            <?php if ($value->status_verifikasi_rt === 'DISETUJUI') { ?>
-                                                <span class="badge badge-success"><?php echo $value->status_verifikasi_rt; ?></span>
-                                            <?php } elseif ($value->status_verifikasi_rt === 'TIDAK DISETUJUI') { ?>
-                                                <span class="badge badge-danger"><?php echo $value->status_verifikasi_rt; ?></span>
-                                            <?php } elseif ($value->status_verifikasi_rt === 'BELUM DISETUJUI') { ?>
-                                                <span class="badge badge-warning"><?php echo $value->status_verifikasi_rt; ?></span>
-                                            <?php } ?>
+                                    <td><?php echo $value->skala_rumah; ?>/5</td>
 
-                                            <?php } else { ?>
-                                                <?php if ($value->status_verifikasi_rt !== 'DISETUJUI') { ?>
-                                                    <form action="<?php echo base_url('kartu-keluarga/verifikasi-rt/'.$value->nomor_kk); ?>" method="POST" style="display:inline;">
-                                                        <?php echo csrf_field(); ?>
-                                                        <button type="submit" class="btn btn-warning btn-sm">
-                                                            SETUJUI
-                                                        </button>
-                                                    </form>
-                                                <?php } else { ?>
-                                                    <span class="badge badge-success">DISETUJUI</span>
-                                                <?php } ?>
-                                        <?php } ?>
-                                    </td>
-                                    <td><?php if ($value->status_verifikasi_rw === 'DISETUJUI') { ?>
-                                                <span class="badge badge-success"><?php echo $value->status_verifikasi_rw; ?></span>
-                                            <?php } elseif ($value->status_verifikasi_rw === 'TIDAK DISETUJUI') { ?>
-                                                <span class="badge badge-danger"><?php echo $value->status_verifikasi_rw; ?></span>
-                                            <?php } elseif ($value->status_verifikasi_rw === 'BELUM DISETUJUI') { ?>
-                                                <span class="badge badge-warning"><?php echo $value->status_verifikasi_rw; ?></span>
-                                            <?php } ?>
-                                    </td>
                                     <td>
-                                        <span class="badge badge-info">Khusus Admin</span> 
-                                    </td>
-
-                                <?php } elseif ($userRole === 'rw') { ?>
-                                    <td><?php if ($value->status_verifikasi_rt === 'DISETUJUI') { ?>
-                                                <span class="badge badge-success"><?php echo $value->status_verifikasi_rt; ?></span>
-                                            <?php } elseif ($value->status_verifikasi_rt === 'TIDAK DISETUJUI') { ?>
-                                                <span class="badge badge-danger"><?php echo $value->status_verifikasi_rt; ?></span>
-                                            <?php } elseif ($value->status_verifikasi_rt === 'BELUM DISETUJUI') { ?>
-                                                <span class="badge badge-warning"><?php echo $value->status_verifikasi_rt; ?></span>
-                                            <?php } ?>
-                                    </td>
-                                    <td>
-                                        <?php if ($userRole !== 'rw') { ?>
-                                            <?php if ($value->status_verifikasi_rw === 'DISETUJUI') { ?>
-                                                <span class="badge badge-success"><?php echo $value->status_verifikasi_rw; ?></span>
-                                            <?php } elseif ($value->status_verifikasi_rw === 'TIDAK DISETUJUI') { ?>
-                                                <span class="badge badge-danger"><?php echo $value->status_verifikasi_rw; ?></span>
-                                            <?php } elseif ($value->status_verifikasi_rw === 'BELUM DISETUJUI') { ?>
-                                                <span class="badge badge-warning"><?php echo $value->status_verifikasi_rw; ?></span>
-                                            <?php } ?>
-
-                                            <?php } else { ?>
-                                                <?php if ($value->status_verifikasi_rw !== 'DISETUJUI') { ?>
-                                                    <form action="<?php echo base_url('kartu-keluarga/verifikasi-rw/'.$value->nomor_kk); ?>" method="POST" style="display:inline;">
-                                                        <?php echo csrf_field(); ?>
-                                                        <button type="submit" class="btn btn-warning btn-sm">
-                                                            SETUJUI
-                                                        </button>
-                                                    </form>
-                                                <?php } else { ?>
-                                                    <span class="badge badge-success">DISETUJUI</span>
-                                                <?php } ?>
-                                        <?php } ?>
-                                    </td>
-                                    
-                                    <td>
-                                        <span class="badge badge-info">Khusus Admin</span> 
-                                    </td>
-                                <?php } elseif ($userRole === 'admin') { ?>
-                                    <td><?php if ($value->status_verifikasi_rt === 'DISETUJUI') { ?>
-                                                <span class="badge badge-success"><?php echo $value->status_verifikasi_rt; ?></span>
-                                            <?php } elseif ($value->status_verifikasi_rt === 'TIDAK DISETUJUI') { ?>
-                                                <span class="badge badge-danger"><?php echo $value->status_verifikasi_rt; ?></span>
-                                            <?php } elseif ($value->status_verifikasi_rt === 'BELUM DISETUJUI') { ?>
-                                                <span class="badge badge-warning"><?php echo $value->status_verifikasi_rt; ?></span>
-                                            <?php } ?>
-                                    </td>
-                                    <td><?php if ($value->status_verifikasi_rw === 'DISETUJUI') { ?>
-                                                <span class="badge badge-success"><?php echo $value->status_verifikasi_rw; ?></span>
-                                            <?php } elseif ($value->status_verifikasi_rw === 'TIDAK DISETUJUI') { ?>
-                                                <span class="badge badge-danger"><?php echo $value->status_verifikasi_rw; ?></span>
-                                            <?php } elseif ($value->status_verifikasi_rw === 'BELUM DISETUJUI') { ?>
-                                                <span class="badge badge-warning"><?php echo $value->status_verifikasi_rw; ?></span>
-                                            <?php } ?>
-                                    </td>
-                                    <td>
-                                        <a href="<?php echo base_url('kartu-keluarga/ubah/'.$value->nomor_kk); ?>"
-                                            class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
-                                        <form class="d-inline" action="<?php echo base_url('kartu-keluarga/'.$value->nomor_kk); ?>"
-                                            method="post" onsubmit="return confirm('Anda yakin ingin menghapus data?')">
-                                            <?php echo csrf_field(); ?>
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
-                                        </form>
-                                        <?php } elseif ($userRole === 'rt') { ?>
-                                            <span class="badge badge-secondary">tampilan ketika RT</span>
+                                        <?php if ($userRole === 'rt' && $value->status_verifikasi_rt === 'BELUM DISETUJUI') { ?>
+                                            <form action="<?php echo base_url('kartu-keluarga/verifikasi-rt/'.$value->nomor_kk); ?>" method="POST">
+                                                <?php echo csrf_field(); ?>
+                                                <button type="submit" class="btn btn-warning btn-sm">SETUJUI</button>
+                                            </form>
                                         <?php } else { ?>
-                                            <span class="badge badge-info"><?php echo $value->status_verifikasi_rt; ?></span>
+                                            <?php
+                                                $class_rt = 'badge-warning';
+                                            if ($value->status_verifikasi_rt === 'DISETUJUI') {
+                                                $class_rt = 'badge-success';
+                                            }
+                                            if ($value->status_verifikasi_rt === 'TIDAK DISETUJUI') {
+                                                $class_rt = 'badge-danger';
+                                            }
+                                            ?>
+                                            <span class="badge <?php echo $class_rt; ?>"><?php echo $value->status_verifikasi_rt; ?></span>
+                                        <?php } ?>
                                     </td>
-                                <?php } ?>
-                                    <!-- <td>
-                                        <a href="<?php echo base_url('kartu-keluarga/ubah/'.$value->nomor_kk); ?>"
-                                            class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
-                                        <form class="d-inline"
-                                            action="<?php echo base_url('kartu-keluarga/'.$value->nomor_kk); ?>"
-                                            method="post" onsubmit="return confirm('Anda yakin ingin menghapus data?')">
-                                            <?php echo csrf_field(); ?>
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
-                                        </form>
-                                    </td> -->
+
+                                    <td>
+                                        <?php if ($userRole === 'rw' && $value->status_verifikasi_rt === 'DISETUJUI' && $value->status_verifikasi_rw === 'BELUM DISETUJUI') { ?>
+                                            <form action="<?php echo base_url('kartu-keluarga/verifikasi-rw/'.$value->nomor_kk); ?>" method="POST">
+                                                <?php echo csrf_field(); ?>
+                                                <button type="submit" class="btn btn-warning btn-sm">SETUJUI</button>
+                                            </form>
+                                        <?php } else { ?>
+                                            <?php
+                                                $class_rw = 'badge-warning';
+                                            if ($value->status_verifikasi_rw === 'DISETUJUI') {
+                                                $class_rw = 'badge-success';
+                                            }
+                                            if ($value->status_verifikasi_rw === 'TIDAK DISETUJUI') {
+                                                $class_rw = 'badge-danger';
+                                            }
+                                            ?>
+                                            <span class="badge <?php echo $class_rw; ?>"><?php echo $value->status_verifikasi_rw; ?></span>
+                                        <?php } ?>
+                                    </td>
+
+                                    <td>
+                                        <?php if ($userRole === 'admin') { ?>
+                                            <a href="<?php echo base_url('kartu-keluarga/ubah/'.$value->nomor_kk); ?>" class="btn btn-warning btn-sm">
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </a>
+                                            <form class="d-inline" action="<?php echo base_url('kartu-keluarga/'.$value->nomor_kk); ?>" method="post" onsubmit="return confirm('Anda yakin ingin menghapus data?')">
+                                                <?php echo csrf_field(); ?>
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                            </form>
+                                        <?php } else { ?>
+                                            <span class="text-muted small">No Access</span>
+                                        <?php } ?>
+                                    </td>
                                 </tr>
-                                <?php } ?>
+                            <?php } ?>
                             </table>
                         </div>
                     </div>

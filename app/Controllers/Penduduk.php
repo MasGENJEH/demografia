@@ -14,8 +14,29 @@ class Penduduk extends BaseController
     // READ (Tampilkan Daftar Data)
     public function index()
     {
-        $data['penduduk'] = $this->penduduk->orderBy('created_at', 'DESC')->paginate(10);
-        $data['pager'] = $this->penduduk->pager;
+        // 1. Ambil keyword dari URL (input name="keyword")
+        $keyword = $this->request->getGet('keyword');
+
+        if (!empty($keyword)) {
+            // 2. Jika ada keyword, lakukan pencarian pada kolom nik atau nama_lengkap
+            // Gunakan groupStart/groupEnd agar operator OR tidak merusak ORDER BY
+            $this->penduduk->groupStart()
+                           ->like('nik', $keyword)
+                           ->orLike('nama_lengkap', $keyword)
+                           ->orLike('nomor_kk', $keyword)
+                           ->orLike('status_keluarga', $keyword)
+                           ->orLike('pendidikan_terakhir', $keyword)
+                           ->orLike('pekerjaan', $keyword)
+                           ->orLike('status_perkawinan', $keyword)
+                           ->groupEnd();
+        }
+
+        // 3. Ambil data dengan pagination (Tetap gunakan paginate agar pager bekerja)
+        $data = [
+            'penduduk' => $this->penduduk->orderBy('created_at', 'DESC')->paginate(10, 'default'),
+            'pager' => $this->penduduk->pager,
+            'keyword' => $keyword, // Kirim keyword ke view untuk menampilkan kembali di input
+        ];
 
         return view('penduduk/view_penduduk', $data);
     }
