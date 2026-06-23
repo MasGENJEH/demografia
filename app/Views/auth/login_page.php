@@ -35,7 +35,7 @@
                             <?php echo csrf_field(); ?>
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input id="email" type="email" class="form-control" name="email" tabindex="1" required
+                                <input id="email" type="email" class="form-control" name="email" tabindex="1" value="<?php echo old('email'); ?>" required
                                     autofocus>
                                 <div class="invalid-feedback">
                                     Please fill in your email

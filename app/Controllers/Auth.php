@@ -22,6 +22,25 @@ class Auth extends BaseController
             return redirect()->to(base_url('home'));
         }
 
+        helper('cookie');
+        $cookie = get_cookie('remember_me');
+        if ($cookie) {
+            $parts = explode('|', $cookie);
+            if (count($parts) === 2) {
+                $user = $this->auth->find($parts[0]);
+                if ($user && hash('sha256', $user->password . 'demografia') === $parts[1]) {
+                    $params = [
+                        'id' => $user->id,
+                        'username' => $user->username,
+                        'email' => $user->email,
+                        'role' => $user->role,
+                    ];
+                    session()->set($params);
+                    return redirect()->to(base_url('home'));
+                }
+            }
+        }
+
         return view('auth/login_page');
     }
 
@@ -42,18 +61,28 @@ class Auth extends BaseController
                 ];
                 session()->set($params);
 
+                if ($this->request->getPost('remember')) {
+                    helper('cookie');
+                    $token = $user->id . '|' . hash('sha256', $user->password . 'demografia');
+                    set_cookie('remember_me', $token, 3600 * 24 * 30);
+                }
+
                 return redirect()->to(base_url('home'));
             } else {
-                return redirect()->back()->with('error', 'Password salah');
+                return redirect()->back()->withInput()->with('error', 'Password salah');
             }
         } else {
-            return redirect()->back()->with('error', 'Email tidak ditemukan');
+            return redirect()->back()->withInput()->with('error', 'Email tidak ditemukan');
         }
     }
 
     public function logout()
     {
         session()->remove('id');
+        session()->destroy();
+
+        helper('cookie');
+        delete_cookie('remember_me');
 
         return redirect()->to(base_url('auth/login'));
     }
