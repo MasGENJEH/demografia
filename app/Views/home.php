@@ -238,10 +238,12 @@
 </section>
 
 <script>
- 
+    // Global Chart Configuration for UI/UX (Font 'Nunito')
+    Chart.defaults.global.defaultFontFamily = "'Nunito', 'Segoe UI', 'Helvetica Neue', 'Arial', sans-serif";
+    Chart.defaults.global.defaultFontColor = '#6c757d';
+    Chart.defaults.global.defaultFontSize = 12;
+
     const incomeData = <?php echo esc($data_income_json); ?>;
-    //const incomeLabels = <?php // echo esc($labels_income_json);?>//;
-    // console.log(incomeLabels);
     var ctx = document.getElementById("myChart2").getContext("2d");
     var myChart = new Chart(ctx, {
         type: "bar",
@@ -258,15 +260,35 @@
             datasets: [{
                 label: "Jumlah Kartu Keluarga",
                 data: incomeData,
-                borderWidth: 2,
-                backgroundColor: "#6777ef",
+                backgroundColor: "rgba(103, 119, 239, 0.8)",
                 borderColor: "#6777ef",
-                borderWidth: 2.5,
-                pointBackgroundColor: "#ffffff",
-                pointRadius: 4,
-            }, ],
+                borderWidth: 1,
+                hoverBackgroundColor: "#6777ef",
+                barPercentage: 0.6,
+                categoryPercentage: 0.8
+            }],
         },
         options: {
+            layout: {
+                padding: {
+                    top: 20 // Beri ruang agar label di atas bar tidak terpotong
+                }
+            },
+            plugins: {
+                datalabels: {
+                    color: '#000000',
+                    anchor: 'end',
+                    align: 'end',
+                    font: {
+                        weight: 'bold',
+                        size: 12
+                    },
+                    formatter: (value) => {
+                        if (value === 0) return "";
+                        return value;
+                    }
+                }
+            },
             legend: {
                 display: false,
             },
@@ -314,15 +336,38 @@
             datasets: [{
                 label: "Jumlah Kartu Keluarga",
                 data: scaleData,
-                borderWidth: 2,
-                backgroundColor: "#6777ef",
-                borderColor: "#7967ef",
-                borderWidth: 2.5,
+                backgroundColor: "rgba(103, 119, 239, 0.15)",
+                borderColor: "#6777ef",
+                borderWidth: 3,
                 pointBackgroundColor: "#ffffff",
+                pointBorderColor: "#6777ef",
                 pointRadius: 4,
-            }, ],
+                pointHoverRadius: 6,
+                fill: true
+            }],
         },
         options: {
+            layout: {
+                padding: {
+                    top: 20,
+                    right: 20
+                }
+            },
+            plugins: {
+                datalabels: {
+                    color: '#000000',
+                    anchor: 'end',
+                    align: 'end',
+                    font: {
+                        weight: 'bold',
+                        size: 12
+                    },
+                    formatter: (value) => {
+                        if (value === 0) return "";
+                        return value;
+                    }
+                }
+            },
             legend: {
                 display: false,
             },
@@ -350,140 +395,81 @@
     });
 </script>
 
-<script>
 
-    // Ambil data JSON untuk Chart Skala Rumah
-    // const scaleData = <?php echo esc($data_scale_json); ?>;
-
-    var ctx = document.getElementById("myChart9").getContext("2d");
-    var myChart = new Chart(ctx, {
-        type: "line",
-        data: {
-            labels: [
-                "Sangat Sederhana (<20m²)",
-                "Sederhana (20m²-40m²)",
-                "Menengah (41m²-80m²)",
-                "Mewah (81m²-120m²)",
-                "Sangat Mewah (>120m²)",
-            ],
-            datasets: [{
-                label: "Jumlah Kartu Keluarga",
-                data: scaleData,
-                borderWidth: 2,
-                backgroundColor: "#6777ef",
-                borderColor: "#7967ef",
-                borderWidth: 2.5,
-                pointBackgroundColor: "#ffffff",
-                pointRadius: 4,
-            }, ],
-        },
-        options: {
-            legend: {
-                display: false,
-            },
-            scales: {
-                yAxes: [{
-                    gridLines: {
-                        drawBorder: false,
-                        color: "#f2f2f2",
-                    },
-                    ticks: {
-                        beginAtZero: true,
-                        stepSize: Math.ceil(Math.max(...incomeData) / 5) || 1,
-                    },
-                }, ],
-                xAxes: [{
-                    ticks: {
-                        display: true,
-                    },
-                    gridLines: {
-                        display: false,
-                    },
-                }, ],
-            },
-        },
-    });
-</script>
 
 <script>
-    
     const genderData = <?php echo esc($data_gender_json); ?>;
 
     var ctx = document.getElementById("myChart4").getContext('2d');
-    var myChart = new Chart(ctx, {
-    type: 'pie',
-    data: {
-        datasets: [{
-        data: genderData,
-        backgroundColor: [
-            '#3381ff',
-            '#ff33fc',
-        ],
-        label: 'Jenis Kelamin'
-        }],
-        labels: [
-        'Laki-Laki',
-        'Perempuan',
-        ],
-    },
-    // plugins: [ChartDataLabels],
-    options: {
-        responsive: true,
-        legend: {
-        position: 'bottom',
+    var myChart4 = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            datasets: [{
+                data: genderData,
+                backgroundColor: [
+                    '#6777ef', // Primary blue
+                    '#fc544b', // Danger red/pink
+                ],
+                borderWidth: 0,
+                label: 'Jenis Kelamin'
+            }],
+            labels: [
+                'Laki-Laki',
+                'Perempuan',
+            ],
         },
-        plugins: {
-                title: {
-                    display: true,
-                    text: 'Custom Chart Title'
-                },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+                position: 'bottom',
+                labels: {
+                    padding: 20,
+                    boxWidth: 12
+                }
+            },
+            plugins: {
                 datalabels: {
-                    color: '#fff', // Warna teks (putih agar kontras)
+                    color: '#ffffff',
                     font: {
                         weight: 'bold',
-                        size: 14 // Ukuran font
+                        size: 13
                     },
                     formatter: (value, ctx) => {
-                        // Menghitung total data
                         let sum = 0;
                         let dataArr = ctx.chart.data.datasets[0].data;
-                        dataArr.map(data => {
-                            sum += data;
-                        });
-                        
-                        // Menghitung persentase
-                        let percentage = (value * 100 / sum).toFixed(1) + "%";
-                        return percentage;
+                        dataArr.map(data => { sum += data; });
+                        if (sum === 0) return "0%";
+                        return (value * 100 / sum).toFixed(1) + "%";
                     }
                 }
             }
         },
     });
-
 </script>
 
 <script>
-    
     const penghasilanKK = <?php echo esc($data_income_json); ?>;
 
     var ctx = document.getElementById("PieChartPenghasilan").getContext('2d');
-    var myChart = new Chart(ctx, {
-    type: 'pie',
-    data: {
-        datasets: [{
-        data: penghasilanKK,
-        backgroundColor: [
-            '#ff7878ff',
-            '#fff67eff',
-            '#84fd74ff',
-            '#7de7faff',
-            '#5d7afcff',
-            '#be72fdff',
-            '#ff8efdff',
-        ],
-        label: 'Jenis Kelamin'
-        }],
-        labels: [
+    var PieChartPenghasilan = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            datasets: [{
+                data: penghasilanKK,
+                backgroundColor: [
+                    '#6777ef', // Primary
+                    '#3abaf4', // Info
+                    '#63ed7a', // Success
+                    '#ffa426', // Warning
+                    '#fc544b', // Danger
+                    '#8a65c2', // Purple
+                    '#34395e', // Dark
+                ],
+                borderWidth: 0,
+                label: 'Penghasilan'
+            }],
+            labels: [
                 "<500 ribu",
                 "500 ribu - 1 juta",
                 "1 - 3 juta",
@@ -491,42 +477,42 @@
                 "5 - 10 juta",
                 "10 - 20 juta",
                 "> 20 juta",
-        ],
-    },
-    // plugins: [ChartDataLabels],
-    options: {
-        responsive: true,
-        legend: {
-        position: 'left',
+            ],
         },
-        plugins: {
-                title: {
-                    display: true,
-                    text: 'Custom Chart Title'
-                },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+                padding: 30 // Beri ruang agar label di luar tidak terpotong
+            },
+            legend: {
+                position: 'right',
+                labels: {
+                    padding: 15,
+                    boxWidth: 12
+                }
+            },
+            plugins: {
                 datalabels: {
-                    color: '#000000ff', // Warna teks (putih agar kontras)
+                    color: '#000000',
+                    anchor: 'end',
+                    align: 'end',
+                    offset: 5,
                     font: {
                         weight: 'bold',
-                        size: 14 // Ukuran font
+                        size: 12
                     },
                     formatter: (value, ctx) => {
-                        // Menghitung total data
                         let sum = 0;
                         let dataArr = ctx.chart.data.datasets[0].data;
-                        dataArr.map(data => {
-                            sum += data;
-                        });
-                        
-                        // Menghitung persentase
-                        let percentage = (value * 100 / sum).toFixed(1) + "%";
-                        return percentage;
+                        dataArr.map(data => { sum += data; });
+                        if (value === 0) return "";
+                        return (value * 100 / sum).toFixed(1) + "%";
                     }
                 }
             }
         },
     });
-
 </script>
 
 <?php echo $this->endSection(); ?>
