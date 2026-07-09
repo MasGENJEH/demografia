@@ -79,39 +79,49 @@ def heuristic_label(row):
         score -= 1
 
     # 4. Penentuan Label Threshold
-    # Contoh Mampu: PNS (+8) + S1 (+5) + 2 tanggungan (+1) = 14
-    # Contoh Menengah: Wiraswasta (+4) + SMA (+3) + 2 tanggungan (+1) = 8
-    # Contoh Tidak Mampu: Buruh (-3) + SD (-1) + 4 tanggungan (-1) = -5
+    # Contoh Mapan: PNS (+8) + S1 (+5) + 2 tanggungan (+1) = 14
+    # Contoh Berkembang: Wiraswasta (+4) + SMA (+3) + 2 tanggungan (+1) = 8
+    # Contoh Rentan: Buruh (-3) + SD (-1) + 4 tanggungan (-1) = -5
     if score >= 10:
-        return 'Mampu'
+        return 'Mapan'
     elif score < -1:
-        return 'Tidak Mampu'
+        return 'Rentan'
     else:
-        return 'Menengah'
+        return 'Berkembang'
 
-def build_training_data(df):
+def build_training_data():
     """
-    Siapkan data training: encode fitur kategorikal dan generate label heuristik.
-    Tambahkan dummy data agar semua kelas selalu tersedia.
+    Siapkan data training dengan memuat dataset_penduduk.csv.
     """
-    dummy_data = [
-        {'id': 'dummy1', 'tanggungan': 1, 'pekerjaan': 'PNS',       'pendidikan': 'Strata I',  'target_label': 'Mampu'},
-        {'id': 'dummy2', 'tanggungan': 6, 'pekerjaan': 'Buruh',     'pendidikan': 'SD',        'target_label': 'Tidak Mampu'},
-        {'id': 'dummy3', 'tanggungan': 3, 'pekerjaan': 'Wiraswasta','pendidikan': 'SMA',       'target_label': 'Menengah'},
-    ]
-    df_train = pd.concat([df, pd.DataFrame(dummy_data)], ignore_index=True)
-
-    # Label target dari heuristik (untuk baris yang belum punya kolom target_label)
-    df_train['target_label'] = df_train.apply(
-        lambda row: row['target_label'] if pd.notna(row.get('target_label')) else heuristic_label(row),
-        axis=1
-    )
+    import os
+    csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dataset_penduduk.csv')
+    
+    if not os.path.exists(csv_path):
+        # Fallback jika CSV tidak ada, gunakan dummy
+        print(json.dumps({"error": f"File dataset training tidak ditemukan di: {csv_path}"}))
+        sys.exit(1)
+        
+    df_train = pd.read_csv(csv_path)
+    
+    # Deteksi nama kolom pendidikan dan label
+    col_pend = 'pendidikan_terakhir' if 'pendidikan_terakhir' in df_train.columns else 'pendidikan'
+    col_label = 'status_ekonomi' if 'status_ekonomi' in df_train.columns else 'target_label'
+    
+    # Pastikan kolom-kolom string terisi
+    df_train['pekerjaan'] = df_train.get('pekerjaan', pd.Series(['Unknown']*len(df_train))).fillna('Unknown')
+    df_train[col_pend] = df_train.get(col_pend, pd.Series(['Unknown']*len(df_train))).fillna('Unknown')
+    df_train['tanggungan'] = df_train.get('tanggungan', pd.Series([0]*len(df_train))).fillna(0)
+    
+    if col_label not in df_train.columns:
+        df_train['target_label'] = df_train.apply(heuristic_label, axis=1)
+    else:
+        df_train['target_label'] = df_train[col_label]
 
     le_pekerjaan = LabelEncoder()
     le_pendidikan = LabelEncoder()
 
     df_train['pekerjaan_enc'] = le_pekerjaan.fit_transform(df_train['pekerjaan'].astype(str))
-    df_train['pendidikan_enc'] = le_pendidikan.fit_transform(df_train['pendidikan'].astype(str))
+    df_train['pendidikan_enc'] = le_pendidikan.fit_transform(df_train[col_pend].astype(str))
 
     X_train = df_train[['tanggungan', 'pekerjaan_enc', 'pendidikan_enc']].astype(float)
     y_train = df_train['target_label']
@@ -144,14 +154,16 @@ def encode_input_row(row, le_pekerjaan, le_pendidikan):
     return [float(tang_val), float(pek_enc), float(pend_enc)]
 
 
-def compute_cv_accuracy(model, X, y):
+def compute_cv_metrics(model, X, y):
     """
-    Hitung akurasi dengan Stratified K-Fold Cross-Validation.
-    n_splits dikap ke min(5, min_jumlah_per_kelas) agar StratifiedKFold tidak error.
+    Hitung akurasi, precision, recall, dan f1 dengan Stratified K-Fold Cross-Validation.
     Jika data terlalu sedikit, fallback ke training accuracy.
-    Kembalikan nilai float antara 0.0-100.0 (persen).
+    Kembalikan dict dengan nilai float antara 0.0-100.0 (persen).
     """
     import numpy as np_inner
+    from sklearn.metrics import precision_score, recall_score, f1_score
+    from sklearn.model_selection import cross_validate
+    
     # Hitung jumlah sampel minimum per kelas
     unique, counts = np_inner.unique(y.values, return_counts=True)
     min_class_count = int(counts.min()) if len(counts) > 0 else 0
@@ -164,27 +176,42 @@ def compute_cv_accuracy(model, X, y):
         model.fit(X.values, y.values)
         preds = model.predict(X.values)
         acc   = accuracy_score(y.values, preds) * 100.0
-        return round(acc, 2)
+        prec  = precision_score(y.values, preds, average='weighted', zero_division=0) * 100.0
+        rec   = recall_score(y.values, preds, average='weighted', zero_division=0) * 100.0
+        f1    = f1_score(y.values, preds, average='weighted', zero_division=0) * 100.0
+        return {
+            'accuracy': round(acc, 2),
+            'precision': round(prec, 2),
+            'recall': round(rec, 2),
+            'f1': round(f1, 2)
+        }
 
     skf    = StratifiedKFold(n_splits=n_folds, shuffle=True, random_state=42)
-    scores = cross_val_score(model, X.values, y.values, cv=skf, scoring='accuracy')
-    return round(float(scores.mean()) * 100.0, 2)
+    scoring = {'accuracy': 'accuracy', 'precision': 'precision_weighted', 'recall': 'recall_weighted', 'f1': 'f1_weighted'}
+    scores = cross_validate(model, X.values, y.values, cv=skf, scoring=scoring)
+    
+    return {
+        'accuracy': round(float(scores['test_accuracy'].mean()) * 100.0, 2),
+        'precision': round(float(scores['test_precision'].mean()) * 100.0, 2),
+        'recall': round(float(scores['test_recall'].mean()) * 100.0, 2),
+        'f1': round(float(scores['test_f1'].mean()) * 100.0, 2)
+    }
 
 
-def get_all_accuracies(X_train, y_train):
+def get_all_metrics(X_train, y_train):
     """
-    Hitung akurasi cross-validation untuk ketiga model sekaligus.
-    Mengembalikan dict: {'decision_tree': xx.x, 'naive_bayes': xx.x, 'random_forest': xx.x}
+    Hitung metrik evaluasi untuk ketiga model sekaligus.
+    Mengembalikan dict bersarang.
     """
     models = {
         'decision_tree': DecisionTreeClassifier(random_state=42, max_depth=5),
         'naive_bayes':   GaussianNB(),
         'random_forest': RandomForestClassifier(n_estimators=100, random_state=42, max_depth=5),
     }
-    accuracies = {}
+    metrics_all = {}
     for name, mdl in models.items():
-        accuracies[name] = compute_cv_accuracy(mdl, X_train, y_train)
-    return accuracies
+        metrics_all[name] = compute_cv_metrics(mdl, X_train, y_train)
+    return metrics_all
 
 
 def predict_with_decision_tree(df, X_train, y_train, le_pekerjaan, le_pendidikan):
@@ -222,6 +249,13 @@ def predict_with_random_forest(df, X_train, y_train, le_pekerjaan, le_pendidikan
         results.append({"id": row.get('id', ''), "prediksi": pred})
     return results
 
+def predict_with_rule_based(df):
+    results = []
+    for _, row in df.iterrows():
+        pred = heuristic_label(row)
+        results.append({"id": row.get('id', ''), "prediksi": pred})
+    return results
+
 
 def main():
     if len(sys.argv) < 2:
@@ -253,7 +287,7 @@ def main():
 
     # Baca metode dari argumen ke-2 (default: decision_tree)
     method = sys.argv[2] if len(sys.argv) >= 3 else 'decision_tree'
-    valid_methods = ['decision_tree', 'naive_bayes', 'random_forest']
+    valid_methods = ['decision_tree', 'naive_bayes', 'random_forest', 'rule_based']
     if method not in valid_methods:
         method = 'decision_tree'
 
@@ -264,20 +298,23 @@ def main():
         if col not in df.columns:
             df[col] = 0 if col == 'tanggungan' else 'Unknown'
 
-    # Generate label heuristik untuk data asli (tanpa dummy)
-    df['target_label'] = df.apply(heuristic_label, axis=1)
+    # Generate label heuristik untuk data asli jika rule based terpilih, dll (tidak digunakan di ML sekarang karena dipisah)
+    # df['target_label'] = df.apply(heuristic_label, axis=1)
 
-    # Siapkan training data (termasuk dummy rows)
-    X_train, y_train, le_pekerjaan, le_pendidikan = build_training_data(df)
+    # Siapkan training data (dari file CSV dataset_penduduk.csv)
+    X_train, y_train, le_pekerjaan, le_pendidikan = build_training_data()
 
     # Hitung akurasi cross-validation untuk SEMUA model sekaligus
-    accuracy_all = get_all_accuracies(X_train, y_train)
+    metrics_all = get_all_metrics(X_train, y_train)
+    metrics_all['rule_based'] = {'accuracy': 100.0, 'precision': 100.0, 'recall': 100.0, 'f1': 100.0}
 
     # Jalankan model sesuai metode yang dipilih
     if method == 'naive_bayes':
         results = predict_with_naive_bayes(df, X_train, y_train, le_pekerjaan, le_pendidikan)
     elif method == 'random_forest':
         results = predict_with_random_forest(df, X_train, y_train, le_pekerjaan, le_pendidikan)
+    elif method == 'rule_based':
+        results = predict_with_rule_based(df)
     else:
         # Default: decision_tree
         results = predict_with_decision_tree(df, X_train, y_train, le_pekerjaan, le_pendidikan)
@@ -285,8 +322,8 @@ def main():
     output = {
         "status":       "success",
         "method":       method,
-        "accuracy":     accuracy_all[method],
-        "accuracy_all": accuracy_all,
+        "metrics":      metrics_all[method],
+        "metrics_all":  metrics_all,
         "data":         results
     }
 

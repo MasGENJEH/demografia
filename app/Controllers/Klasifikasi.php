@@ -14,6 +14,7 @@ class Klasifikasi extends BaseController
         'decision_tree' => 'Decision Tree',
         'naive_bayes'   => 'Naive Bayes',
         'random_forest' => 'Random Forest',
+        'rule_based'    => 'Rule-Based Expert System',
     ];
 
     public function index()
@@ -130,9 +131,9 @@ class Klasifikasi extends BaseController
                             $viewData[$predItem['id']]['prediksi'] = $predItem['prediksi'];
                         }
                     }
-                    // Simpan info akurasi dari Python
-                    $data['accuracy']     = $result['accuracy']     ?? null;
-                    $data['accuracy_all'] = $result['accuracy_all'] ?? [];
+                    // Simpan info metrik dari Python
+                    $data['metrics']     = $result['metrics']     ?? null;
+                    $data['metrics_all'] = $result['metrics_all'] ?? [];
                 } else {
                     $data['error'] = 'Gagal memproses hasil klasifikasi: ' . ($result['error'] ?? 'Unknown error');
                 }
@@ -145,7 +146,7 @@ class Klasifikasi extends BaseController
 
         // Fitur Filter Label
         $filter_label = $this->request->getVar('filter_label');
-        if ($filter_label && in_array($filter_label, ['Mampu', 'Menengah', 'Tidak Mampu'])) {
+        if ($filter_label && in_array($filter_label, ['Mapan', 'Berkembang', 'Rentan'])) {
             $klasifikasi_array = array_filter($klasifikasi_array, function($row) use ($filter_label) {
                 return strcasecmp($row['prediksi'], $filter_label) === 0;
             });
@@ -181,9 +182,9 @@ class Klasifikasi extends BaseController
         $data['methodLabels']  = $this->methodLabels;
         $data['methodLabel']   = $this->methodLabels[$method];
         $data['filter_label']  = $filter_label;
-        // Pastikan key akurasi selalu ada meski Python tidak jalan
-        $data['accuracy']      = $data['accuracy']     ?? null;
-        $data['accuracy_all']  = $data['accuracy_all'] ?? [];
+        // Pastikan key metrics selalu ada meski Python tidak jalan
+        $data['metrics']      = $data['metrics']     ?? null;
+        $data['metrics_all']  = $data['metrics_all'] ?? [];
 
         return view('klasifikasi/index', $data);
     }

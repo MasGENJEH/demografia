@@ -23,6 +23,7 @@
                 'decision_tree' => 'fas fa-sitemap',
                 'naive_bayes'   => 'fas fa-calculator',
                 'random_forest' => 'fas fa-tree',
+                'rule_based'    => 'fas fa-balance-scale',
             ];
             ?>
             <i class="<?= $methodIcons[$method] ?> mr-1"></i>
@@ -33,8 +34,10 @@
                 Klasifikasi menggunakan <b>Decision Tree</b>: model berbasis pohon keputusan yang memisahkan data melalui serangkaian aturan IF-THEN berdasarkan fitur Tanggungan, Pekerjaan, dan Pendidikan.
             <?php elseif ($method === 'naive_bayes'): ?>
                 Klasifikasi menggunakan <b>Naive Bayes</b>: model probabilistik yang menghitung kemungkinan setiap kelas berdasarkan distribusi Gaussian dari fitur Tanggungan, Pekerjaan, dan Pendidikan.
-            <?php else: ?>
+            <?php elseif ($method === 'random_forest'): ?>
                 Klasifikasi menggunakan <b>Random Forest</b>: model ensemble yang menggabungkan 100 pohon keputusan untuk menghasilkan prediksi yang lebih robust dan akurat berdasarkan fitur Tanggungan, Pekerjaan, dan Pendidikan.
+            <?php else: ?>
+                Klasifikasi menggunakan <b>Rule-Based Expert System</b>: sistem pakar yang mengevaluasi secara manual berdasarkan kombinasi skor Pekerjaan, Pendidikan, dan jumlah Tanggungan secara deterministik.
             <?php endif; ?>
         </p>
 
@@ -78,6 +81,12 @@
                                     'color' => 'btn-warning',
                                     'desc'  => 'Ensemble 100 Pohon',
                                 ],
+                                'rule_based' => [
+                                    'label' => 'Rule-Based',
+                                    'icon'  => 'fas fa-balance-scale',
+                                    'color' => 'btn-info',
+                                    'desc'  => 'Sistem Pakar Aturan',
+                                ],
                             ];
 
                             foreach ($methodDefs as $key => $def):
@@ -99,15 +108,19 @@
                             <?php endforeach; ?>
 
                             <!-- Badge akurasi metode aktif -->
-                            <?php if ($accuracy !== null): ?>
-                            <span class="ml-auto" style="display: inline-flex; align-items: center; gap: 8px;">
+                            <?php if ($metrics !== null): ?>
+                            <span class="ml-auto" style="display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                                 <span class="badge badge-light border" style="font-size: 0.85em; padding: 6px 10px;">
                                     <i class="fas fa-info-circle mr-1 text-info"></i>
                                     Metode aktif: <strong><?= $methodLabel ?></strong>
                                 </span>
-                                <span class="badge <?= $accuracy >= 80 ? 'badge-success' : ($accuracy >= 60 ? 'badge-warning' : 'badge-danger') ?>" style="font-size: 0.9em; padding: 6px 12px;">
-                                    <i class="fas fa-chart-line mr-1"></i>
-                                    Akurasi CV: <strong><?= $accuracy ?>%</strong>
+                                <span class="badge <?= $metrics['accuracy'] >= 80 ? 'badge-success' : ($metrics['accuracy'] >= 60 ? 'badge-warning' : 'badge-danger') ?>" style="font-size: 0.9em; padding: 6px 12px;">
+                                    <i class="fas fa-bullseye mr-1"></i>
+                                    Accuracy: <strong><?= $metrics['accuracy'] ?>%</strong>
+                                </span>
+                                <span class="badge <?= $metrics['f1'] >= 80 ? 'badge-success' : ($metrics['f1'] >= 60 ? 'badge-warning' : 'badge-danger') ?>" style="font-size: 0.9em; padding: 6px 12px;">
+                                    <i class="fas fa-balance-scale mr-1"></i>
+                                    F1-Score: <strong><?= $metrics['f1'] ?>%</strong>
                                 </span>
                             </span>
                             <?php else: ?>
@@ -132,18 +145,23 @@
                             Hasil Klasifikasi — <span class="text-primary"><?= $methodLabel ?></span>
                         </h4>
                         <div class="card-header-action" style="display: flex; align-items: center; gap: 8px;">
-                            <div class="mr-2">
+                            <div class="mr-2 d-flex align-items-center" style="gap: 8px;">
                                 <select class="form-control" style="width: auto; height: 32px; padding: 4px 10px; font-size: 0.9em; border-radius: 4px;" onchange="window.location.href=this.value">
                                     <option value="<?= base_url('klasifikasi') . '?method=' . $method . '&sort=' . $sort . '&order=' . $order ?>" <?= !$filter_label ? 'selected' : '' ?>>Semua Status</option>
-                                    <option value="<?= base_url('klasifikasi') . '?method=' . $method . '&sort=' . $sort . '&order=' . $order . '&filter_label=Mampu' ?>" <?= $filter_label === 'Mampu' ? 'selected' : '' ?>>Mampu</option>
-                                    <option value="<?= base_url('klasifikasi') . '?method=' . $method . '&sort=' . $sort . '&order=' . $order . '&filter_label=Menengah' ?>" <?= $filter_label === 'Menengah' ? 'selected' : '' ?>>Menengah</option>
-                                    <option value="<?= base_url('klasifikasi') . '?method=' . $method . '&sort=' . $sort . '&order=' . $order . '&filter_label=Tidak Mampu' ?>" <?= $filter_label === 'Tidak Mampu' ? 'selected' : '' ?>>Tidak Mampu</option>
+                                    <option value="<?= base_url('klasifikasi') . '?method=' . $method . '&sort=' . $sort . '&order=' . $order . '&filter_label=Mapan' ?>" <?= $filter_label === 'Mapan' ? 'selected' : '' ?>>Mapan</option>
+                                    <option value="<?= base_url('klasifikasi') . '?method=' . $method . '&sort=' . $sort . '&order=' . $order . '&filter_label=Berkembang' ?>" <?= $filter_label === 'Berkembang' ? 'selected' : '' ?>>Berkembang</option>
+                                    <option value="<?= base_url('klasifikasi') . '?method=' . $method . '&sort=' . $sort . '&order=' . $order . '&filter_label=Rentan' ?>" <?= $filter_label === 'Rentan' ? 'selected' : '' ?>>Rentan</option>
                                 </select>
+                                <?php if ($filter_label || $sort): ?>
+                                    <a href="<?= base_url('klasifikasi') . '?method=' . $method ?>" class="btn btn-outline-danger btn-sm" style="height: 32px; display: inline-flex; align-items: center; padding: 0 10px;" title="Reset Filter & Urutan">
+                                        <i class="fas fa-undo mr-1"></i> Reset
+                                    </a>
+                                <?php endif; ?>
                             </div>
-                            <?php if ($accuracy !== null): ?>
-                            <span class="badge <?= $accuracy >= 80 ? 'badge-success' : ($accuracy >= 60 ? 'badge-warning' : 'badge-danger') ?>" style="font-size: 0.9em; padding: 6px 14px;">
+                            <?php if ($metrics !== null): ?>
+                            <span class="badge <?= $metrics['accuracy'] >= 80 ? 'badge-success' : ($metrics['accuracy'] >= 60 ? 'badge-warning' : 'badge-danger') ?>" style="font-size: 0.9em; padding: 6px 14px;">
                                 <i class="fas fa-bullseye mr-1"></i>
-                                Akurasi: <?= $accuracy ?>%
+                                Akurasi: <?= $metrics['accuracy'] ?>%
                             </span>
                             <?php endif; ?>
                             <span class="badge badge-primary" style="font-size: 0.9em; padding: 6px 12px;">
@@ -198,9 +216,9 @@
                                         <td>
                                             <?php
                                                 $badgeConfig = [
-                                                    'Mampu'       => ['class' => 'badge-success', 'icon' => 'fas fa-check-circle'],
-                                                    'Menengah'    => ['class' => 'badge-warning',  'icon' => 'fas fa-minus-circle'],
-                                                    'Tidak Mampu' => ['class' => 'badge-danger',   'icon' => 'fas fa-times-circle'],
+                                                    'Mapan'       => ['class' => 'badge-success', 'icon' => 'fas fa-check-circle'],
+                                                    'Berkembang'  => ['class' => 'badge-warning', 'icon' => 'fas fa-minus-circle'],
+                                                    'Rentan'      => ['class' => 'badge-danger',  'icon' => 'fas fa-times-circle'],
                                                 ];
                                                 $cfg = $badgeConfig[$row['prediksi']] ?? ['class' => 'badge-secondary', 'icon' => 'fas fa-clock'];
                                             ?>
@@ -238,18 +256,29 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4><i class="fas fa-chart-bar mr-1"></i> Perbandingan Akurasi & Metode ML</h4>
-                        <?php if (!empty($accuracy_all)): ?>
+                        <h4><i class="fas fa-chart-bar mr-1"></i> Perbandingan Performa Model ML</h4>
+                        <?php if (!empty($metrics_all)): ?>
                         <div class="card-header-action">
                             <span class="badge badge-light border" style="font-size: 0.8em; padding: 5px 10px;">
                                 <i class="fas fa-info-circle mr-1 text-secondary"></i>
-                                Akurasi dihitung menggunakan Stratified K-Fold Cross-Validation
+                                Dihitung menggunakan Stratified K-Fold Cross-Validation
                             </span>
                         </div>
                         <?php endif; ?>
                     </div>
                     <div class="card-body">
                         <?php
+                        // Tentukan model terbaik (akurasi tertinggi)
+                        $bestMethod = '';
+                        if (!empty($metrics_all)) {
+                            $bestAcc = -1;
+                            foreach ($metrics_all as $k => $m) {
+                                if (isset($m['accuracy']) && $m['accuracy'] > $bestAcc) {
+                                    $bestAcc = $m['accuracy'];
+                                    $bestMethod = $k;
+                                }
+                            }
+                        }
                         $compCards = [
                             'decision_tree' => [
                                 'label'   => 'Decision Tree',
@@ -284,72 +313,75 @@
                                 'bar'     => 'bg-warning',
                                 'desc'    => 'Ensemble 100 pohon. Akurasi tinggi, tahan overfitting.',
                             ],
+                            'rule_based' => [
+                                'label'   => 'Rule-Based',
+                                'icon'    => 'fas fa-balance-scale',
+                                'color'   => '#17a2b8',
+                                'border'  => 'border-info',
+                                'shadow'  => 'box-shadow: 0 0 0 2px #17a2b833;',
+                                'btn_on'  => 'btn-info',
+                                'btn_off' => 'btn-outline-info',
+                                'bar'     => 'bg-info',
+                                'desc'    => 'Sistem pakar (Expert System) yang memakai aturan logika penentuan kemiskinan yang konsisten dan absolut (Akurasi logis 100%).',
+                            ],
                         ];
-                        // Tentukan model terbaik (akurasi tertinggi)
-                        $bestMethod = '';
-                        if (!empty($accuracy_all)) {
-                            $bestMethod = array_search(max($accuracy_all), $accuracy_all);
-                        }
                         ?>
                         <div class="row">
                         <?php foreach ($compCards as $key => $cc): ?>
                             <?php
                                 $isActive  = ($method === $key);
-                                $isBest    = ($bestMethod === $key && !empty($accuracy_all));
-                                $accVal    = $accuracy_all[$key] ?? null;
-                                $barWidth  = $accVal !== null ? (int)$accVal : 0;
+                                $isBest    = ($bestMethod === $key && !empty($metrics_all));
+                                $mVal      = $metrics_all[$key] ?? null;
                             ?>
-                            <div class="col-md-4 mb-3">
-                                <div class="card border <?= $isActive ? $cc['border'] : '' ?>" style="<?= $isActive ? $cc['shadow'] : '' ?>; position: relative;">
+                            <div class="col-md-6 col-lg-3 mb-3">
+                                <div class="card border <?= $isActive ? $cc['border'] : '' ?>" style="<?= $isActive ? $cc['shadow'] : '' ?>; position: relative; height: 100%;">
                                     <?php if ($isBest): ?>
                                     <div style="position: absolute; top: -10px; right: 10px; z-index: 10;">
                                         <span class="badge badge-danger" style="font-size: 0.75em; padding: 4px 8px;">
-                                            <i class="fas fa-trophy mr-1"></i>Terbaik
+                                            <i class="fas fa-trophy mr-1"></i>Akurasi Terbaik
                                         </span>
                                     </div>
                                     <?php endif; ?>
-                                    <div class="card-body p-3">
-                                        <div class="text-center mb-2">
+                                    <div class="card-body p-3 d-flex flex-column">
+                                        <div class="text-center mb-3">
                                             <div style="font-size: 2rem; color: <?= $cc['color'] ?>;"><i class="<?= $cc['icon'] ?>"></i></div>
                                             <h6 class="mt-2 font-weight-bold mb-1"><?= $cc['label'] ?></h6>
-                                            <p class="text-muted small mb-2"><?= $cc['desc'] ?></p>
+                                            <p class="text-muted small mb-0" style="line-height: 1.2; height: 35px; overflow: hidden;"><?= $cc['desc'] ?></p>
                                         </div>
 
-                                        <!-- Akurasi progress bar -->
-                                        <?php if ($accVal !== null): ?>
-                                        <div class="mb-3">
-                                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                                <small class="font-weight-bold text-muted"><i class="fas fa-chart-line mr-1"></i>Akurasi CV</small>
-                                                <small class="font-weight-bold" style="color: <?= $accVal >= 80 ? '#28a745' : ($accVal >= 60 ? '#ffc107' : '#dc3545') ?>;">
-                                                    <?= $accVal ?>%
-                                                </small>
-                                            </div>
-                                            <div class="progress" style="height: 10px; border-radius: 5px;">
-                                                <div class="progress-bar <?= $cc['bar'] ?>"
-                                                     role="progressbar"
-                                                     style="width: <?= $barWidth ?>%; border-radius: 5px; transition: width 1s ease;"
-                                                     aria-valuenow="<?= $barWidth ?>"
-                                                     aria-valuemin="0"
-                                                     aria-valuemax="100">
+                                        <!-- Metrik Performa -->
+                                        <?php if ($mVal !== null): ?>
+                                        <div class="mb-3 flex-grow-1">
+                                            <?php 
+                                            $metricsList = [
+                                                'Accuracy'  => $mVal['accuracy'] ?? 0,
+                                                'Precision' => $mVal['precision'] ?? 0,
+                                                'Recall'    => $mVal['recall'] ?? 0,
+                                                'F1-Score'  => $mVal['f1'] ?? 0
+                                            ];
+                                            foreach($metricsList as $mName => $mScore):
+                                                $barWidth = (int)$mScore;
+                                                $barColor = $mScore >= 80 ? 'bg-success' : ($mScore >= 60 ? 'bg-warning' : 'bg-danger');
+                                                $textColor = $mScore >= 80 ? '#28a745' : ($mScore >= 60 ? '#ffc107' : '#dc3545');
+                                            ?>
+                                            <div class="mb-2">
+                                                <div class="d-flex justify-content-between align-items-center mb-1" style="font-size: 0.8em;">
+                                                    <span class="font-weight-bold text-muted"><?= $mName ?></span>
+                                                    <span class="font-weight-bold" style="color: <?= $textColor ?>;"><?= $mScore ?>%</span>
+                                                </div>
+                                                <div class="progress" style="height: 6px; border-radius: 3px;">
+                                                    <div class="progress-bar <?= $barColor ?>" role="progressbar" style="width: <?= $barWidth ?>%;" aria-valuenow="<?= $barWidth ?>" aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
                                             </div>
-                                            <small class="text-muted" style="font-size: 0.7em;">
-                                                <?php if ($accVal >= 80): ?>
-                                                    <i class="fas fa-smile text-success mr-1"></i>Akurasi Tinggi
-                                                <?php elseif ($accVal >= 60): ?>
-                                                    <i class="fas fa-meh text-warning mr-1"></i>Akurasi Sedang
-                                                <?php else: ?>
-                                                    <i class="fas fa-frown text-danger mr-1"></i>Akurasi Rendah
-                                                <?php endif; ?>
-                                            </small>
+                                            <?php endforeach; ?>
                                         </div>
                                         <?php else: ?>
-                                        <div class="mb-3 text-center text-muted small">
-                                            <i class="fas fa-spinner fa-spin mr-1"></i>Akurasi belum tersedia
+                                        <div class="mb-3 flex-grow-1 d-flex justify-content-center align-items-center text-muted small" style="min-height: 120px;">
+                                            <div><i class="fas fa-spinner fa-spin mr-1"></i>Metrik belum tersedia</div>
                                         </div>
                                         <?php endif; ?>
 
-                                        <div class="text-center">
+                                        <div class="text-center mt-auto">
                                             <a href="<?= base_url('klasifikasi?method=' . $key) ?>" class="btn btn-sm <?= $isActive ? $cc['btn_on'] : $cc['btn_off'] ?>">
                                                 <?= $isActive ? '<i class="fas fa-check mr-1"></i>Aktif' : 'Gunakan' ?>
                                             </a>
