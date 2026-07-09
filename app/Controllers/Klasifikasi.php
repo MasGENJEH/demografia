@@ -163,21 +163,10 @@ class Klasifikasi extends BaseController
             });
         }
 
-        // Fitur Pagination Array Manual
-        $page = (int)($this->request->getVar('page') ?? 1);
-        if ($page < 1) $page = 1;
-        $perPage = 10;
-        $total   = count($klasifikasi_array);
-
-        $pager       = \Config\Services::pager();
-        $pager_links = $pager->makeLinks($page, $perPage, $total, 'pagination');
-
-        $data['klasifikasi']   = array_slice($klasifikasi_array, ($page - 1) * $perPage, $perPage);
-        $data['pager_links']   = $pager_links;
-        $data['page']          = $page;
+        // Kirim seluruh data untuk di-handle "Load More" di sisi client (JavaScript)
+        $data['klasifikasi']   = $klasifikasi_array;
         $data['sort']          = $sort;
         $data['order']         = $order;
-        $data['perPage']       = $perPage;
         $data['method']        = $method;
         $data['methodLabels']  = $this->methodLabels;
         $data['methodLabel']   = $this->methodLabels[$method];

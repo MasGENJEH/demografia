@@ -81,12 +81,12 @@
                                     'color' => 'btn-warning',
                                     'desc'  => 'Ensemble 100 Pohon',
                                 ],
-                                'rule_based' => [
-                                    'label' => 'Rule-Based',
-                                    'icon'  => 'fas fa-balance-scale',
-                                    'color' => 'btn-info',
-                                    'desc'  => 'Sistem Pakar Aturan',
-                                ],
+                                // 'rule_based' => [
+                                //     'label' => 'Rule-Based',
+                                //     'icon'  => 'fas fa-balance-scale',
+                                //     'color' => 'btn-info',
+                                //     'desc'  => 'Sistem Pakar Aturan',
+                                // ],
                             ];
 
                             foreach ($methodDefs as $key => $def):
@@ -203,10 +203,11 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $no = 1 + (($page - 1) * $perPage);
-                                    foreach ($klasifikasi as $row) :
+                                    $no = 1;
+                                    foreach ($klasifikasi as $index => $row) :
+                                        $isHidden = $index >= 10 ? 'd-none data-row-hidden="true"' : '';
                                     ?>
-                                    <tr>
+                                    <tr class="table-data-row <?= $isHidden ? 'd-none' : '' ?>" <?= $isHidden ?>>
                                         <td><?= $no++ ?></td>
                                         <td><?= $row['nomor_kk'] ?></td>
                                         <td><?= $row['nama_kepala'] ?></td>
@@ -242,12 +243,44 @@
                             </table>
                         </div>
                     </div>
-                    <div class="card-footer text-right">
-                        <nav class="d-inline-block">
-                            <?= $pager_links ?>
-                        </nav>
+                    </div>
+                    <div class="card-footer text-center">
+                        <?php if (count($klasifikasi) > 10): ?>
+                            <button id="btnLoadMore" class="btn btn-outline-primary btn-lg px-4" style="border-radius: 30px;">
+                                <i class="fas fa-chevron-down mr-2"></i> Tampilkan data lebih banyak
+                            </button>
+                            <p id="textAllLoaded" class="text-muted d-none mt-2 mb-0"><i class="fas fa-check-circle mr-1 text-success"></i>Semua data telah ditampilkan</p>
+                        <?php endif; ?>
                     </div>
                 </div>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        const btnLoadMore = document.getElementById('btnLoadMore');
+                        const textAllLoaded = document.getElementById('textAllLoaded');
+                        if (btnLoadMore) {
+                            btnLoadMore.addEventListener('click', function() {
+                                // Cari 10 row berikutnya yang tersembunyi
+                                const hiddenRows = document.querySelectorAll('.table-data-row.d-none');
+                                let count = 0;
+                                hiddenRows.forEach(function(row) {
+                                    if (count < 10) {
+                                        row.classList.remove('d-none');
+                                        row.removeAttribute('data-row-hidden');
+                                        count++;
+                                    }
+                                });
+
+                                // Jika tidak ada lagi yang tersembunyi, hilangkan tombol
+                                const remainingHidden = document.querySelectorAll('.table-data-row.d-none');
+                                if (remainingHidden.length === 0) {
+                                    btnLoadMore.classList.add('d-none');
+                                    if (textAllLoaded) textAllLoaded.classList.remove('d-none');
+                                }
+                            });
+                        }
+                    });
+                </script>
             </div>
         </div>
 
@@ -313,17 +346,6 @@
                                 'bar'     => 'bg-warning',
                                 'desc'    => 'Ensemble 100 pohon. Akurasi tinggi, tahan overfitting.',
                             ],
-                            'rule_based' => [
-                                'label'   => 'Rule-Based',
-                                'icon'    => 'fas fa-balance-scale',
-                                'color'   => '#17a2b8',
-                                'border'  => 'border-info',
-                                'shadow'  => 'box-shadow: 0 0 0 2px #17a2b833;',
-                                'btn_on'  => 'btn-info',
-                                'btn_off' => 'btn-outline-info',
-                                'bar'     => 'bg-info',
-                                'desc'    => 'Sistem pakar (Expert System) yang memakai aturan logika penentuan kemiskinan yang konsisten dan absolut (Akurasi logis 100%).',
-                            ],
                         ];
                         ?>
                         <div class="row">
@@ -333,7 +355,7 @@
                                 $isBest    = ($bestMethod === $key && !empty($metrics_all));
                                 $mVal      = $metrics_all[$key] ?? null;
                             ?>
-                            <div class="col-md-6 col-lg-3 mb-3">
+                            <div class="col-md-6 col-lg-4 mb-3">
                                 <div class="card border <?= $isActive ? $cc['border'] : '' ?>" style="<?= $isActive ? $cc['shadow'] : '' ?>; position: relative; height: 100%;">
                                     <?php if ($isBest): ?>
                                     <div style="position: absolute; top: -10px; right: 10px; z-index: 10;">
