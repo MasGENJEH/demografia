@@ -39,6 +39,62 @@ class KartuKeluarga extends BaseController
 
     public function create()
     {
+        $rules = [
+            'nomor_kk' => [
+                'rules' => 'required|numeric|max_length[16]|is_unique[kartu_keluarga.nomor_kk]',
+                'errors' => [
+                    'required' => 'Nomor KK wajib diisi.',
+                    'numeric' => 'Nomor KK harus berupa angka.',
+                    'max_length' => 'Nomor KK maksimal 16 digit.',
+                    'is_unique' => 'Nomor KK ini sudah terdaftar.'
+                ]
+            ],
+            'alamat' => [
+                'rules' => 'required',
+                'errors' => ['required' => 'Alamat wajib diisi.']
+            ],
+            'rt' => [
+                'rules' => 'required|numeric',
+                'errors' => [
+                    'required' => 'RT wajib diisi.',
+                    'numeric' => 'RT harus berupa angka.'
+                ]
+            ],
+            'rw' => [
+                'rules' => 'required|numeric',
+                'errors' => [
+                    'required' => 'RW wajib diisi.',
+                    'numeric' => 'RW harus berupa angka.'
+                ]
+            ],
+            'dusun' => [
+                'rules' => 'required',
+                'errors' => ['required' => 'Dusun wajib diisi.']
+            ],
+            'pendapatan' => [
+                'rules' => 'required|numeric',
+                'errors' => [
+                    'required' => 'Pendapatan wajib diisi.',
+                    'numeric' => 'Pendapatan harus berupa angka.'
+                ]
+            ],
+            'skala_rumah' => [
+                'rules' => 'required|numeric',
+                'errors' => [
+                    'required' => 'Skala rumah wajib diisi.',
+                    'numeric' => 'Skala rumah harus berupa angka.'
+                ]
+            ],
+            'desa' => [
+                'rules' => 'required',
+                'errors' => ['required' => 'Status kependudukan wajib dipilih.']
+            ]
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $data = $this->request->getPost();
         $this->kartu_keluarga->insert($data);
 

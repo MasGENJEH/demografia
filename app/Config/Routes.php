@@ -57,6 +57,12 @@ $routes->group('bansos', ['filter' => 'isAdmin'], static function ($routes) {
     // $routes->delete('(:segment)', 'Bansos::delete/$1'); // Delete Data
 });
 
+// --- KLASIFIKASI ROUTES ---
+$routes->group('klasifikasi', static function ($routes) {
+    $routes->get('/', 'Klasifikasi::index');
+    $routes->post('predict', 'Klasifikasi::predict');
+});
+
 // --- AUTH ROUTES ---
 $routes->group('auth', static function ($routes) {
     $routes->get('login', 'Auth::login'); // view login

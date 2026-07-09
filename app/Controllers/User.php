@@ -26,6 +26,42 @@ class User extends BaseController
 
     public function create()
     {
+        $rules = [
+            'username' => [
+                'rules' => 'required|min_length[3]|max_length[50]',
+                'errors' => [
+                    'required' => 'Username wajib diisi.',
+                    'min_length' => 'Username minimal 3 karakter.',
+                    'max_length' => 'Username maksimal 50 karakter.'
+                ]
+            ],
+            'email' => [
+                'rules' => 'required|valid_email|is_unique[users.email]',
+                'errors' => [
+                    'required' => 'Email wajib diisi.',
+                    'valid_email' => 'Format email tidak valid.',
+                    'is_unique' => 'Email ini sudah terdaftar.'
+                ]
+            ],
+            'password' => [
+                'rules' => 'required|min_length[6]',
+                'errors' => [
+                    'required' => 'Password wajib diisi.',
+                    'min_length' => 'Password minimal 6 karakter.'
+                ]
+            ],
+            'role' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Role wajib dipilih.'
+                ]
+            ]
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $data = [
             'username' => $this->request->getVar('username'),
             'email' => $this->request->getVar('email'),

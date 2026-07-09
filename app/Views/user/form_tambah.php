@@ -30,6 +30,7 @@
                         <h4>Masukan Data User Baru</h4>
                     </div>
                     <div class="card-body">
+                        <?php $errors = session()->getFlashdata('errors'); ?>
                         <form action="<?php echo base_url('pengguna/save'); ?>" method="post" autocomplete="off">
                             <?php echo csrf_field(); ?>
 
@@ -37,13 +38,19 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Username</label>
-                                        <input type="text" name="username" class="form-control" required>
+                                        <input type="text" name="username" class="form-control <?php echo isset($errors['username']) ? 'is-invalid' : ''; ?>" value="<?php echo old('username'); ?>">
+                                        <?php if (isset($errors['username'])) { ?>
+                                            <div class="invalid-feedback"><?php echo $errors['username']; ?></div>
+                                        <?php } ?>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>email</label>
-                                        <input type="email" name="email" class="form-control" required>
+                                        <input type="email" name="email" class="form-control <?php echo isset($errors['email']) ? 'is-invalid' : ''; ?>" value="<?php echo old('email'); ?>">
+                                        <?php if (isset($errors['email'])) { ?>
+                                            <div class="invalid-feedback"><?php echo $errors['email']; ?></div>
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </div>
@@ -52,18 +59,24 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Password</label>
-                                        <input type="password" name="password" class="form-control" required>
+                                        <input type="password" name="password" class="form-control <?php echo isset($errors['password']) ? 'is-invalid' : ''; ?>">
+                                        <?php if (isset($errors['password'])) { ?>
+                                            <div class="invalid-feedback"><?php echo $errors['password']; ?></div>
+                                        <?php } ?>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="role_select">Pendidikan Terakhir</label>
-                                        <select class="form-control" id="role_select" name="role">
-                                            <option value="" selected disabled hidden>Pilih Role</option>
-                                            <option value="admin">Admin</option>
-                                            <option value="rt">RT</option>
-                                            <option value="rw">RW</option>
+                                        <label for="role_select">Role</label>
+                                        <select class="form-control <?php echo isset($errors['role']) ? 'is-invalid' : ''; ?>" id="role_select" name="role">
+                                            <option value="" <?php echo old('role') == '' ? 'selected' : ''; ?> disabled hidden>Pilih Role</option>
+                                            <option value="admin" <?php echo old('role') == 'admin' ? 'selected' : ''; ?>>Admin</option>
+                                            <option value="rt" <?php echo old('role') == 'rt' ? 'selected' : ''; ?>>RT</option>
+                                            <option value="rw" <?php echo old('role') == 'rw' ? 'selected' : ''; ?>>RW</option>
                                         </select>
+                                        <?php if (isset($errors['role'])) { ?>
+                                            <div class="invalid-feedback"><?php echo $errors['role']; ?></div>
+                                        <?php } ?>
                                     </div>
                                 </div>
 

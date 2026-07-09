@@ -50,13 +50,67 @@ class Penduduk extends BaseController
     // CREATE (Proses Simpan Data Baru)
     public function create()
     {
-        // Validasi input
-        // $data = $this->request->getPost();
+        $rules = [
+            'nama_lengkap' => [
+                'rules' => 'required',
+                'errors' => ['required' => 'Nama lengkap wajib diisi.']
+            ],
+            'nik' => [
+                'rules' => 'required|numeric|max_length[16]|is_unique[penduduk.nik]',
+                'errors' => [
+                    'required' => 'NIK wajib diisi.',
+                    'numeric' => 'NIK harus berupa angka.',
+                    'max_length' => 'NIK maksimal 16 digit.',
+                    'is_unique' => 'NIK ini sudah terdaftar.'
+                ]
+            ],
+            'nomor_kk' => [
+                'rules' => 'required|numeric|max_length[16]',
+                'errors' => [
+                    'required' => 'Nomor KK wajib diisi.',
+                    'numeric' => 'Nomor KK harus berupa angka.',
+                    'max_length' => 'Nomor KK maksimal 16 digit.'
+                ]
+            ],
+            'tanggal_lahir' => [
+                'rules' => 'required|valid_date',
+                'errors' => [
+                    'required' => 'Tanggal lahir wajib diisi.',
+                    'valid_date' => 'Format tanggal lahir tidak valid.'
+                ]
+            ],
+            'jenis_kelamin' => [
+                'rules' => 'required',
+                'errors' => ['required' => 'Jenis kelamin wajib dipilih.']
+            ],
+            'status_keluarga' => [
+                'rules' => 'required',
+                'errors' => ['required' => 'Status keluarga wajib dipilih.']
+            ],
+            'pendidikan_terakhir' => [
+                'rules' => 'required',
+                'errors' => ['required' => 'Pendidikan terakhir wajib dipilih.']
+            ],
+            'pekerjaan' => [
+                'rules' => 'required',
+                'errors' => ['required' => 'Pekerjaan wajib diisi.']
+            ],
+            'status_perkawinan' => [
+                'rules' => 'required',
+                'errors' => ['required' => 'Status perkawinan wajib dipilih.']
+            ]
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $data = [
             'nik' => $this->request->getVar('nik'),
             'nama_lengkap' => $this->request->getVar('nama_lengkap'),
             'nomor_kk' => $this->request->getVar('nomor_kk'),
             'tanggal_lahir' => $this->request->getVar('tanggal_lahir'),
+            'jenis_kelamin' => $this->request->getVar('jenis_kelamin'),
             'status_keluarga' => $this->request->getVar('status_keluarga'),
             'pendidikan_terakhir' => $this->request->getVar('pendidikan_terakhir'),
             'pekerjaan' => $this->request->getVar('pekerjaan'),

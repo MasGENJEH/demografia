@@ -72,5 +72,11 @@
             </ul>
         </li>
 
+        <li class="nav-item">
+            <a class="nav-link" href="<?php echo base_url('/klasifikasi'); ?>">
+                <span><i class="fas fa-brain fa-fw"></i>Klasifikasi Ekonomi (ML)</span>
+            </a>
+        </li>
+
     </ul>
 </aside>
