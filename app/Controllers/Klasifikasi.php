@@ -55,6 +55,9 @@ class Klasifikasi extends BaseController
             $pekerjaan   = 'Tidak Bekerja';
             $pendidikan  = 'Tidak Sekolah';
             $nama_kepala = null;
+            $jenis_kelamin = 'Laki-laki';
+            $status_perkawinan = 'Kawin';
+            $tanggal_lahir = date('Y-m-d');
 
             // Cari anggota yang berstatus Kepala Keluarga
             foreach ($anggota as $p) {
@@ -62,6 +65,9 @@ class Klasifikasi extends BaseController
                     $pekerjaan   = $p->pekerjaan;
                     $pendidikan  = $p->pendidikan_terakhir;
                     $nama_kepala = $p->nama_lengkap;
+                    $jenis_kelamin = $p->jenis_kelamin;
+                    $status_perkawinan = $p->status_perkawinan;
+                    $tanggal_lahir = $p->tanggal_lahir;
                     break;
                 }
             }
@@ -71,12 +77,20 @@ class Klasifikasi extends BaseController
                 $pekerjaan   = $anggota[0]->pekerjaan;
                 $pendidikan  = $anggota[0]->pendidikan_terakhir;
                 $nama_kepala = $anggota[0]->nama_lengkap;
+                $jenis_kelamin = $anggota[0]->jenis_kelamin;
+                $status_perkawinan = $anggota[0]->status_perkawinan;
+                $tanggal_lahir = $anggota[0]->tanggal_lahir;
             }
 
             // KK dengan banyak anggota tapi tidak ada Kepala Keluarga → lewati
             if ($nama_kepala === null) {
                 continue;
             }
+
+            // Hitung umur
+            $tgl = new \DateTime($tanggal_lahir);
+            $sekarang = new \DateTime('today');
+            $umur = $tgl->diff($sekarang)->y;
 
             // Tanggungan = jumlah anggota - 1 (Kepala Keluarga tidak dihitung)
             // Jika hanya 1 anggota, tanggungan = 0
@@ -87,6 +101,9 @@ class Klasifikasi extends BaseController
                 'tanggungan' => $jumlah_tanggungan,
                 'pekerjaan'  => $pekerjaan,
                 'pendidikan' => $pendidikan,
+                'umur'       => $umur,
+                'jenis_kelamin' => $jenis_kelamin,
+                'status_perkawinan' => $status_perkawinan,
             ];
 
             $viewData[$nomor_kk] = [

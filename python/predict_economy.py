@@ -82,19 +82,19 @@ def heuristic_label(row):
     # Contoh Mapan: PNS (+8) + S1 (+5) + 2 tanggungan (+1) = 14
     # Contoh Berkembang: Wiraswasta (+4) + SMA (+3) + 2 tanggungan (+1) = 8
     # Contoh Rentan: Buruh (-3) + SD (-1) + 4 tanggungan (-1) = -5
-    if score >= 10:
+    if score >= 7:
         return 'Mapan'
-    elif score < -1:
+    elif score < 1:
         return 'Rentan'
     else:
         return 'Berkembang'
 
 def build_training_data():
     """
-    Siapkan data training dengan memuat dataset_penduduk.csv.
+    Siapkan data training dengan memuat dataset_penduduk.csv (atau data_bersih2.csv).
     """
     import os
-    csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dataset_penduduk.csv')
+    csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data_bersih2.csv')
     
     if not os.path.exists(csv_path):
         # Fallback jika CSV tidak ada, gunakan dummy
@@ -107,10 +107,19 @@ def build_training_data():
     col_pend = 'pendidikan_terakhir' if 'pendidikan_terakhir' in df_train.columns else 'pendidikan'
     col_label = 'status_ekonomi' if 'status_ekonomi' in df_train.columns else 'target_label'
     
+    # Deteksi umur, jenis kelamin, status perkawinan
+    col_umur = 'UMUR' if 'UMUR' in df_train.columns else 'umur'
+    col_jk = 'JENIS KELAMIN' if 'JENIS KELAMIN' in df_train.columns else 'jenis_kelamin'
+    col_status = 'STATUS PERKAWINAN' if 'STATUS PERKAWINAN' in df_train.columns else 'status_perkawinan'
+    
     # Pastikan kolom-kolom string terisi
     df_train['pekerjaan'] = df_train.get('pekerjaan', pd.Series(['Unknown']*len(df_train))).fillna('Unknown')
     df_train[col_pend] = df_train.get(col_pend, pd.Series(['Unknown']*len(df_train))).fillna('Unknown')
     df_train['tanggungan'] = df_train.get('tanggungan', pd.Series([0]*len(df_train))).fillna(0)
+    
+    df_train[col_umur] = df_train.get(col_umur, pd.Series([0]*len(df_train))).fillna(0)
+    df_train[col_jk] = df_train.get(col_jk, pd.Series(['Unknown']*len(df_train))).fillna('Unknown')
+    df_train[col_status] = df_train.get(col_status, pd.Series(['Unknown']*len(df_train))).fillna('Unknown')
     
     if col_label not in df_train.columns:
         df_train['target_label'] = df_train.apply(heuristic_label, axis=1)
@@ -119,20 +128,27 @@ def build_training_data():
 
     le_pekerjaan = LabelEncoder()
     le_pendidikan = LabelEncoder()
+    le_jk = LabelEncoder()
+    le_status = LabelEncoder()
 
     df_train['pekerjaan_enc'] = le_pekerjaan.fit_transform(df_train['pekerjaan'].astype(str))
     df_train['pendidikan_enc'] = le_pendidikan.fit_transform(df_train[col_pend].astype(str))
+    df_train['jk_enc'] = le_jk.fit_transform(df_train[col_jk].astype(str).str.upper())
+    df_train['status_enc'] = le_status.fit_transform(df_train[col_status].astype(str).str.upper())
 
-    X_train = df_train[['tanggungan', 'pekerjaan_enc', 'pendidikan_enc']].astype(float)
+    X_train = df_train[['tanggungan', 'pekerjaan_enc', 'pendidikan_enc', col_umur, 'jk_enc', 'status_enc']].astype(float)
     y_train = df_train['target_label']
 
-    return X_train, y_train, le_pekerjaan, le_pendidikan
+    return X_train, y_train, le_pekerjaan, le_pendidikan, le_jk, le_status
 
 
-def encode_input_row(row, le_pekerjaan, le_pendidikan):
+def encode_input_row(row, le_pekerjaan, le_pendidikan, le_jk, le_status):
     """Encode satu baris data input; tangani label yang belum pernah dilihat (unseen)."""
-    pek_val  = str(row['pekerjaan'])
-    pend_val = str(row['pendidikan'])
+    pek_val  = str(row.get('pekerjaan', 'Unknown'))
+    pend_val = str(row.get('pendidikan', 'Unknown'))
+    
+    jk_val = str(row.get('jenis_kelamin', row.get('JENIS KELAMIN', 'Unknown'))).upper().strip()
+    status_val = str(row.get('status_perkawinan', row.get('STATUS PERKAWINAN', 'Unknown'))).upper().strip()
 
     # Unseen label fallback: cari kelas terdekat atau pakai 0
     if pek_val in le_pekerjaan.classes_:
@@ -144,14 +160,28 @@ def encode_input_row(row, le_pekerjaan, le_pendidikan):
         pend_enc = le_pendidikan.transform([pend_val])[0]
     else:
         pend_enc = 0
+        
+    if jk_val in le_jk.classes_:
+        jk_enc = le_jk.transform([jk_val])[0]
+    else:
+        jk_enc = 0
+        
+    if status_val in le_status.classes_:
+        status_enc = le_status.transform([status_val])[0]
+    else:
+        status_enc = 0
 
-    tang_val = 0
     try:
-        tang_val = int(row['tanggungan'])
+        tang_val = int(row.get('tanggungan', 0))
     except:
-        pass
+        tang_val = 0
+        
+    try:
+        umur_val = int(row.get('umur', row.get('UMUR', 0)))
+    except:
+        umur_val = 0
 
-    return [float(tang_val), float(pek_enc), float(pend_enc)]
+    return [float(tang_val), float(pek_enc), float(pend_enc), float(umur_val), float(jk_enc), float(status_enc)]
 
 
 def compute_cv_metrics(model, X, y):
@@ -172,7 +202,7 @@ def compute_cv_metrics(model, X, y):
     n_folds = min(5, min_class_count)
 
     if n_folds < 2:
-        # Terlalu sedikit data per kelas — gunakan training accuracy sebagai fallback
+        # Terlalu sedikit data per kelas - gunakan training accuracy sebagai fallback
         model.fit(X.values, y.values)
         preds = model.predict(X.values)
         acc   = accuracy_score(y.values, preds) * 100.0
@@ -214,37 +244,37 @@ def get_all_metrics(X_train, y_train):
     return metrics_all
 
 
-def predict_with_decision_tree(df, X_train, y_train, le_pekerjaan, le_pendidikan):
+def predict_with_decision_tree(df, X_train, y_train, le_pekerjaan, le_pendidikan, le_jk, le_status):
     model = DecisionTreeClassifier(random_state=42, max_depth=5)
     model.fit(X_train.values, y_train.values)
 
     results = []
     for _, row in df.iterrows():
-        features = encode_input_row(row, le_pekerjaan, le_pendidikan)
+        features = encode_input_row(row, le_pekerjaan, le_pendidikan, le_jk, le_status)
         pred = model.predict([features])[0]
         results.append({"id": row.get('id', ''), "prediksi": pred})
     return results
 
 
-def predict_with_naive_bayes(df, X_train, y_train, le_pekerjaan, le_pendidikan):
+def predict_with_naive_bayes(df, X_train, y_train, le_pekerjaan, le_pendidikan, le_jk, le_status):
     model = GaussianNB()
     model.fit(X_train.values, y_train.values)
 
     results = []
     for _, row in df.iterrows():
-        features = encode_input_row(row, le_pekerjaan, le_pendidikan)
+        features = encode_input_row(row, le_pekerjaan, le_pendidikan, le_jk, le_status)
         pred = model.predict([features])[0]
         results.append({"id": row.get('id', ''), "prediksi": pred})
     return results
 
 
-def predict_with_random_forest(df, X_train, y_train, le_pekerjaan, le_pendidikan):
+def predict_with_random_forest(df, X_train, y_train, le_pekerjaan, le_pendidikan, le_jk, le_status):
     model = RandomForestClassifier(n_estimators=100, random_state=42, max_depth=5)
     model.fit(X_train.values, y_train.values)
 
     results = []
     for _, row in df.iterrows():
-        features = encode_input_row(row, le_pekerjaan, le_pendidikan)
+        features = encode_input_row(row, le_pekerjaan, le_pendidikan, le_jk, le_status)
         pred = model.predict([features])[0]
         results.append({"id": row.get('id', ''), "prediksi": pred})
     return results
@@ -262,7 +292,6 @@ def main():
         print(json.dumps({"error": "Argumen JSON tidak ditemukan."}))
         sys.exit(1)
 
-    # Parse argumen: argv[1] = path file JSON, argv[2] (opsional) = method
     try:
         import os
         arg_val = sys.argv[1]
@@ -285,7 +314,6 @@ def main():
         print(json.dumps({"error": "Format argumen tidak valid: " + str(e)}))
         sys.exit(1)
 
-    # Baca metode dari argumen ke-2 (default: decision_tree)
     method = sys.argv[2] if len(sys.argv) >= 3 else 'decision_tree'
     valid_methods = ['decision_tree', 'naive_bayes', 'random_forest', 'rule_based']
     if method not in valid_methods:
@@ -293,31 +321,19 @@ def main():
 
     df = pd.DataFrame(input_data)
 
-    # Pastikan kolom-kolom penting ada
-    for col in ['tanggungan', 'pekerjaan', 'pendidikan']:
-        if col not in df.columns:
-            df[col] = 0 if col == 'tanggungan' else 'Unknown'
+    X_train, y_train, le_pekerjaan, le_pendidikan, le_jk, le_status = build_training_data()
 
-    # Generate label heuristik untuk data asli jika rule based terpilih, dll (tidak digunakan di ML sekarang karena dipisah)
-    # df['target_label'] = df.apply(heuristic_label, axis=1)
-
-    # Siapkan training data (dari file CSV dataset_penduduk.csv)
-    X_train, y_train, le_pekerjaan, le_pendidikan = build_training_data()
-
-    # Hitung akurasi cross-validation untuk SEMUA model sekaligus
     metrics_all = get_all_metrics(X_train, y_train)
     metrics_all['rule_based'] = {'accuracy': 100.0, 'precision': 100.0, 'recall': 100.0, 'f1': 100.0}
 
-    # Jalankan model sesuai metode yang dipilih
     if method == 'naive_bayes':
-        results = predict_with_naive_bayes(df, X_train, y_train, le_pekerjaan, le_pendidikan)
+        results = predict_with_naive_bayes(df, X_train, y_train, le_pekerjaan, le_pendidikan, le_jk, le_status)
     elif method == 'random_forest':
-        results = predict_with_random_forest(df, X_train, y_train, le_pekerjaan, le_pendidikan)
+        results = predict_with_random_forest(df, X_train, y_train, le_pekerjaan, le_pendidikan, le_jk, le_status)
     elif method == 'rule_based':
         results = predict_with_rule_based(df)
     else:
-        # Default: decision_tree
-        results = predict_with_decision_tree(df, X_train, y_train, le_pekerjaan, le_pendidikan)
+        results = predict_with_decision_tree(df, X_train, y_train, le_pekerjaan, le_pendidikan, le_jk, le_status)
 
     output = {
         "status":       "success",
