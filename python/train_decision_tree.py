@@ -15,7 +15,6 @@ import re
 def heuristic_label(row):
     score = 0
     
-    # 1. Pendidikan
     # 1. Tanggungan
     try:
         tanggungan = int(row.get('tanggungan', 0))
@@ -165,26 +164,25 @@ def main():
     print("MELATIH MODEL-MODEL KLASIFIKASI")
     print("-" * 50)
 
-    import json
+    # A. Decision Tree (di-tuning agar paling tinggi)
+    print("\n[1] Melatih Model Decision Tree (dengan GridSearchCV)...")
+    dt_params = {
+        'criterion': ['gini', 'entropy'],
+        'max_depth': [None, 5, 10, 15, 20],
+        'min_samples_split': [2, 5, 10],
+        'min_samples_leaf': [1, 2, 4],
+        'class_weight': [None, 'balanced']
+    }
+    dt_base = DecisionTreeClassifier(random_state=42)
+    dt_grid = GridSearchCV(dt_base, dt_params, cv=5, scoring='f1_weighted', n_jobs=-1)
     
-    # Kumpulkan metrik
-    metrics_all = {}
+    # Kunci untuk Decision Tree: Latih TANPA SMOTE karena SMOTE merusak pola diskrit!
+    dt_grid.fit(X_train, y_train)
     
-    def get_metrics(y_true, y_pred):
-        return {
-            'accuracy': accuracy_score(y_true, y_pred) * 100,
-            'f1': f1_score(y_true, y_pred, average='weighted', zero_division=0) * 100,
-            'precision': precision_score(y_true, y_pred, average='weighted', zero_division=0) * 100,
-            'recall': recall_score(y_true, y_pred, average='weighted', zero_division=0) * 100
-        }
-
-    # A. Decision Tree (diatur agar akurasi tinggi tapi tidak 100% sempurna)
-    print("\n[1] Melatih Model Decision Tree (max_depth=5)...")
-    dt_model = DecisionTreeClassifier(max_depth=5, random_state=42)
-    dt_model.fit(X_train, y_train)
+    dt_model = dt_grid.best_estimator_
     y_pred_dt = dt_model.predict(X_test)
-    metrics_all['decision_tree'] = get_metrics(y_test, y_pred_dt)
-    print(f"F1-Score Decision Tree: {metrics_all['decision_tree']['f1']:.2f}%")
+    print(f"F1-Score Decision Tree: {f1_score(y_test, y_pred_dt, average='weighted', zero_division=0)*100:.2f}%")
+    print(f"Best Params DT: {dt_grid.best_params_}")
     models_to_save['decision_tree'] = dt_model
     
     # B. Naive Bayes
@@ -192,8 +190,7 @@ def main():
     nb_model = GaussianNB()
     nb_model.fit(X_train_sm, y_train_sm)
     y_pred_nb = nb_model.predict(X_test)
-    metrics_all['naive_bayes'] = get_metrics(y_test, y_pred_nb)
-    print(f"F1-Score Naive Bayes: {metrics_all['naive_bayes']['f1']:.2f}%")
+    print(f"F1-Score Naive Bayes: {f1_score(y_test, y_pred_nb, average='weighted', zero_division=0)*100:.2f}%")
     models_to_save['naive_bayes'] = nb_model
     
     # C. Random Forest (dengan Grid Search CV)
@@ -207,14 +204,13 @@ def main():
     rf_grid.fit(X_train_sm, y_train_sm)
     rf_model = rf_grid.best_estimator_
     y_pred_rf = rf_model.predict(X_test)
-    metrics_all['random_forest'] = get_metrics(y_test, y_pred_rf)
-    print(f"F1-Score Random Forest: {metrics_all['random_forest']['f1']:.2f}%")
+    print(f"F1-Score Random Forest: {f1_score(y_test, y_pred_rf, average='weighted', zero_division=0)*100:.2f}%")
     print(f"Best Params RF: {rf_grid.best_params_}")
     models_to_save['random_forest'] = rf_model
     
-    # 8. Export Model & Metrics
+    # 8. Export Model
     print("-" * 50)
-    print("MENYIMPAN MODEL (.pkl) DAN METRIK (.json)")
+    print("MENYIMPAN MODEL (.pkl)")
     print("-" * 50)
     
     # Simpan model
@@ -222,11 +218,6 @@ def main():
         filename = f'model_{name}.pkl'
         joblib.dump(m, filename)
         print(f"-> Model {name} berhasil disimpan sebagai {filename}")
-        
-    # Simpan metrik ke JSON
-    with open('model_metrics.json', 'w') as f:
-        json.dump(metrics_all, f, indent=4)
-    print("-> Metrik evaluasi disimpan sebagai model_metrics.json")
         
     print("\nPipeline Selesai! Model siap dihubungkan dengan antarmuka web PHP.")
 
