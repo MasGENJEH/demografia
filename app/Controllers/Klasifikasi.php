@@ -128,8 +128,9 @@ class Klasifikasi extends BaseController
             $pythonExec = 'python';
             $scriptPath = FCPATH . '../python/predict_economy.py';
 
-            // Teruskan path file temporary dan metode ke python
-            $command = escapeshellcmd("$pythonExec \"$scriptPath\"")
+            // Teruskan path file temporary dan metode ke python (hindari escapeshellcmd di Windows untuk path yang memiliki spasi)
+            $command = escapeshellarg($pythonExec) 
+                . ' ' . escapeshellarg($scriptPath)
                 . ' ' . escapeshellarg($tmpFile)
                 . ' ' . escapeshellarg($method);
 
@@ -142,7 +143,9 @@ class Klasifikasi extends BaseController
 
             if ($output !== null) {
                 $result = json_decode($output, true);
-                if (isset($result['status']) && $result['status'] === 'success') {
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    $data['error'] = 'Gagal parse JSON dari Python. Output: ' . htmlspecialchars($output) . ' | Command: ' . htmlspecialchars($command);
+                } else if (isset($result['status']) && $result['status'] === 'success') {
                     foreach ($result['data'] as $predItem) {
                         if (isset($viewData[$predItem['id']])) {
                             $viewData[$predItem['id']]['prediksi'] = $predItem['prediksi'];
